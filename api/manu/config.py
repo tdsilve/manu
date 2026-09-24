@@ -41,7 +41,7 @@ class Settings:
             ollama_url=env("OLLAMA_URL", "http://localhost:11434"),
             embedding_model=env("EMBEDDING_MODEL", "bge-m3"),
             anthropic_api_key=env("ANTHROPIC_API_KEY") or None,
-            claude_model=env("CLAUDE_MODEL", "claude-sonnet-5"),
+            claude_model=env("CLAUDE_MODEL", "claude-opus-5"),
             top_k=int(env("TOP_K", "3")),
             similarity_threshold=float(env("SIMILARITY_THRESHOLD", "0.5")),
             cors_origin=env("CORS_ORIGIN", "http://localhost:3000"),
