@@ -1,0 +1,22 @@
+# Registro de manuais (ADR 0006): os PDFs ficam em data/pdfs/ (fora do git);
+# este arquivo permite a qualquer pessoa baixar os mesmos manuais.
+#
+# Campos de cada manual:
+#   id           identificador estável (vai nos IDs dos trechos: id + página)
+#   brand        Electrolux | Brastemp
+#   model_codes  lista de códigos do modelo cobertos, copiados do próprio manual
+#   category     geladeira | micro-ondas
+#   source_url   link de onde o PDF foi baixado
+#   file         nome do arquivo em data/pdfs/
+#
+# Valide com: manu-validate
+#
+# Exemplo (substitua pelos manuais reais):
+#   - id: electrolux-df44
+#     brand: Electrolux
+#     model_codes: [DF44, DF44S]
+#     category: geladeira
+#     source_url: https://...
+#     file: electrolux-df44.pdf
+
+manuals: []
