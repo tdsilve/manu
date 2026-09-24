@@ -1,1 +1,25 @@
 .scratch/
+.DS_Store
+
+# Segredos
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.egg-info/
+.venv/
+.mypy_cache/
+.pytest_cache/
+
+# Dados locais (nunca versionados: ADR 0006)
+api/data/pdfs/
+api/data/chroma/
+api/data/extracted/
+api/eval/reports/
+
+# Web
+node_modules/
+.next/
+next-env.d.ts
