@@ -198,3 +198,18 @@ def test_reindexing_the_same_manual_does_not_duplicate_results(
 
 def test_health(client: TestClient) -> None:
     assert client.get("/health").status_code == 200
+
+
+def test_answer_without_any_valid_citation_is_a_refusal(
+    client: TestClient, generator: FakeGenerator
+) -> None:
+    generator.result = Generation(
+        answer="Resposta sem fonte.", refused=False, used_chunk_ids=["outro-manual:9"]
+    )
+
+    response = client.post("/ask", json={"question": "a porta está com erro"})
+
+    body = response.json()
+    assert body["refused"] is True
+    assert body["citations"] == []
+    assert "Resposta sem fonte" not in body["answer"]

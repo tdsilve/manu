@@ -19,4 +19,11 @@
 #     source_url: https://...
 #     file: electrolux-df44.pdf
 
-manuals: []
+manuals:
+  - id: electrolux-g0045837
+    brand: Electrolux
+    # Códigos copiados da capa do manual
+    model_codes: [DB44, DB44S, IB45, IB45S, IB54, IB54S, IB54B, IB55, IB55S, IF43, IF43S, IF43B, IW43S, IF45, IF45S, IW45S, IB7, IB7S, IB7B, IF46, IF46S, IW46S, TF38, TF38S, TF41, TF41S, TF41B, TF44, TF44S, TF44B, TF70, TF70S, TF71, TF71S, TF71B, IB51, IB51S]
+    category: geladeira
+    source_url: PENDENTE  # TODO: link de onde o PDF foi baixado
+    file: G0045837_IM_DB44_DB44S_IB45_IB45S_IB54_IB54S_IB54B_IB55_IB55S_IF43_IF43S_IB43B_IW43S_IF45_IF45S_IW45S-583x1296.raw.pdf
