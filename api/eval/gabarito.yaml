@@ -1,0 +1,28 @@
+# Gabarito de avaliação (ticket 07). Escrito à mão pela autora.
+#
+# Cada item:
+#   id         identificador curto e estável (q01, q02, ...)
+#   question   em linguagem leiga, como um usuário escreveria
+#   category   geladeira | micro-ondas
+#   expected   lista de {manual_id, pages: [...]} com as páginas que respondem
+#   no_answer  true quando nenhum manual responde (use no lugar de expected)
+#
+# Cobertura sugerida: códigos de erro, barulhos e comportamentos normais,
+# garantia (prazo, cobertura, o que invalida), instalação, limpeza e uso.
+# Inclua de 3 a 4 itens no_answer plausíveis, do mesmo domínio.
+#
+# Exemplos de formato (substitua pelos itens reais):
+#   - id: q01
+#     question: a geladeira está fazendo barulho de água
+#     category: geladeira
+#     expected:
+#       - manual_id: electrolux-df44
+#         pages: [32]
+#   - id: q02
+#     question: posso usar o micro-ondas para secar roupa?
+#     category: micro-ondas
+#     no_answer: true
+#
+# Rode a avaliação com: manu-eval
+
+items: []

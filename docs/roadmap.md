@@ -2,32 +2,33 @@
 
 ## Visão do produto
 
-Assistente que ajuda o usuário a saber se um problema em um eletrodoméstico está coberto pela garantia, respondendo com base no manual oficial do fabricante, com citação da página. Na visão completa, o usuário envia a foto da etiqueta do produto (para extrair o modelo) e descreve o problema ou envia a foto do defeito.
+Assistente que responde dúvidas sobre um eletrodoméstico com base no manual oficial do modelo, com citação da página. O produto é identificado pela foto da etiqueta de identificação (ou pelo código do modelo digitado) e a pessoa descreve a dúvida em texto. A garantia é um dos assuntos possíveis, não um requisito: o produto não precisa estar na garantia.
 
 Escopo do MVP: geladeiras e micro-ondas, marcas Electrolux e Brastemp, 15 a 20 manuais.
 
 ## Fases
 
 1. RAG básico ([spec](fases/fase-1/spec.md))
-2. Citações
-3. Benchmark e avaliação
-4. Chunking e retrieval
-5. Knowledge base e metadados
-6. Memória de conversa
-7. LLM + SQL
-8. RAG + SQL + APIs + agente
+2. Identificação por código digitado: registro com os códigos de modelo cobertos por cada manual, correspondência por prefixo (com escolha entre candidatos), busca restrita ao produto selecionado e registro de modelos sem manual
+3. Identificação pela foto da etiqueta: Claude com visão, confirmação do código lido, gabarito com fotos de etiquetas
+4. Citações
+5. Benchmark e avaliação
+6. Chunking e retrieval
+7. Memória de conversa
+8. LLM + SQL
+9. RAG + SQL + APIs + agente, incluindo a busca de manual ([ADR 0007](adr/0007-busca-de-manual-apenas-como-fallback.md))
 
 ## Melhorias já identificadas
 
-- **Extração de PDF:** pdfplumber → avaliar OCR ou modelo de visão (Fase 4).
-- **Chunking:** por página → comparar com tamanho fixo (com sobreposição) e divisão por seção ou parágrafo (Fase 4).
-- **Retrieval:** top-k = 3 fixo → reranking ou método mais avançado (Fase 4).
+- **Extração de PDF:** pdfplumber → avaliar OCR ou modelo de visão (Fase 6).
+- **Chunking:** por página → comparar com tamanho fixo (com sobreposição) e divisão por seção ou parágrafo (Fase 6).
+- **Retrieval:** top-k = 3 fixo → reranking ou método mais avançado (Fase 6).
 - **Avaliação (execução):** script manual → GitHub Actions (fase intermediária).
 - **Avaliação (julgamento):** manual → LLM como juiz quando o gabarito crescer.
 - **Gabarito:** escrito à mão → expandido com ajuda de LLM, com revisão da autora.
-- **Geração:** Claude → comparar com modelo local via Ollama, como experimento medido (Fase 4/5).
+- **Geração:** Claude → comparar com modelo local via Ollama, como experimento medido (Fase 6).
 - **Interface:** simples na Fase 1 → identidade visual de produto nas fases finais.
-- **Busca de manuais:** pré-indexação manual → busca no site do fabricante como fallback quando o manual não estiver indexado (Fase 8, agente).
+- **Busca de manual:** base montada à mão → busca no site do fabricante só quando o código do modelo não tiver manual na base (Fase 9, agente). Ver [ADR 0007](adr/0007-busca-de-manual-apenas-como-fallback.md).
 
 ## Riscos e cuidados
 

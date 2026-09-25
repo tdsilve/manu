@@ -1,0 +1,42 @@
+[project]
+name = "manu"
+version = "0.1.0"
+description = "Manu: perguntas sobre manuais de eletrodomésticos com citação de página"
+requires-python = ">=3.12"
+dependencies = [
+    "pdfplumber>=0.11",
+    "pyyaml>=6",
+    "httpx>=0.27",
+    "chromadb>=1.0",
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "anthropic>=0.40",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "fpdf2>=2.8",
+    "mypy>=1.11",
+    "types-PyYAML",
+]
+
+[project.scripts]
+manu-extract = "manu.extraction:main"
+manu-validate = "manu.registry:main"
+manu-index = "manu.indexing:main"
+manu-eval = "manu.evaluation:main"
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["manu"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
