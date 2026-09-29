@@ -25,5 +25,58 @@ manuals:
     # Códigos copiados da capa do manual
     model_codes: [DB44, DB44S, IB45, IB45S, IB54, IB54S, IB54B, IB55, IB55S, IF43, IF43S, IF43B, IW43S, IF45, IF45S, IW45S, IB7, IB7S, IB7B, IF46, IF46S, IW46S, TF38, TF38S, TF41, TF41S, TF41B, TF44, TF44S, TF44B, TF70, TF70S, TF71, TF71S, TF71B, IB51, IB51S]
     category: geladeira
-    source_url: PENDENTE  # TODO: link de onde o PDF foi baixado
+    # Link exato do download não foi anotado. Página oficial dos modelos cobertos; o PDF
+    # publicado hoje lá é uma versão mais nova do que o arquivo local (G0045837).
+    source_url: https://cuida.electrolux.com.br/produtos/geladeira-e-refrigerador/IB45
     file: G0045837_IM_DB44_DB44S_IB45_IB45S_IB54_IB54S_IB54B_IB55_IB55S_IF43_IF43S_IB43B_IW43S_IF45_IF45S_IW45S-583x1296.raw.pdf
+
+  - id: electrolux-db53
+    brand: Electrolux
+    model_codes: [DB53, DB53X, IB53, IB53X]
+    category: geladeira
+    source_url: https://electrolux.bynder.com/asset/dc792bbc-019c-4642-8651-fff5f83abc00/1bcfff02-4a54-4ec7-8527-8d2b3ce42714-pdf.pdf
+    file: Electrolux_Geladeira_DB53_Manual.pdf
+
+  - id: electrolux-df82
+    brand: Electrolux
+    model_codes: [DF82, DF82X]
+    category: geladeira
+    source_url: https://electrolux.bynder.com/asset/a4256e77-7c72-4411-a267-afb98314b35b/02e414d4-5e87-4644-b009-fa5c11885a51-pdf.pdf
+    file: Electrolux_Geladeira_DF82_Manual.pdf
+
+  - id: electrolux-tf56
+    brand: Electrolux
+    model_codes: [DF56, DF56S, IF55, IF55S, IF55B, IF56B, TF55, TF55S, TF56, TF56S, IT55, IT55S, IT56, IT56S]
+    category: geladeira
+    source_url: https://electrolux.bynder.com/asset/6a10e3f0-e825-46cb-acca-8aa1ffbe46bd/b1d65664-f9d0-44bc-b9f4-39e4307efd82-pdf.pdf
+    file: Electrolux_Geladeira_TF56S_Manual.pdf
+
+  - id: electrolux-im7
+    brand: Electrolux
+    model_codes: [IM7, IM7S, IM7B]
+    category: geladeira
+    source_url: https://electrolux.bynder.com/asset/b2e77865-8023-4d63-a6bc-633bc079437f/240731X4EB-pdf.pdf
+    file: Electrolux_Geladeira_IM7S_Manual.pdf
+
+  # Os manuais Brastemp abaixo não trazem o código do modelo no texto; o código vem do
+  # nome do arquivo oficial publicado pela Whirlpool.
+  - id: brastemp-bre57fe
+    brand: Brastemp
+    model_codes: [BRE57FE]
+    category: geladeira
+    source_url: https://whirlpool.vteximg.com.br/arquivos/Brastemp_Geladeira_BRE57FE_Manual_Vers%C3%A3o_Digital.pdf
+    file: Brastemp_Geladeira_BRE57FE_Manual.pdf
+
+  - id: brastemp-bre85ab
+    brand: Brastemp
+    model_codes: [BRE85AB]
+    category: geladeira
+    source_url: https://whirlpool.vteximg.com.br/arquivos/brastemp-geladeira-bre85ab-manual-versao-digital.pdf
+    file: Brastemp_Geladeira_BRE85AB_Manual.pdf
+
+  - id: brastemp-brh86ar
+    brand: Brastemp
+    model_codes: [BRH86AR]
+    category: geladeira
+    source_url: https://whirlpool.vteximg.com.br/arquivos/Brastemp_Geladeira_BRH86AR_Manual_Vers%C3%A3o_Digital.pdf
+    file: Brastemp_Geladeira_BRH86AR_Manual.pdf

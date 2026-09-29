@@ -25,4 +25,168 @@
 #
 # Rode a avaliação com: manu-eval
 
-items: []
+# RASCUNHO (29/09/2026): gerado a partir do texto extraído dos manuais, com as páginas
+# localizadas por busca no texto. A autora precisa conferir cada página no PDF original
+# antes de usar os números no README. Onde a mesma informação aparece em mais de um
+# manual (os três Brastemp são quase idênticos; o IM7 repete o G0045837), todos entram
+# em expected: basta um deles no top-k para contar como acerto.
+# Micro-ondas: ainda não há manual de micro-ondas indexável na base.
+
+items:
+  - id: q01
+    question: a lateral da geladeira está quente, é defeito?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-g0045837, pages: [5]}
+      - {manual_id: electrolux-im7, pages: [5]}
+      - {manual_id: electrolux-tf56, pages: [14]}
+
+  - id: q02
+    question: a porta não fecha sozinha, como eu nivelo a geladeira?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-g0045837, pages: [4]}
+      - {manual_id: electrolux-im7, pages: [4]}
+
+  - id: q03
+    question: quanto tempo dura a garantia da geladeira?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-g0045837, pages: [5]}
+      - {manual_id: electrolux-im7, pages: [5]}
+      - {manual_id: electrolux-db53, pages: [30]}
+      - {manual_id: electrolux-df82, pages: [22]}
+      - {manual_id: electrolux-tf56, pages: [21]}
+      - {manual_id: brastemp-bre57fe, pages: [6]}
+      - {manual_id: brastemp-bre85ab, pages: [6]}
+      - {manual_id: brastemp-brh86ar, pages: [6]}
+
+  - id: q04
+    question: o que faz eu perder a garantia da geladeira?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-g0045837, pages: [6]}
+      - {manual_id: electrolux-im7, pages: [6]}
+      - {manual_id: electrolux-df82, pages: [23]}
+
+  - id: q05
+    question: quais peças da geladeira brastemp têm só 90 dias de garantia?
+    category: geladeira
+    expected:
+      - {manual_id: brastemp-bre57fe, pages: [7]}
+      - {manual_id: brastemp-bre85ab, pages: [7]}
+      - {manual_id: brastemp-brh86ar, pages: [7]}
+
+  - id: q06
+    question: a geladeira fica apitando quando deixo a porta aberta
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-tf56, pages: [10]}
+      - {manual_id: electrolux-df82, pages: [7]}
+      - {manual_id: electrolux-db53, pages: [9]}
+
+  - id: q07
+    question: a geladeira está fazendo um barulho estranho
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-db53, pages: [24]}
+      - {manual_id: electrolux-tf56, pages: [16]}
+
+  - id: q08
+    question: a geladeira está suando por fora, está com problema?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-db53, pages: [25]}
+      - {manual_id: electrolux-df82, pages: [15]}
+      - {manual_id: brastemp-bre57fe, pages: [6]}
+      - {manual_id: brastemp-bre85ab, pages: [6]}
+      - {manual_id: brastemp-brh86ar, pages: [6]}
+
+  - id: q09
+    question: pra que serve a função férias da geladeira?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-db53, pages: [9]}
+      - {manual_id: electrolux-df82, pages: [6]}
+      - {manual_id: electrolux-tf56, pages: [9]}
+
+  - id: q10
+    question: quanto tempo o turbo freezer fica ligado?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-db53, pages: [10]}
+
+  - id: q11
+    question: quanto espaço preciso deixar entre a geladeira e a parede?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-tf56, pages: [5]}
+      - {manual_id: electrolux-db53, pages: [13]}
+      - {manual_id: electrolux-df82, pages: [3]}
+      - {manual_id: brastemp-bre57fe, pages: [3]}
+      - {manual_id: brastemp-bre85ab, pages: [3]}
+      - {manual_id: brastemp-brh86ar, pages: [3]}
+
+  - id: q12
+    question: posso limpar a porta da geladeira com esponja de aço?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-df82, pages: [13]}
+
+  - id: q13
+    question: com o que eu limpo a geladeira por dentro?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-g0045837, pages: [5]}
+      - {manual_id: electrolux-im7, pages: [5]}
+      - {manual_id: electrolux-db53, pages: [18]}
+      - {manual_id: electrolux-df82, pages: [12]}
+      - {manual_id: electrolux-tf56, pages: [13]}
+      - {manual_id: brastemp-bre57fe, pages: [5]}
+      - {manual_id: brastemp-bre85ab, pages: [5]}
+      - {manual_id: brastemp-brh86ar, pages: [5]}
+
+  - id: q14
+    question: tem uma bandeja com água atrás da geladeira, é normal?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-db53, pages: [19]}
+      - {manual_id: electrolux-df82, pages: [13]}
+      - {manual_id: electrolux-tf56, pages: [14]}
+
+  - id: q15
+    question: quantos litros cabem na geladeira DF82?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-df82, pages: [19]}
+
+  - id: q16
+    question: vou viajar por um mês, o que faço com a geladeira?
+    category: geladeira
+    expected:
+      - {manual_id: electrolux-db53, pages: [15, 20]}
+      - {manual_id: electrolux-df82, pages: [17]}
+      - {manual_id: brastemp-bre57fe, pages: [5]}
+      - {manual_id: brastemp-bre85ab, pages: [5]}
+      - {manual_id: brastemp-brh86ar, pages: [5]}
+
+  # Sem resposta nos manuais (plausíveis, do mesmo domínio)
+  - id: q17
+    question: quanto custa uma prateleira nova de reposição?
+    category: geladeira
+    no_answer: true
+
+  - id: q18
+    question: dá pra controlar a geladeira pelo celular via wi-fi?
+    category: geladeira
+    no_answer: true
+
+  - id: q19
+    question: quantos reais a geladeira gasta de luz por mês?
+    category: geladeira
+    no_answer: true
+
+  - id: q20
+    question: a loja pode trocar minha geladeira se eu me arrepender da compra?
+    category: geladeira
+    no_answer: true
