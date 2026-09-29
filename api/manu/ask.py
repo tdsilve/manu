@@ -45,6 +45,9 @@ class Asker:
             return AskResult(answer=REFUSAL_MESSAGE, refused=True, citations=[], retrieved=chunks)
         by_id = {c.chunk_id: c for c in chunks}
         citations = [by_id[i] for i in generation.used_chunk_ids if i in by_id]
+        # Resposta sem nenhuma fonte recuperada é tratada como recusa: toda resposta mostra de onde veio.
+        if not citations:
+            return AskResult(answer=REFUSAL_MESSAGE, refused=True, citations=[], retrieved=chunks)
         return AskResult(
             answer=generation.answer, refused=False, citations=citations, retrieved=chunks
         )
