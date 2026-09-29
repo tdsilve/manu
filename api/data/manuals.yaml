@@ -80,3 +80,12 @@ manuals:
     category: geladeira
     source_url: https://whirlpool.vteximg.com.br/arquivos/Brastemp_Geladeira_BRH86AR_Manual_Vers%C3%A3o_Digital.pdf
     file: Brastemp_Geladeira_BRH86AR_Manual.pdf
+
+  # Hospedado pela Magazine Luiza (documento do fabricante, versão digital página a página).
+  # As versões oficiais no site da Whirlpool estão em formato de impressão.
+  - id: brastemp-bms45
+    brand: Brastemp
+    model_codes: [BMS45CB, BMS45CR]
+    category: micro-ondas
+    source_url: https://conteudoproduto.magazineluiza.com.br/manual/01/011356800/Brastemp_Micro_ondas_BMS45CR_Manual_Versao_digital.pdf
+    file: Brastemp_Micro-ondas_BMS45CR_Manual.pdf

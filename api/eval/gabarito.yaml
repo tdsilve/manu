@@ -30,7 +30,8 @@
 # antes de usar os números no README. Onde a mesma informação aparece em mais de um
 # manual (os três Brastemp são quase idênticos; o IM7 repete o G0045837), todos entram
 # em expected: basta um deles no top-k para contar como acerto.
-# Micro-ondas: ainda não há manual de micro-ondas indexável na base.
+# Micro-ondas: só o Brastemp BMS45 por enquanto (os outros manuais de micro-ondas
+# encontrados estão em formato de impressão).
 
 items:
   - id: q01
@@ -170,6 +171,30 @@ items:
       - {manual_id: brastemp-bre85ab, pages: [5]}
       - {manual_id: brastemp-brh86ar, pages: [5]}
 
+  - id: q21
+    question: posso esquentar a mamadeira do bebê no micro-ondas?
+    category: micro-ondas
+    expected:
+      - {manual_id: brastemp-bms45, pages: [4]}
+
+  - id: q22
+    question: que tipo de pote eu posso usar no micro-ondas?
+    category: micro-ondas
+    expected:
+      - {manual_id: brastemp-bms45, pages: [12]}
+
+  - id: q23
+    question: como eu mudo a potência do micro-ondas?
+    category: micro-ondas
+    expected:
+      - {manual_id: brastemp-bms45, pages: [7]}
+
+  - id: q24
+    question: qual é a garantia do micro-ondas?
+    category: micro-ondas
+    expected:
+      - {manual_id: brastemp-bms45, pages: [15]}
+
   # Sem resposta nos manuais (plausíveis, do mesmo domínio)
   - id: q17
     question: quanto custa uma prateleira nova de reposição?
@@ -189,4 +214,9 @@ items:
   - id: q20
     question: a loja pode trocar minha geladeira se eu me arrepender da compra?
     category: geladeira
+    no_answer: true
+
+  - id: q25
+    question: o micro-ondas funciona como air fryer?
+    category: micro-ondas
     no_answer: true
