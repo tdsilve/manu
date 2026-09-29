@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import type { AskResponse } from "@/lib/ask";
-import { cn } from "@/lib/utils";
 
 export type Turn = {
   id: number;
@@ -32,32 +31,40 @@ function highlight(text: string, terms: string[]): ReactNode {
 
 export function ChatMessage({ turn, onRetry, busy }: ChatMessageProps) {
   return (
-    <article data-slot="chat-message" className="mb-12 flex animate-settle flex-col gap-[18px]">
-      <p className="max-w-[80%] self-end rounded-[20px_20px_6px_20px] bg-ink px-[18px] py-[11px] whitespace-pre-wrap text-on-ink">
+    <article data-slot="chat-message" className="mb-12 flex animate-settle flex-col gap-5">
+      <p className="max-w-[85%] self-end rounded-[22px_22px_6px_22px] bg-ink px-[18px] py-3 whitespace-pre-wrap text-white">
         {turn.question}
       </p>
-      <div className="grid grid-cols-[22px_1fr] gap-3 md:grid-cols-[28px_1fr] md:gap-4">
-        <Icons.logo className="mt-0.5 size-[22px] md:size-[26px]" />
+      <div className="grid grid-cols-[32px_1fr] gap-3 md:gap-4">
+        <Icons.logo className="mt-0.5" />
         <div className="min-w-0">
-          <ChatReply turn={turn} onRetry={onRetry} busy={busy} />
+          <p className="label">O Manu responde</p>
+          <div className="mt-1.5">
+            <ChatReply turn={turn} onRetry={onRetry} busy={busy} />
+          </div>
         </div>
       </div>
     </article>
   );
 }
 
-const noteClass = "max-w-[62ch] rounded-slip px-[18px] py-4 shadow-hairline";
-const noteTitleClass = "mb-1 text-[1.0625rem] font-medium tracking-[-0.015em]";
+const noteClass = "max-w-[62ch] rounded-2xl bg-paper px-[18px] py-4 shadow-card";
+const noteTitleClass = "mb-1 font-display text-[18px] font-bold tracking-[-0.02em]";
 
 function ChatReply({ turn, onRetry, busy }: ChatMessageProps) {
   if (turn.status === "loading") {
     return (
-      <p className="mt-1 inline-flex items-center gap-3" role="status">
-        <span
-          aria-hidden="true"
-          className="relative h-5 w-4 rounded-[2px] shadow-[inset_0_0_0_1.5px_currentColor] perspective-[60px] after:absolute after:inset-y-0 after:right-0 after:left-1/2 after:origin-left after:animate-thumb after:bg-current after:opacity-55 after:content-['']"
-        />
-        Procurando nos manuais…
+      <p className="inline-flex items-center gap-2.5 text-muted" role="status">
+        <span aria-hidden="true" className="flex gap-1">
+          {[0, 150, 300].map((delay) => (
+            <span
+              key={delay}
+              className="size-1.5 animate-pulse rounded-full bg-accent"
+              style={{ animationDelay: `${delay}ms`, animationDuration: "900ms" }}
+            />
+          ))}
+        </span>
+        Procurando no manual…
       </p>
     );
   }
@@ -65,7 +72,7 @@ function ChatReply({ turn, onRetry, busy }: ChatMessageProps) {
   if (turn.status === "error" || !turn.result) {
     return (
       <div className={noteClass} role="alert">
-        <p className={cn(noteTitleClass, "text-alert")}>Não consegui consultar os manuais.</p>
+        <p className={`${noteTitleClass} text-alert`}>Não consegui consultar o manual.</p>
         <p className="leading-normal">A conexão com o servidor falhou. Sua pergunta continua aqui.</p>
         <Button variant="outline" size="sm" className="mt-3.5" onClick={onRetry} disabled={busy}>
           <Icons.retry /> Tentar de novo
@@ -78,8 +85,9 @@ function ChatReply({ turn, onRetry, busy }: ChatMessageProps) {
   if (result.refused) {
     return (
       <div className={noteClass}>
-        <p className={noteTitleClass}>Isso não está nos manuais.</p>
+        <p className={noteTitleClass}>Isso não está no manual.</p>
         <p className="leading-normal">{result.answer}</p>
+        <p className="mt-2 text-[13px] text-muted">Prefiro dizer que não sei a inventar uma resposta.</p>
       </div>
     );
   }
@@ -87,33 +95,29 @@ function ChatReply({ turn, onRetry, busy }: ChatMessageProps) {
   const terms = questionTerms(turn.question);
   return (
     <>
-      <p className="max-w-[62ch] text-[1.0625rem] leading-normal tracking-[-0.015em] whitespace-pre-wrap text-pretty md:text-[1.1875rem]">
+      <p className="max-w-[62ch] text-[17px] leading-normal whitespace-pre-wrap text-pretty md:text-[19px]">
         {result.answer}
       </p>
       {result.citations.length > 0 && (
-        <ol className="mt-[26px] -ml-11 grid gap-3.5 md:-ml-[60px]" aria-label="Fontes">
+        <ol className="mt-5 grid gap-3.5" aria-label="Fontes">
           {result.citations.map((c) => (
-            <li
-              key={`${c.manual_id}:${c.page}`}
-              className="grid grid-cols-[30px_1fr] items-start gap-3 md:grid-cols-[44px_1fr] md:gap-4"
-            >
-              <p
-                className="flex flex-col items-end pt-2.5 text-[1.375rem] leading-none font-light tracking-[-0.04em] tabular-nums md:text-[1.75rem]"
-                aria-label={`Página ${c.page}`}
-              >
-                <span className="mb-1 text-[0.5625rem] font-[450] tracking-[0.1em] uppercase">pág.</span>
-                {c.page}
-              </p>
-              <div className="rounded-slip bg-paper px-[18px] pt-4 pb-3 text-paper-ink shadow-float">
-                <p className="mb-2 text-[0.6875rem] tracking-[0.08em] text-paper-muted uppercase">
-                  {c.brand} · {c.model}
+            <li key={`${c.manual_id}:${c.page}`}>
+              <figure className="grid grid-cols-[auto_1fr] items-start gap-3 md:gap-4">
+                <p className="min-w-9 text-right font-display leading-none" aria-label={`Página ${c.page}`}>
+                  <span className="block label font-bold">pág.</span>
+                  <span className="text-[40px] font-extrabold tracking-[-0.05em] tabular-nums md:text-[48px]">{c.page}</span>
                 </p>
-                <p className="text-[0.9375rem] leading-[1.55]">{highlight(c.excerpt, terms)}</p>
-                <details className="mt-2.5 text-xs text-paper-muted">
-                  <summary className="w-fit">Detalhes</summary>
-                  Manual {c.manual_id} · similaridade {c.similarity.toFixed(2).replace(".", ",")}
-                </details>
-              </div>
+                <blockquote className="rounded-2xl bg-paper px-4 py-3.5 shadow-card">
+                  <p className="text-[15px] leading-relaxed">{highlight(c.excerpt, terms)}</p>
+                  <footer className="mt-2 label">
+                    Manual {c.brand} · {c.model}
+                  </footer>
+                  <details className="mt-2 text-xs text-muted">
+                    <summary className="w-fit">Detalhes</summary>
+                    Manual {c.manual_id} · similaridade {c.similarity.toFixed(2).replace(".", ",")}
+                  </details>
+                </blockquote>
+              </figure>
             </li>
           ))}
         </ol>

@@ -2,13 +2,14 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Brand } from "@/components/brand";
+import { useFinePointer } from "@/lib/use-pointer";
 import { ChatMessage, Turn } from "@/components/chat-message";
+import { Honesty } from "@/components/honesty";
 import { Icons } from "@/components/icons";
-import { Mascot } from "@/components/mascot";
-import { ModeToggle } from "@/components/mode-toggle";
-import { QuestionDock, questionButtonClass, questionFieldClass } from "@/components/question-dock";
+import { Manu } from "@/components/manu";
+import { QUESTION_PLACEHOLDER, QuestionBar, questionFieldClass } from "@/components/question-bar";
 import { Button } from "@/components/ui/button";
+import { Wordmark } from "@/components/wordmark";
 import { ask } from "@/lib/ask";
 import { EXAMPLES } from "@/lib/examples";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,8 @@ import { cn } from "@/lib/utils";
 export function Chat({ initialQuestion }: { initialQuestion: string }) {
   const router = useRouter();
   const [draft, setDraft] = useState("");
+  const [focused, setFocused] = useState(false);
+  const finePointer = useFinePointer();
   const [turns, setTurns] = useState<Turn[]>([]);
   const nextId = useRef(0);
   const sentInitial = useRef(false);
@@ -77,41 +80,46 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
     inputRef.current?.focus();
   }
 
+  const empty = turns.length === 0;
+
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-10 flex items-center justify-between bg-linear-to-b from-field-top from-55% to-transparent px-(--gutter) py-[18px]">
-        <Brand />
-        <div className="flex items-center gap-3">
-          <ModeToggle size="sm" className="max-md:hidden" />
-          <Button variant="outline" size="sm" onClick={reset} disabled={turns.length === 0 || busy}>
-            <Icons.plus /> Nova conversa
-          </Button>
-        </div>
+      <header className="sticky top-0 z-10 flex items-center justify-between bg-linear-to-b from-bg from-60% to-transparent px-(--gutter) pt-5 pb-6">
+        <Wordmark />
+        <Button variant="outline" size="sm" onClick={reset} disabled={empty || busy}>
+          <Icons.plus /> Nova conversa
+        </Button>
       </header>
 
-      <main className="mx-auto w-full max-w-[780px] flex-1 px-(--gutter) pt-3 pb-[180px]">
-        {turns.length === 0 ? (
-          <div className="flex min-h-[62dvh] flex-col items-center justify-center text-center">
-            <Mascot className="mb-1 aspect-[1.08] w-[200px]" />
-            <h1 className="text-[clamp(3rem,9vw,6rem)] leading-[0.92] font-light tracking-[-0.05em] text-balance text-display">
+      <main className="mx-auto w-full max-w-[760px] flex-1 px-(--gutter) pb-[180px]">
+        {empty ? (
+          <div className="flex min-h-[64dvh] flex-col items-center justify-center text-center">
+            <div className="relative mb-4 h-[216px] w-full max-w-[520px] overflow-hidden rounded-[28px] stage md:h-[236px]">
+              <Manu
+                gaze={focused ? { x: 0, y: -1 } : null}
+                excited={focused || draft.length > 0}
+                className="absolute inset-x-0 top-5 bottom-2"
+              />
+            </div>
+            <h1 className="font-display text-[clamp(40px,7vw,72px)] leading-[0.95] font-extrabold tracking-[-0.045em] text-balance">
               Qual é a sua dúvida?
             </h1>
-            <p className="mt-[22px] mb-[30px] max-w-[44ch] text-[1.0625rem] leading-[1.45] text-pretty">
-              Pergunte do seu jeito sobre a geladeira ou o micro-ondas. A resposta vem do manual oficial, com a
-              página.
+            <p className="mt-4 max-w-[44ch] text-[17px] leading-snug text-muted text-pretty">
+              Pergunte do seu jeito sobre a sua geladeira. A resposta vem do manual oficial, com a página.
             </p>
-            <div className="flex max-w-[640px] flex-wrap justify-center gap-2" aria-label="Exemplos">
+            <div className="mt-7 flex max-w-[640px] flex-wrap justify-center gap-2" aria-label="Exemplos">
               {EXAMPLES.map((ex) => (
                 <Button
                   key={ex.id}
-                  variant="outline"
-                  className="h-auto px-4 py-[9px] text-sm whitespace-normal"
+                  variant="soft"
+                  className="h-auto min-h-10 px-4 py-2 text-left text-sm whitespace-normal"
                   onClick={() => submit(ex.question)}
                 >
                   {ex.question}
                 </Button>
               ))}
             </div>
+            <Honesty className="mt-6" />
           </div>
         ) : (
           <div aria-live="polite">
@@ -123,8 +131,8 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
         <div ref={endRef} />
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 bg-linear-to-t from-field-bottom from-55% to-transparent px-(--gutter) pt-9 pb-3.5">
-        <QuestionDock className="max-w-[780px]" onSubmit={onSubmit}>
+      <div className="fixed inset-x-0 bottom-0 z-10 bg-linear-to-t from-bg from-60% to-transparent px-3 pt-10 pb-[max(14px,env(safe-area-inset-bottom))] md:px-(--gutter)">
+        <QuestionBar className="mx-auto max-w-[760px]" onSubmit={onSubmit}>
           <label htmlFor="chat-q" className="sr-only">
             Sua dúvida
           </label>
@@ -134,17 +142,20 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
             rows={1}
             value={draft}
             maxLength={1000}
-            autoFocus
-            placeholder="Descreva sua dúvida…"
+            autoFocus={finePointer === true}
+            enterKeyHint="send"
+            placeholder={QUESTION_PLACEHOLDER}
             onChange={(e) => setDraft(e.target.value)}
             onKeyDown={onKeyDown}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
             className={cn(questionFieldClass, "field-sizing-content max-h-[200px] resize-none")}
           />
-          <Button type="submit" size="icon" className={questionButtonClass} disabled={!canSubmit} aria-label="Perguntar">
+          <Button type="submit" size="icon" disabled={!canSubmit} aria-label="Perguntar">
             <Icons.arrowUp />
           </Button>
-        </QuestionDock>
-        <p className="mt-2.5 hidden text-center text-[0.6875rem] md:block">Enter envia · Shift + Enter quebra a linha</p>
+        </QuestionBar>
+        <p className="mt-2.5 hidden text-center text-xs text-muted md:block">Enter envia · Shift + Enter quebra a linha</p>
       </div>
     </div>
   );

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-29T00:00:00-03:00",
+  "title": "Design System: Manu",
+  "extensions": {
+    "colorMeta": {
+      "lavender-paper": { "role": "neutral", "displayName": "Lavender Paper", "canonical": "#f8f6fc", "tonalRamp": ["#2a2536", "#433d52", "#615a73", "#827a96", "#a59eb9", "#c8c2da", "#e6e2f1", "#f8f6fc"] },
+      "aubergine-ink": { "role": "neutral", "displayName": "Aubergine Ink", "canonical": "#1d1733", "tonalRamp": ["#1d1733", "#2c2447", "#3f365e", "#56516a", "#7b7590", "#a29db4", "#cbc7d8", "#efedf4"] },
+      "quiet-ink": { "role": "neutral", "displayName": "Quiet Ink", "canonical": "#56516a" },
+      "manual-violet": { "role": "primary", "displayName": "Manual Violet", "canonical": "#6b57c7", "tonalRamp": ["#261c4f", "#3a2d78", "#5241a3", "#6b57c7", "#8a7ad6", "#aa9fe3", "#cdc5ef", "#ece8fa"] },
+      "highlighter": { "role": "secondary", "displayName": "Highlighter", "canonical": "#f8e38a" },
+      "post-it-gold": { "role": "secondary", "displayName": "Post-it Gold", "canonical": "#f3b93a" },
+      "stage-bottom": { "role": "neutral", "displayName": "Stage Lilac", "canonical": "#c9bcf2" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Título da home em duas linhas; a segunda em Manual Violet." },
+      "headline": { "displayName": "Headline", "purpose": "Título do chat vazio." },
+      "page-number": { "displayName": "Page Number", "purpose": "Número da página ao lado de cada trecho citado." },
+      "title": { "displayName": "Title", "purpose": "Pergunta e resposta curta dos exemplos." },
+      "body": { "displayName": "Body", "purpose": "Respostas do chat, até 62ch." },
+      "excerpt": { "displayName": "Excerpt", "purpose": "Trecho do manual no cartão de papel." },
+      "label": { "displayName": "Label", "purpose": "Rótulos em caixa alta, cor sólida." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0 14px 30px -16px rgb(80 60 160 / 0.4)", "purpose": "Cartões de prova e de recusa." },
+      { "name": "bar", "value": "0 1px 2px rgb(29 23 51 / 0.08), 0 18px 40px -14px rgb(80 60 160 / 0.45)", "purpose": "Barra de pergunta flutuante." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Entradas, braços e olhar do mascote." },
+      { "name": "settle", "value": "600ms ease-out, blur 4px → 0, 6px → 0", "purpose": "Entrada de exemplos e mensagens." }
+    ],
+    "breakpoints": [{ "name": "wide", "value": "768px" }]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal: Perguntar, enviar.",
+      "html": "<button class=\"ds-btn\">Perguntar <svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><path d=\"M3 8h10M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 20px; border: 0; border-radius: 9999px; background: #1d1733; color: #fff; font: 700 15px 'Bricolage Grotesque', sans-serif; cursor: pointer; transition: background-color .2s; } .ds-btn:hover { background: #2c2447; } .ds-btn:focus-visible { outline: 2px solid #1d1733; outline-offset: 3px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Setas de exemplo, Nova conversa.",
+      "html": "<button class=\"ds-btn-outline\" aria-label=\"Próximo exemplo\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\"><path d=\"M3 8h10M9 4l4 4-4 4\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button>",
+      "css": ".ds-btn-outline { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 9999px; background: transparent; color: #1d1733; box-shadow: inset 0 0 0 1px rgb(29 23 51 / .28); cursor: pointer; transition: background-color .2s, color .2s; } .ds-btn-outline:hover { background: #1d1733; color: #fff; box-shadow: none; } .ds-btn-outline:focus-visible { outline: 2px solid #1d1733; outline-offset: 3px; }"
+    },
+    {
+      "name": "Example Chip",
+      "kind": "chip",
+      "refersTo": "button-soft",
+      "description": "Perguntas de exemplo no chat vazio.",
+      "html": "<button class=\"ds-chip\">Quanto tempo dura a garantia?</button>",
+      "css": ".ds-chip { padding: 8px 16px; border: 0; border-radius: 9999px; background: rgb(255 255 255 / .7); color: #1d1733; box-shadow: inset 0 0 0 1px rgb(29 23 51 / .12); font: 400 14px Geist, sans-serif; cursor: pointer; transition: background-color .2s; } .ds-chip:hover { background: #fff; } .ds-chip:focus-visible { outline: 2px solid #1d1733; outline-offset: 3px; }"
+    },
+    {
+      "name": "Question Bar",
+      "kind": "input",
+      "refersTo": "question-bar",
+      "description": "Barra de pergunta em pílula, presente em todas as telas.",
+      "html": "<form class=\"ds-bar\"><input class=\"ds-bar-input\" placeholder=\"Qual é a sua dúvida?\" aria-label=\"Sua dúvida\"><button class=\"ds-bar-send\" aria-label=\"Perguntar\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 16 16\" fill=\"none\"><path d=\"M8 13V3M4 7l4-4 4 4\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></button></form>",
+      "css": ".ds-bar { display: flex; align-items: center; gap: 8px; width: 360px; min-height: 56px; padding: 6px 6px 6px 20px; border-radius: 28px; background: #fff; box-shadow: 0 1px 2px rgb(29 23 51 / .08), 0 18px 40px -14px rgb(80 60 160 / .45); } .ds-bar:focus-within { box-shadow: 0 0 0 2px #1d1733, 0 18px 40px -14px rgb(80 60 160 / .45); } .ds-bar-input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: #1d1733; font: 400 16px Geist, sans-serif; } .ds-bar-input::placeholder { color: #56516a; } .ds-bar-send { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 9999px; background: #1d1733; color: #fff; cursor: pointer; }"
+    },
+    {
+      "name": "Proof",
+      "kind": "card",
+      "refersTo": "proof-card",
+      "description": "Número da página + trecho grifado do manual. O coração do produto.",
+      "html": "<figure class=\"ds-proof\"><p class=\"ds-proof-page\"><span>pág.</span>5</p><blockquote class=\"ds-proof-card\"><mark>é normal o aquecimento nas regiões próximas às portas e laterais do refrigerador.</mark><footer>Manual Electrolux · Refrigeradores</footer></blockquote></figure>",
+      "css": ".ds-proof { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start; margin: 0; max-width: 460px; color: #1d1733; } .ds-proof-page { margin: 0; text-align: right; font: 800 52px/1 'Bricolage Grotesque', sans-serif; letter-spacing: -.05em; } .ds-proof-page span { display: block; font: 700 11px Geist, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #56516a; } .ds-proof-card { margin: 0; padding: 14px 16px; border-radius: 16px; background: #fff; box-shadow: 0 14px 30px -16px rgb(80 60 160 / .4); font: 400 15px/1.625 Geist, sans-serif; } .ds-proof-card mark { background: #f8e38a; color: inherit; padding: 0 .1em; border-radius: 2px; } .ds-proof-card footer { margin-top: 8px; font: 500 11px Geist, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #56516a; }"
+    },
+    {
+      "name": "Chat Question Bubble",
+      "kind": "custom",
+      "refersTo": "chat-bubble-user",
+      "description": "Pergunta da pessoa no chat.",
+      "html": "<p class=\"ds-bubble\">A lateral da geladeira está quente. É defeito?</p>",
+      "css": ".ds-bubble { display: inline-block; max-width: 320px; margin: 0; padding: 12px 18px; border-radius: 22px 22px 6px 22px; background: #1d1733; color: #fff; font: 400 16px/1.5 Geist, sans-serif; }"
+    },
+    {
+      "name": "Stage",
+      "kind": "custom",
+      "description": "Palco lilás onde vive o Manu.",
+      "html": "<div class=\"ds-stage\"><span class=\"ds-label\">Nº 01 · Lateral quente</span></div>",
+      "css": ".ds-stage { position: relative; width: 320px; height: 220px; border-radius: 32px; background: radial-gradient(85% 65% at 50% 100%, #c9bcf2 0%, #ddd4f7 55%, #ebe6fa 100%); } .ds-label { position: absolute; top: 20px; right: 24px; font: 500 11px Geist, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #56516a; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "O manual que sorri",
+    "overview": "O Manu transforma o manual de papel, aquele que ninguém lê, num personagem simpático: um manual com abas, de rosto redondo, que olha para você. A graça fica toda no mascote. O resto da interface é calmo e exato, porque o produto é a prova: toda resposta mostra o trecho do manual, grifado, com o número da página em destaque.",
+    "keyCharacteristics": [
+      "Um personagem lúdico; todo o resto é sóbrio.",
+      "A prova (grifo amarelo + página) é o centro visual de cada resposta.",
+      "Papel branco sobre lavanda; o lilás só aparece no palco do Manu e no destaque do título.",
+      "Títulos em Bricolage extra-bold; texto em Geist.",
+      "Só tema claro."
+    ],
+    "rules": [
+      { "name": "The Solid Label Rule", "body": "Texto secundário usa Quiet Ink sólido, nunca opacidade. Transparência em texto derruba o contraste.", "section": "colors" },
+      { "name": "The Highlighter Is Evidence Rule", "body": "O amarelo de grifo marca só trecho real do manual. Não serve para decorar nem para chamar atenção.", "section": "colors" },
+      { "name": "The No Purple Book Rule", "body": "O mascote é papel: creme, areia e linho. O lilás fica no palco, nunca no manual.", "section": "colors" },
+      { "name": "The Page Is Loud Rule", "body": "O número da página é o maior elemento de cada resposta depois do título. Se a página não aparece de relance, a prova falhou.", "section": "typography" },
+      { "name": "The 11px Floor Rule", "body": "Nenhum texto abaixo de 11px.", "section": "typography" },
+      { "name": "The Paper Floats Rule", "body": "Só papel tem sombra: cartões e barra. Palco, botões e texto são planos.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do mostrar a página e o trecho grifado em toda resposta com fonte.",
+      "Do usar Quiet Ink sólido para texto secundário, com 11px ou mais.",
+      "Do manter o mascote em tons de papel e a mesma ordem de abas em todas as versões.",
+      "Do fazer cada tela da home caber sem rolagem.",
+      "Do usar pílula para tudo o que se clica."
+    ],
+    "donts": [
+      "Don't colocar título ou texto na capa do mascote.",
+      "Don't usar roxo ou lilás no corpo do mascote.",
+      "Don't usar o amarelo de grifo fora de trechos reais do manual.",
+      "Don't usar opacidade para clarear texto.",
+      "Don't usar animações de mola ou elásticas.",
+      "Don't mostrar logotipos de fabricantes; marcas aparecem só como texto.",
+      "Don't carregar o 3D no celular."
+    ]
+  }
+}

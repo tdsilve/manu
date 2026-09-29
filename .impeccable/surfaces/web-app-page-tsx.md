@@ -1,30 +1,30 @@
 ---
-version: 1
+version: 2
 slug: "web-app-page-tsx"
 primary_target: "web/app/page.tsx"
-related_targets: ["web/app/chat/page.tsx","web/app/chat/Chat.tsx"]
+related_targets: ["web/app/chat/page.tsx","web/components/chat.tsx","web/components/home-desktop.tsx","web/components/home-mobile.tsx"]
 ---
 
 # Surface brief: Manu (home + chat)
 
-Scope: web/app/page.tsx (home, Persuade) and web/app/chat (chat, Operate). Only these two routes exist.
+Scope: web/app/page.tsx (home, Persuade) and web/app/chat (chat, Operate). Only these two routes exist. Visual system: DESIGN.md.
 
-Audience: dono de geladeira/micro-ondas com uma dúvida no meio do uso; o portfólio é avaliado pelo produto funcionando. Action: iniciar o chat (ou já mandar a pergunta pela barra da home). Proof: exemplos reais do manual Electrolux G0045837 (págs. 4 e 5), com trecho verbatim e página. Constraints: só o que existe (Fase 1); sem logos de fabricantes; sem números inventados.
-
-Direction: brief-pinned to the user's references. Lamp Studio owns the world; NextWork donates the floating question dock and button craft. Concept-seed challengers declined as brief-pinned; raise kept from rw-centre-rail-reference-setting: the page number hangs in the margin of every citation, like apparatus in a reference edition.
+Audience: dono de geladeira com uma dúvida no meio do uso; o portfólio é avaliado pelo produto funcionando. Action: perguntar (barra da home ou "Perguntar isso no chat"). Proof: exemplos reais do manual Electrolux G0045837 (págs. 4 e 5), com trecho verbatim, grifo e página. Constraints: só o que existe (Fase 1: um manual de geladeira); sem logos de fabricantes; sem números inventados.
 
 ## Direction contract
 
-THESIS: O manual vira um personagem: Manu, um livrinho 3D fofo sem nada escrito, ao lado do trecho real grifado com a página. Recusa o hero de SaaS com card de chat genérico e a home creme+serif.
+THESIS: O manual que sorri. O Manu é um manual com abas que ganhou rosto; a prova (trecho grifado + número da página) é sempre o centro da tela.
 
-OWN-WORLD: Campo drenado azul→lavanda (dia) / azul-noite (noite); título gigante em sans leve, off-white, entrelinha apertada; tinta azul-marinho para texto; microtexto em caixa alta espaçada nos cantos; botões redondos de contorno fino; papel branco quente como único material sólido (mascote, fichas de trecho e citação); marca-texto amarelo pálido.
+WORLD: Fundo lavanda quase branco; palco lilás arredondado onde vive o Manu; tinta berinjela; títulos em Bricolage Grotesque extra-bold com a segunda linha em roxo; cartões de papel branco com grifo amarelo; rótulos em caixa alta, cor sólida. Ver DESIGN.md.
 
-STORY: Em segundos a pessoa entende "pergunto em palavras minhas, o Manu mostra a página do manual" e clica Iniciar chat ou digita na barra.
+STORY: Em segundos a pessoa entende "pergunto em palavras minhas, o Manu mostra a página do manual" e pergunta.
 
-FIRST VIEWPORT: Cabeçalho em 3 zonas (marca, 4 abas de exemplo, Iniciar chat). Topo: "Pergunte / ao manual." ~140px, sozinho (pedido da autora: o mascote nunca fica sobre o texto). Abaixo, grade de 3 colunas: pergunta do exemplo à esquerda; mascote Three.js entre as setas ← → no centro, com sombra no chão; à direita "Nº 0x / Página N" + resposta curta + ficha de papel com o trecho real grifado. Abaixo do objeto: pílula dia/noite. Rodapé: barra de pergunta flutuante (orbe + campo + Iniciar chat), status e "1 de 4".
+DESKTOP (≥768px): duas colunas numa tela só. Esquerda: marca, "O manual responde. / Com a página.", exemplo (Você pergunta → O Manu responde → pág. + trecho grifado → promessa do "não sei"), setas ← → com "1 / 4", "Perguntar isso no chat", barra de pergunta. Direita: palco lilás com o Manu 3D (Three.js) grande e cortado na borda de baixo; "Nº 0x · aba" no canto.
 
-FORM: Lamp Studio product-carousel hero, user-pinned reference, position 1 of the user's list; seed key c3fd6b7f.
+MOBILE (<768px): uma tela sem rolagem. Palco lilás no topo (marca, contador, título, Manu inteiro); exemplos em cartões de deslizar; pontos de navegação; barra de pergunta na zona do polegar.
 
-Signature interaction: o mascote respira, pisca, segue o cursor, acena no hover e dá um pulinho com giro ao trocar de exemplo; pílula dia/noite muda o campo e a luz da cena.
+MASCOTE POR APARELHO: a largura escolhe o layout; o aparelho escolhe o Manu. Com cursor (mesmo em janela estreita) é o 3D; em aparelho de toque são as imagens renderizadas do próprio 3D (mesma aparência), e o three.js não é baixado.
 
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+CHAT: mesmo mundo. Estado vazio com o Manu no palco, "Qual é a sua dúvida?", exemplos em pílulas e a promessa do "não sei". Resposta: rótulo "O Manu responde", texto, e cada fonte como número da página grande + cartão de papel com os termos da pergunta grifados. Recusa em cartão próprio ("Isso não está no manual.").
+
+Signature interaction: com cursor, o Manu 3D segue o mouse com os olhos e o corpo, pisca, respira e pula a cada exemplo; levanta os braços quando a pessoa digita. No toque, o Manu em imagens tem olhar próprio (passeia, olha onde o dedo toca, acompanha o cartão deslizado, olha para o campo), pula a cada exemplo e se alegra quando é tocado.

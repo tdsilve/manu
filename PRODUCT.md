@@ -33,7 +33,7 @@ A resposta sai só do manual oficial, nunca de fórum ou do conhecimento geral d
 ## Brand Commitments
 
 - O nome do produto é **Manu**.
-- Referências visuais escolhidas pela autora para o redesign: https://lamp-studio-mateusz.kontakt167645.chatgpt.site/ e https://nextwork.ai/.
+- O mascote é o próprio manual: um manual com abas, de rosto sorridente, sem título na capa. O sistema visual está em `DESIGN.md`.
 
 ## Evidence on Hand
 

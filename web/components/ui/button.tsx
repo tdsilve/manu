@@ -7,15 +7,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-ink text-on-ink shadow-button hover:not-disabled:shadow-button-hover",
-        outline: "bg-transparent shadow-hairline hover:not-disabled:bg-ink-hair hover:not-disabled:shadow-hairline-strong",
+        default: "bg-ink text-white hover:not-disabled:bg-[#2c2447]",
+        outline:
+          "bg-transparent shadow-[inset_0_0_0_1px_var(--line-strong)] hover:not-disabled:bg-ink hover:not-disabled:text-white hover:not-disabled:shadow-none",
+        soft: "bg-paper/70 shadow-[inset_0_0_0_1px_var(--line)] hover:not-disabled:bg-paper",
       },
       size: {
         default: "h-10 px-4",
-        sm: "h-[34px] px-3.5 text-[0.8125rem]",
-        icon: "size-10",
-        "icon-lg": "size-11 md:size-12",
+        sm: "h-9 px-3.5 text-[0.8125rem]",
+        icon: "size-11",
       },
     },
     defaultVariants: {

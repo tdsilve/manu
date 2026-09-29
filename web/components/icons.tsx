@@ -19,14 +19,17 @@ const base = (size: number): IconProps => ({
 });
 
 export const Icons = {
-  // O rosto do mascote, um livrinho sorridente sem nada escrito.
+  // O Manu em miniatura: manual com abas e rosto.
   logo: ({ className, ...props }: IconProps) => (
-    <svg className={cn("size-[30px] shrink-0", className)} viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
-      <rect x="6" y="3.5" width="21" height="25" rx="4" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M10.5 3.5v25" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="15.5" cy="14" r="1.6" fill="currentColor" />
-      <circle cx="22" cy="14" r="1.6" fill="currentColor" />
-      <path d="M16.3 18.6c.8 1.3 3.9 1.3 4.8 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <svg className={cn("size-8 shrink-0", className)} viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
+      <rect x="24" y="7" width="4" height="5" rx="1.5" fill="#f2a07b" />
+      <rect x="24" y="13" width="4" height="5" rx="1.5" fill="#f3b93a" />
+      <rect x="24" y="19" width="4" height="5" rx="1.5" fill="#9fdcc4" />
+      <rect x="3.5" y="4" width="5" height="25" rx="2" fill="#e2d6bf" />
+      <rect x="6" y="4" width="20" height="24.5" rx="3" fill="#fffdf8" stroke="#1d1733" strokeOpacity=".14" />
+      <circle cx="12.5" cy="14.5" r="2.4" fill="#1d1733" />
+      <circle cx="19.5" cy="14.5" r="2.4" fill="#1d1733" />
+      <path d="M13.8 19.2c1.2 1.5 3.3 1.5 4.5 0" stroke="#1d1733" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   ),
   arrowRight: (props: IconProps) => (
@@ -52,20 +55,6 @@ export const Icons = {
   plus: (props: IconProps) => (
     <svg {...base(14)} {...props}>
       <path d="M8 3v10M3 8h10" {...stroke} />
-    </svg>
-  ),
-  sun: (props: IconProps) => (
-    <svg {...base(16)} {...props}>
-      <circle cx="8" cy="8" r="2.75" {...stroke} />
-      <path
-        d="M8 1.5v1.25M8 13.25v1.25M1.5 8h1.25M13.25 8h1.25M3.4 3.4l.9.9M11.7 11.7l.9.9M3.4 12.6l.9-.9M11.7 4.3l.9-.9"
-        {...stroke}
-      />
-    </svg>
-  ),
-  moon: (props: IconProps) => (
-    <svg {...base(16)} {...props}>
-      <path d="M13.2 9.6A5.5 5.5 0 0 1 6.4 2.8a5.5 5.5 0 1 0 6.8 6.8Z" {...stroke} />
     </svg>
   ),
   retry: (props: IconProps) => (
