@@ -7,7 +7,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Honesty } from "@/components/honesty";
 import { Icons } from "@/components/icons";
 import { Manu } from "@/components/manu";
 
@@ -38,7 +37,7 @@ export function HomeView() {
       </p>
       <div className="absolute top-8 right-(--gutter) z-10 hidden max-w-[260px] text-right md:block">
         <p className="label">Como funciona</p>
-        <p className="mt-2 text-[15px] leading-snug">Pergunte do seu jeito. A resposta vem do manual oficial, com o trecho e a página.</p>
+        <p className="mt-2 text-[15px] leading-snug">Pergunte do seu jeito. A resposta vem do manual oficial.</p>
       </div>
 
       <main className="pointer-events-none relative z-10 flex flex-col items-center px-(--gutter) pt-[7vh] text-center md:pt-[9vh]">
@@ -57,10 +56,9 @@ export function HomeView() {
           onBlur={off}
           className="group pointer-events-auto mt-6 inline-flex h-14 items-center gap-2.5 rounded-full bg-ink px-7 font-display text-[17px] font-bold text-white shadow-bar transition-colors hover:bg-[#2c2447] md:mt-8"
         >
-          Conversar com o Manu
+          Converse com a Manu
           <Icons.arrowRight className="transition-transform duration-300 group-hover:translate-x-[3px]" />
         </Link>
-        <Honesty className="mt-4 justify-center" />
       </main>
     </div>
   );
