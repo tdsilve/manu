@@ -58,6 +58,7 @@ const css = `
 `;
 
 const layer = (name: string) => `/manu/${name}.webp`;
+const LAYER_COUNT = 7;
 
 export function ManuSprite({
   bump = 0,
@@ -82,6 +83,9 @@ export function ManuSprite({
   const bobRef = useRef<HTMLDivElement>(null);
   const wiggleRef = useRef<HTMLDivElement>(null);
   const [joy, setJoy] = useState(false);
+  // Só aparece com todas as camadas carregadas: numa rede lenta, sem "olhos flutuando".
+  const [loaded, setLoaded] = useState(0);
+  const ready = loaded >= LAYER_COUNT;
   const [box, setBox] = useState<{ left: number; top: number; size: number } | null>(null);
 
   // Posição e tamanho no palco, iguais aos do 3D com o mesmo enquadramento.
@@ -203,7 +207,25 @@ export function ManuSprite({
 
   const img = (name: string, extra?: string) => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={layer(name)} alt="" draggable={false} decoding="async" className={cn("ms-layer", extra)} />
+    <img
+      src={layer(name)}
+      alt=""
+      draggable={false}
+      decoding="async"
+      // Imagem já em cache pode terminar antes da hidratação: conta também pelo ref.
+      ref={(el) => {
+        if (el?.complete && el.naturalWidth && !el.dataset.counted) {
+          el.dataset.counted = "1";
+          setLoaded((n) => n + 1);
+        }
+      }}
+      onLoad={(e) => {
+        if (e.currentTarget.dataset.counted) return;
+        e.currentTarget.dataset.counted = "1";
+        setLoaded((n) => n + 1);
+      }}
+      className={cn("ms-layer", extra)}
+    />
   );
 
   return (
@@ -215,7 +237,7 @@ export function ManuSprite({
       <style>{css}</style>
       <div
         ref={boxRef}
-        className="ms-box"
+        className={cn("ms-box transition-opacity duration-500", !ready && "opacity-0")}
         style={box ? { left: box.left, top: box.top, width: box.size, height: box.size } : { visibility: "hidden" }}
       >
         <div ref={bobRef} className="ms-layer" style={{ transformOrigin: `50% ${M.ground.y}%` }}>
