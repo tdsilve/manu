@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 
 // Imagem de compartilhamento (WhatsApp, LinkedIn…): título + o Manu renderizado do 3D (public/manu/full.png).
 
-export const alt = "Manu: o manual responde e mostra onde.";
+export const alt = "Manu: o manual responde, direto da fonte.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -58,7 +58,7 @@ export default async function OpengraphImage() {
             O manual responde.
           </div>
           <div style={{ ...heading, fontSize: 76, fontWeight: 800, lineHeight: 1.05, letterSpacing: -3, color: "#6b57c7" }}>
-            E mostra onde.
+            Direto da fonte.
           </div>
           <div style={{ ...heading, marginTop: 36, fontSize: 28, fontWeight: 500, color: "#56516a" }}>
             Pergunte do seu jeito. A resposta vem do manual oficial.

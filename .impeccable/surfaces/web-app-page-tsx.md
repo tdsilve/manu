@@ -19,7 +19,7 @@ WORLD: Fundo lavanda quase branco; palco lilás arredondado onde vive o Manu; ti
 
 STORY: O Manu em evidência: a pessoa vê o personagem, o nome e um único convite para conversar.
 
-HOME (referência da autora: página de personagem com o mascote gigante e texto só nos cantos): palco lilás de tela inteira; "manu." enorme e centralizado no topo; botão "Converse com a Manu" centralizado logo abaixo; o Manu gigante ocupando a parte de baixo (enquadramento giant), cortado na borda no desktop. Cantos no desktop: "O manual responde. / E mostra onde." à esquerda, "Como funciona" à direita. Os exemplos com trecho e página ficam no chat.
+HOME (referência da autora: página de personagem com o mascote gigante e texto só nos cantos): palco lilás de tela inteira; "manu." enorme e centralizado no topo; botão "Converse com a Manu" centralizado logo abaixo; o Manu gigante ocupando a parte de baixo (enquadramento giant), cortado na borda no desktop. Cantos no desktop: "O manual responde. / Direto da fonte." à esquerda, "Como funciona" à direita. Os exemplos com trecho e página ficam no chat.
 
 MOBILE (<768px): o mesmo layout; o slogan vai para baixo do nome e o Manu aparece inteiro.
 

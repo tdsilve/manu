@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Manu",
   description: "Dúvidas sobre o seu eletrodoméstico, respondidas pelo manual oficial, com a página citada.",
   openGraph: {
-    title: "Manu · o manual responde e mostra onde",
+    title: "Manu · o manual responde, direto da fonte",
     description: "Pergunte do seu jeito. A resposta vem do manual oficial, com o trecho e a página.",
     locale: "pt_BR",
     type: "website",
