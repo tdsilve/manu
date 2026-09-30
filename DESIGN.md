@@ -191,8 +191,7 @@ Lavanda calma de fundo, tinta berinjela para ler, um violeta de destaque e o ama
 
 Cada tela cabe inteira, sem rolagem, na home. Margem lateral fluida: clamp(20px, 3.6vw, 48px).
 
-- **Desktop (≥768px):** duas colunas iguais. Esquerda: conteúdo alinhado à esquerda, com o texto limitado a ~540px e a barra de pergunta presa no pé. Direita: palco com 12px de respiro nas bordas.
-- **Celular (<768px):** coluna única. Palco no topo (44% da altura), cartões de exemplo deslizantes no meio e barra de pergunta no pé, respeitando a área do gesto do iPhone.
+- **Home:** um layout só, centralizado, sobre o palco lilás de tela inteira. No topo, "manu." enorme (Bricolage 800, clamp(88px, 17vw, 208px)) e, logo abaixo, o botão "Conversar com o Manu" e a promessa do "não sei". O Manu ocupa a parte de baixo, com o topo do livro a 44% da altura (enquadramento *giant*). No desktop ele fica cortado na borda de baixo; no celular aparece inteiro. No desktop, "O manual responde. Com a página." fica no canto esquerdo e "Como funciona" no direito; no celular o slogan vai para baixo do nome.
 - **Chat:** coluna central de até 760px, cabeçalho fixo com degradê para o fundo, barra de pergunta fixa embaixo.
 - **Ritmo:** 8, 12, 16, 20, 36px. Blocos de conteúdo separados por 20px; seções maiores por 36px.
 

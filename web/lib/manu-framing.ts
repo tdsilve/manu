@@ -2,12 +2,14 @@
 // para as duas versões aparecerem exatamente no mesmo lugar e tamanho.
 //
 // Unidades da cena: o livro vai de y=-1,06 a y=1,06. TOP inclui a folga acima dele.
-// hero: grande, cortado embaixo (palco do desktop). compact: o Manu inteiro (palcos pequenos).
+// giant: a home, com o Manu enorme e cortado na borda de baixo, o topo do livro abaixo do nome.
+// hero: grande, cortado embaixo (palco lateral). compact: o Manu inteiro (palcos pequenos).
 
 export const FOV = 26;
 const TOP = 1.22;
 
 export const FRAMINGS = {
+  giant: { top: 0.44, bottom: -0.3, minHalfWidth: 1.3 },
   hero: { top: 0.24, bottom: -0.7, minHalfWidth: 1.1 },
   compact: { top: 0.05, bottom: -0.9, minHalfWidth: 1.6 },
 } as const;

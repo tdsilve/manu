@@ -17,11 +17,11 @@ THESIS: O manual que sorri. O Manu é um manual com abas que ganhou rosto; a pro
 
 WORLD: Fundo lavanda quase branco; palco lilás arredondado onde vive o Manu; tinta berinjela; títulos em Bricolage Grotesque extra-bold com a segunda linha em roxo; cartões de papel branco com grifo amarelo; rótulos em caixa alta, cor sólida. Ver DESIGN.md.
 
-STORY: Em segundos a pessoa entende "pergunto em palavras minhas, o Manu mostra a página do manual" e pergunta.
+STORY: O Manu em evidência: a pessoa vê o personagem, o nome e um único convite para conversar.
 
-DESKTOP (≥768px): duas colunas numa tela só. Esquerda: marca, "O manual responde. / Com a página.", exemplo (Você pergunta → O Manu responde → pág. + trecho grifado → promessa do "não sei"), setas ← → com "1 / 4", "Perguntar isso no chat", barra de pergunta. Direita: palco lilás com o Manu 3D (Three.js) grande e cortado na borda de baixo; "Nº 0x · aba" no canto.
+HOME (referência da autora: página de personagem com o mascote gigante e texto só nos cantos): palco lilás de tela inteira; "manu." enorme e centralizado no topo; botão "Conversar com o Manu" centralizado logo abaixo, com a promessa do "não sei"; o Manu gigante ocupando a parte de baixo (enquadramento giant), cortado na borda no desktop. Cantos no desktop: "O manual responde. / Com a página." à esquerda, "Como funciona" à direita. Os exemplos com trecho e página ficam no chat.
 
-MOBILE (<768px): uma tela sem rolagem. Palco lilás no topo (marca, contador, título, Manu inteiro); exemplos em cartões de deslizar; pontos de navegação; barra de pergunta na zona do polegar.
+MOBILE (<768px): o mesmo layout; o slogan vai para baixo do nome e o Manu aparece inteiro.
 
 MASCOTE POR APARELHO: a largura escolhe o layout; o aparelho escolhe o Manu. Com cursor (mesmo em janela estreita) é o 3D; em aparelho de toque são as imagens renderizadas do próprio 3D (mesma aparência), e o three.js não é baixado.
 
