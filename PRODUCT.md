@@ -16,7 +16,7 @@ Responder dúvidas sobre um eletrodoméstico com base no manual oficial do fabri
 
 ## Positioning
 
-A resposta sai só do manual oficial, nunca de fórum ou do conhecimento geral de um modelo de linguagem, e sempre com a página citada. Quando os manuais não trazem a resposta, o Manu diz que não sabe em vez de inventar.
+A resposta sai só do manual oficial, nunca de fórum ou do conhecimento geral de um modelo de linguagem, e sempre com a página citada. Quando os manuais não trazem a resposta, a Manu diz que não sabe em vez de inventar.
 
 ## Operating Context
 
@@ -32,8 +32,13 @@ A resposta sai só do manual oficial, nunca de fórum ou do conhecimento geral d
 
 ## Brand Commitments
 
-- O nome do produto é **Manu**.
-- O mascote é o próprio manual: um manual com abas, de rosto sorridente, sem título na capa. O sistema visual está em `DESIGN.md`.
+- O nome do produto é **Manu**, uma personagem feminina: **a Manu** (da Manu, com a Manu). Nunca "o Manu", "MANU" ou "Manu IA". O nome vem de *manual*.
+- **Essência:** a Manu é a amiga que leu o manual inteiro.
+- **Arquétipo:** a biblioteca inteligente. Sabe onde está cada coisa, fala simples e nunca inventa.
+- **Promessa (slogan):** "A Manu responde. Direto da fonte."
+- **Personalidade:** honesta (não sabe-tudo), prestativa (não prolixa), simpática (não engraçadinha), precisa (não técnica demais). O humor fica no desenho, não no texto.
+- **Voz:** linguagem do dia a dia na entrada, precisão do manual na saída. Frases curtas e voz ativa; sem saudações, elogios à pergunta, emojis ou jargão de tecnologia. A Manu não se apresenta como robô nem como "inteligência artificial".
+- A personagem é o próprio manual: um manual com abas, de rosto sorridente, sem título na capa. Logo, símbolo e sistema visual em `DESIGN.md`; guia completo com exemplos em https://claude.ai/artifact/CUJkm6hjwLatr9NT8LM4ZH.
 
 ## Evidence on Hand
 

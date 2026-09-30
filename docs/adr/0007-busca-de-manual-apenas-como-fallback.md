@@ -1,6 +1,6 @@
 # Busca de manual só como fallback, sob demanda
 
-O Manu identifica o produto pela foto da etiqueta e consulta o manual oficial daquele modelo. A base de manuais é montada à mão; a busca automática no site do fabricante é uma melhoria futura (fase 8) e só acontece quando o código do modelo identificado não tem manual na base, baixando apenas o manual desse modelo. Isso revê a regra anterior de "nenhum download automatizado", mantendo o espírito dela: um download por pedido real do usuário, igual ao que ele mesmo faria, sem varrer catálogos e sem redistribuir os PDFs ([ADR 0006](0006-manuais-fora-do-repositorio.md)).
+A Manu identifica o produto pela foto da etiqueta e consulta o manual oficial daquele modelo. A base de manuais é montada à mão; a busca automática no site do fabricante é uma melhoria futura (fase 8) e só acontece quando o código do modelo identificado não tem manual na base, baixando apenas o manual desse modelo. Isso revê a regra anterior de "nenhum download automatizado", mantendo o espírito dela: um download por pedido real do usuário, igual ao que ele mesmo faria, sem varrer catálogos e sem redistribuir os PDFs ([ADR 0006](0006-manuais-fora-do-repositorio.md)).
 
 ## Considered Options
 

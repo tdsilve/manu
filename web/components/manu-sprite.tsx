@@ -1,11 +1,11 @@
 "use client";
 
-// O Manu em imagens: as camadas em public/manu foram renderizadas do próprio Manu 3D
+// A Manu em imagens: as camadas em public/manu foram renderizadas da própria Manu 3D
 // (manu-3d.tsx), então a aparência é a mesma, sem WebGL e sem three.js.
 // Usado em aparelhos de toque e como imagem provisória enquanto o 3D carrega.
 //
 // Camadas (1000×1000, fundo transparente, mesma câmera): arm-left, arm-right, body, whites,
-// pupils, brows, mouth; full.png é o Manu inteiro. Exportadas em pose neutra com a câmera
+// pupils, brows, mouth; full.png é a Manu inteira. Exportadas em pose neutra com a câmera
 // SPRITE_CAMERA (lib/manu-framing.ts). Se o modelo 3D mudar, exporte de novo;
 // manifest.json guarda ombros, olhos e boca em % da imagem.
 // Com `framing`, a imagem é posicionada no palco exatamente onde o 3D apareceria.

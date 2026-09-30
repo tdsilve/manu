@@ -1,8 +1,8 @@
 "use client";
 
-// O Manu 3D: manual com abas que segue o cursor com os olhos. Só é baixado em aparelhos
+// A Manu 3D: manual com abas que segue o cursor com os olhos. Só é baixado em aparelhos
 // com cursor (ver components/manu.tsx). Pausa fora da tela e com a aba escondida;
-// avisa com onReady quando o primeiro quadro está pronto (até lá aparecem as imagens do Manu).
+// avisa com onReady quando o primeiro quadro está pronto (até lá aparecem as imagens da Manu).
 
 import { useEffect, useRef } from "react";
 import type * as THREE_NS from "three";
@@ -409,7 +409,7 @@ export function Manu3D({
         rig.setExcited(latest.current.excited);
       })
       .catch(() => {
-        // Sem WebGL: as imagens do Manu continuam no lugar.
+        // Sem WebGL: as imagens da Manu continuam no lugar.
         canvas.remove();
       });
     return () => {

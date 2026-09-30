@@ -4,7 +4,7 @@ Assistente que responde dúvidas sobre eletrodomésticos com base no manual ofic
 
 ## Fase 1: RAG básico
 
-Perguntas em linguagem do dia a dia sobre geladeiras e micro-ondas Electrolux e Brastemp, respondidas só com o conteúdo dos manuais. Toda resposta mostra o trecho, o manual e a página. Quando os manuais não trazem a resposta, o Manu diz que não sabe.
+Perguntas em linguagem do dia a dia sobre geladeiras e micro-ondas Electrolux e Brastemp, respondidas só com o conteúdo dos manuais. Toda resposta mostra o trecho, o manual e a página. Quando os manuais não trazem a resposta, a Manu diz que não sabe.
 
 Fora desta fase: identificação do produto pela foto da etiqueta (fases 2 e 3), filtro por modelo, OCR, memória de conversa. Detalhes no [spec](docs/fases/fase-1/spec.md).
 

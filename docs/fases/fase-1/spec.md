@@ -10,7 +10,7 @@ Do ponto de vista da autora (projeto de portfólio, migração de frontend para 
 
 ## Solution
 
-O Manu responde perguntas em linguagem do dia a dia sobre geladeiras e micro-ondas Electrolux e Brastemp, usando apenas o conteúdo dos manuais oficiais. Toda resposta mostra de onde veio: o trecho do manual destacado, o nome do manual e a página. Quando os manuais não trazem a resposta, o Manu diz claramente que não sabe, em vez de inventar.
+A Manu responde perguntas em linguagem do dia a dia sobre geladeiras e micro-ondas Electrolux e Brastemp, usando apenas o conteúdo dos manuais oficiais. Toda resposta mostra de onde veio: o trecho do manual destacado, o nome do manual e a página. Quando os manuais não trazem a resposta, a Manu diz claramente que não sabe, em vez de inventar.
 
 Na Fase 1:
 
@@ -29,7 +29,7 @@ Na Fase 1:
 4. Como usuário, quero ver o trecho do manual que embasa a resposta, para confiar que ela não foi inventada.
 5. Como usuário, quero ver o nome do manual (marca e modelo) e a página citada, para poder conferir no manual original se quiser.
 6. Como usuário, quero ver mais de uma citação quando a resposta vier de mais de uma página, para entender o contexto completo.
-7. Como usuário, quero que o Manu diga claramente quando os manuais não têm a resposta, para não seguir uma orientação inventada.
+7. Como usuário, quero que a Manu diga claramente quando os manuais não têm a resposta, para não seguir uma orientação inventada.
 8. Como usuário, quero que a recusa me sugira um próximo passo (por exemplo, procurar a assistência técnica), para não ficar sem saída.
 9. Como usuário, quero perguntar se um problema está coberto pela garantia, para decidir se aciono o fabricante.
 10. Como usuário, quero saber o prazo de garantia que o manual informa, para saber se ainda estou dentro dele.

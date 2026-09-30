@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   Paleta: fundo lavanda quase branco, palco lilás para o Manu, tinta berinjela.
+   Paleta: fundo lavanda quase branco, palco lilás para a Manu, tinta berinjela.
    Papel branco é o material das provas (trechos do manual); amarelo é o grifo.
-   Só tema claro: o Manu é de papel e o site tem uma cena só.
+   Só tema claro: a Manu é de papel e o site tem uma cena só.
    ========================================================================== */
 
 :root {
@@ -80,7 +80,7 @@
   color: var(--muted);
 }
 
-/* Palco lilás do Manu */
+/* Palco lilás da Manu */
 @utility stage {
   background: radial-gradient(85% 65% at 50% 100%, var(--stage-bottom) 0%, var(--stage-mid) 55%, var(--stage-top) 100%);
 }

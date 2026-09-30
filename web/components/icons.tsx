@@ -19,17 +19,21 @@ const base = (size: number): IconProps => ({
 });
 
 export const Icons = {
-  // O Manu em miniatura: manual com abas e rosto.
+  // Símbolo A da marca: a Manu em miniatura (mesmo desenho de app/icon.svg).
   logo: ({ className, ...props }: IconProps) => (
-    <svg className={cn("size-8 shrink-0", className)} viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
-      <rect x="24" y="7" width="4" height="5" rx="1.5" fill="#f2a07b" />
-      <rect x="24" y="13" width="4" height="5" rx="1.5" fill="#f3b93a" />
-      <rect x="24" y="19" width="4" height="5" rx="1.5" fill="#9fdcc4" />
-      <rect x="3.5" y="4" width="5" height="25" rx="2" fill="#e2d6bf" />
-      <rect x="6" y="4" width="20" height="24.5" rx="3" fill="#fffdf8" stroke="#1d1733" strokeOpacity=".14" />
-      <circle cx="12.5" cy="14.5" r="2.4" fill="#1d1733" />
-      <circle cx="19.5" cy="14.5" r="2.4" fill="#1d1733" />
-      <path d="M13.8 19.2c1.2 1.5 3.3 1.5 4.5 0" stroke="#1d1733" strokeWidth="1.5" strokeLinecap="round" />
+    <svg className={cn("size-8 shrink-0", className)} viewBox="0 0 64 64" fill="none" aria-hidden="true" {...props}>
+      <rect x="47" y="13" width="9" height="10" rx="3" fill="#f2a07b" />
+      <rect x="47" y="25" width="9" height="10" rx="3" fill="#f3b93a" />
+      <rect x="47" y="37" width="9" height="10" rx="3" fill="#9fdcc4" />
+      <rect x="7" y="7" width="12" height="51" rx="5" fill="#e2d6bf" />
+      <rect x="12" y="7" width="40" height="50" rx="7" fill="#fdfaf2" stroke="#1d1733" strokeOpacity=".12" />
+      <ellipse cx="25" cy="29" rx="4.6" ry="5" fill="#1d1733" />
+      <ellipse cx="39" cy="29" rx="4.6" ry="5" fill="#1d1733" />
+      <circle cx="26.4" cy="27.3" r="1.4" fill="#fff" />
+      <circle cx="40.4" cy="27.3" r="1.4" fill="#fff" />
+      <ellipse cx="19.5" cy="37" rx="3.4" ry="2" fill="#f59bb5" opacity=".6" />
+      <ellipse cx="44.5" cy="37" rx="3.4" ry="2" fill="#f59bb5" opacity=".6" />
+      <path d="M27.5 37.5a4.5 4.5 0 0 0 9 0z" fill="#4a1f3a" />
     </svg>
   ),
   arrowRight: (props: IconProps) => (

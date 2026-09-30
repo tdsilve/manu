@@ -122,16 +122,16 @@ components:
 
 **Creative North Star: "O manual que sorri"**
 
-O Manu transforma o manual de papel, aquele que ninguém lê, num personagem simpático: um manual com abas, de rosto redondo, que olha para você. A graça fica toda no mascote. O resto da interface é calmo e exato, porque o produto é a prova: toda resposta mostra o trecho do manual, grifado, com o número da página em destaque.
+A Manu transforma o manual de papel, aquele que ninguém lê, numa personagem simpática: um manual com abas, de rosto redondo, que olha para você. A graça fica toda no mascote. O resto da interface é calmo e exato, porque o produto é a prova: toda resposta mostra o trecho do manual, grifado, com o número da página em destaque.
 
-A cena é única e clara. O fundo lavanda quase branco não compete com nada, o palco lilás arredondado é a casa do Manu e os cartões de papel branco carregam a evidência. Os títulos são grandes e confiantes; os rótulos, pequenos e discretos. A leitura vai sempre na mesma ordem: pergunta, resposta, página, trecho.
+A cena é única e clara. O fundo lavanda quase branco não compete com nada, o palco lilás arredondado é a casa da Manu e os cartões de papel branco carregam a evidência. Os títulos são grandes e confiantes; os rótulos, pequenos e discretos. A leitura vai sempre na mesma ordem: pergunta, resposta, página, trecho.
 
 O mascote muda com o aparelho, não com o tamanho da tela. Em aparelhos com cursor (computador, mesmo com a janela estreita) ele é 3D e segue o mouse. Em aparelhos de toque (celular, tablet) ele é feito de imagens renderizadas do próprio 3D: a mesma aparência, leve, com olhar próprio e reação ao toque. As duas versões usam o mesmo enquadramento e aparecem no mesmo lugar.
 
 **Key Characteristics:**
 - Um personagem lúdico; todo o resto é sóbrio.
 - A prova (grifo amarelo + página) é o centro visual de cada resposta.
-- Papel branco sobre lavanda; o lilás só aparece no palco do Manu e no destaque do título.
+- Papel branco sobre lavanda; o lilás só aparece no palco da Manu e no destaque do título.
 - Títulos em Bricolage extra-bold; texto em Geist.
 - Só tema claro.
 
@@ -149,7 +149,7 @@ Lavanda calma de fundo, tinta berinjela para ler, um violeta de destaque e o ama
 ### Neutral
 - **Lavender Paper** (lavender-paper): fundo de todas as telas.
 - **Lavender Deep** (lavender-deep): fundo por trás de áreas centralizadas.
-- **Stage** (stage-top → stage-mid → stage-bottom): gradiente radial do palco do Manu, mais escuro embaixo, como um chão.
+- **Stage** (stage-top → stage-mid → stage-bottom): gradiente radial do palco da Manu, mais escuro embaixo, como um chão.
 - **Aubergine Ink** (aubergine-ink): texto principal, botões primários, bolha da pergunta no chat, traços do mascote.
 - **Quiet Ink** (quiet-ink): rótulos, texto secundário, placeholder. Cor sólida com contraste de cerca de 7:1 sobre o fundo.
 - **Paper White** (paper-white): cartões de prova, barra de pergunta, botões suaves.
@@ -180,7 +180,7 @@ Lavanda calma de fundo, tinta berinjela para ler, um violeta de destaque e o ama
 - **Title** (500, 19px, 1.375): a pergunta de exemplo e a resposta curta na home.
 - **Body** (400, 17px, 1.5): respostas do chat (19px no desktop), no máximo 62 caracteres por linha.
 - **Excerpt** (400, 15px, 1.625): o trecho do manual dentro do cartão de papel.
-- **Label** (500, 11px, 0.12em, caixa alta): "Você pergunta", "O Manu responde", "pág.", legenda do manual, contadores.
+- **Label** (500, 11px, 0.12em, caixa alta): "Você pergunta", "A Manu responde", "pág.", legenda do manual, contadores.
 
 ### Named Rules
 **The Page Is Loud Rule.** O número da página é o maior elemento de cada resposta depois do título. Se a página não aparece de relance, a prova falhou.
@@ -191,7 +191,7 @@ Lavanda calma de fundo, tinta berinjela para ler, um violeta de destaque e o ama
 
 Cada tela cabe inteira, sem rolagem, na home. Margem lateral fluida: clamp(20px, 3.6vw, 48px).
 
-- **Home:** um layout só, centralizado, sobre o palco lilás de tela inteira. No topo, "manu." enorme (Bricolage 800, clamp(88px, 17vw, 208px)) e, logo abaixo, o botão "Converse com a Manu". O Manu ocupa a parte de baixo, com o topo do livro a 44% da altura (enquadramento *giant*). No desktop ele fica cortado na borda de baixo; no celular aparece inteiro. No desktop, o slogan "A Manu responde. Direto da fonte." fica no canto esquerdo e "Como funciona" no direito; no celular o slogan vai para baixo do nome.
+- **Home:** um layout só, centralizado, sobre o palco lilás de tela inteira. No topo, "manu." enorme (Bricolage 800, clamp(88px, 17vw, 208px)) e, logo abaixo, o botão "Converse com a Manu". A Manu ocupa a parte de baixo, com o topo do livro a 44% da altura (enquadramento *giant*). No desktop ele fica cortado na borda de baixo; no celular aparece inteiro. No desktop, o slogan "A Manu responde. Direto da fonte." fica no canto esquerdo e "Como funciona" no direito; no celular o slogan vai para baixo do nome.
 - **Chat:** coluna central de até 760px, cabeçalho fixo com degradê para o fundo, barra de pergunta fixa embaixo.
 - **Ritmo:** 8, 12, 16, 20, 36px. Blocos de conteúdo separados por 20px; seções maiores por 36px.
 
@@ -214,9 +214,14 @@ Tudo é arredondado e macio, como o mascote. Não há cantos vivos.
 - **Pílula** (9999px): botões, barra de pergunta, exemplos em pílula.
 - **Cartão** (16px): cartões de prova e de recusa.
 - **Bolha** (22px, com o canto inferior direito a 6px): a pergunta da pessoa no chat.
-- **Palco** (28px no celular, 32px no desktop): a área lilás do Manu.
+- **Palco** (28px no celular, 32px no desktop): a área lilás da Manu.
 
 ## Components
+
+### Logo e símbolo
+- **Logo:** a palavra "manu." em Bricolage Grotesque 800, sempre minúscula, com espaçamento −6% a −7% e o ponto em Post-it Gold. Sobre fundo dourado, o ponto vira Aubergine Ink. Área de respiro igual à altura do "n"; largura mínima de 64px. Sem contorno, sombra, degradê ou letras roxas.
+- **Símbolo (A · Rosto):** a Manu em miniatura (capa creme, lombada areia, três abas, olhos, bochechas e sorriso), em `web/app/icon.svg`. Usado onde o logo não cabe: favicon, ícone de app (sobre o lilás #DDD4F7, `web/app/apple-icon.tsx`), avatar ao lado das respostas no chat (`Icons.logo`).
+- **Grafia:** "a Manu" em texto corrido; "manu." só como logo.
 
 ### Buttons
 - **Shape:** pílula (9999px).
@@ -236,11 +241,11 @@ Tudo é arredondado e macio, como o mascote. Não há cantos vivos.
 - **Na home:** o trecho inteiro é grifado. **No chat:** só os termos da pergunta.
 
 ### Honesty Line
-Ícone de check + "Não está no manual? O Manu diz que não sabe." em Quiet Ink, 13px. Aparece perto da prova, na home e no chat vazio.
+Ícone de check + "Não está no manual? A Manu diz que não sabe." em Quiet Ink, 13px. Aparece perto da prova, na home e no chat vazio.
 
 ### Chat Turn
 - **Pergunta:** bolha em Aubergine Ink, alinhada à direita.
-- **Resposta:** mini-Manu (ícone de 32px), o rótulo "O Manu responde", o texto e as provas.
+- **Resposta:** mini-Manu (ícone de 32px), o rótulo "A Manu responde", o texto e as provas.
 - **Recusa:** cartão de papel com "Isso não está no manual." em Bricolage bold.
 - **Erro:** título em Alert Brick e botão "Tentar de novo".
 

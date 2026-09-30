@@ -1,6 +1,6 @@
 "use client";
 
-// Home: o Manu em evidência. O nome "manu." grande e centralizado, o botão para o chat
+// Home: a Manu em evidência. O nome "manu." grande e centralizado, o botão para o chat
 // logo abaixo e o mascote enorme ocupando a parte de baixo da tela, cortado na borda.
 // Um layout só, que se ajusta à largura. Qual Manu aparece (3D ou imagens) depende do
 // aparelho: ver components/manu.tsx.
@@ -20,7 +20,7 @@ export function HomeView() {
     <div className="relative h-dvh overflow-hidden stage">
       <Manu framing="giant" excited={eager} pokes={pokes} className="absolute inset-0" />
 
-      {/* Toque no Manu (celular): brincadeira visual, fora da leitura de tela e do teclado. */}
+      {/* Toque na Manu (celular): brincadeira visual, fora da leitura de tela e do teclado. */}
       <button
         type="button"
         tabIndex={-1}

@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 
-// Imagem de compartilhamento (WhatsApp, LinkedIn…): título + o Manu renderizado do 3D (public/manu/full.png).
+// Imagem de compartilhamento (WhatsApp, LinkedIn…): título + a Manu renderizada do 3D (public/manu/full.png).
 
 export const alt = "Manu: a Manu responde, direto da fonte.";
 export const size = { width: 1200, height: 630 };

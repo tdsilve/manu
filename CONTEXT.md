@@ -25,7 +25,7 @@ Documento oficial publicado pelo fabricante para um ou mais códigos de modelo.
 _Avoid_: Guia, documentação, PDF
 
 **Base de manuais**:
-O conjunto de manuais já indexados que o Manu consegue consultar.
+O conjunto de manuais já indexados que a Manu consegue consultar.
 _Avoid_: Knowledge base, acervo, banco
 
 **Busca de manual**:

@@ -1,9 +1,9 @@
 "use client";
 
-// O Manu certo para cada aparelho, em qualquer tamanho de tela:
+// A Manu certa para cada aparelho, em qualquer tamanho de tela:
 // - com cursor (computador, mesmo com a janela estreita): 3D que segue o mouse. Até o 3D
-//   ficar pronto, ou se não houver WebGL, aparecem as imagens do Manu no mesmo lugar;
-// - sem cursor (celular, tablet): as imagens do Manu (renderizadas do próprio 3D, mesma
+//   ficar pronto, ou se não houver WebGL, aparecem as imagens da Manu no mesmo lugar;
+// - sem cursor (celular, tablet): as imagens da Manu (renderizadas do próprio 3D, mesma
 //   aparência), leves, com olhar próprio e reação ao toque.
 // As duas versões usam o mesmo enquadramento (lib/manu-framing.ts), então coincidem.
 
@@ -31,7 +31,7 @@ export function Manu({
   pokes?: number;
   gaze?: Gaze;
   excited?: boolean;
-  // Posição do palco do Manu (ex.: "absolute inset-0").
+  // Posição do palco da Manu (ex.: "absolute inset-0").
   className?: string;
 }) {
   const fine = useFinePointer();

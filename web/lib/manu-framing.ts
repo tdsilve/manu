@@ -1,9 +1,9 @@
-// Enquadramento do Manu, compartilhado pelo 3D (manu-3d.tsx) e pelas imagens (manu-sprite.tsx),
+// Enquadramento da Manu, compartilhado pelo 3D (manu-3d.tsx) e pelas imagens (manu-sprite.tsx),
 // para as duas versões aparecerem exatamente no mesmo lugar e tamanho.
 //
 // Unidades da cena: o livro vai de y=-1,06 a y=1,06. TOP inclui a folga acima dele.
-// giant: a home, com o Manu enorme e cortado na borda de baixo, o topo do livro abaixo do nome.
-// hero: grande, cortado embaixo (palco lateral). compact: o Manu inteiro (palcos pequenos).
+// giant: a home, com a Manu enorme e cortada na borda de baixo, o topo do livro abaixo do nome.
+// hero: grande, cortado embaixo (palco lateral). compact: a Manu inteira (palcos pequenos).
 
 export const FOV = 26;
 const TOP = 1.22;
@@ -27,7 +27,7 @@ export function frame(framing: Framing, aspect: number) {
 // Câmera usada para renderizar as camadas em public/manu (imagens quadradas).
 export const SPRITE_CAMERA = { H: 1.45, yc: 0.1 };
 
-// Onde colocar a imagem quadrada do Manu num palco w×h para coincidir com o 3D.
+// Onde colocar a imagem quadrada da Manu num palco w×h para coincidir com o 3D.
 export function spriteBox(framing: Framing, w: number, h: number) {
   const { H, yc } = frame(framing, w / h);
   const size = (h * SPRITE_CAMERA.H) / H;

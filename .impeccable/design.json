@@ -83,18 +83,18 @@
     {
       "name": "Stage",
       "kind": "custom",
-      "description": "Palco lilás onde vive o Manu.",
+      "description": "Palco lilás onde vive a Manu.",
       "html": "<div class=\"ds-stage\"><span class=\"ds-label\">Nº 01 · Lateral quente</span></div>",
       "css": ".ds-stage { position: relative; width: 320px; height: 220px; border-radius: 32px; background: radial-gradient(85% 65% at 50% 100%, #c9bcf2 0%, #ddd4f7 55%, #ebe6fa 100%); } .ds-label { position: absolute; top: 20px; right: 24px; font: 500 11px Geist, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #56516a; }"
     }
   ],
   "narrative": {
     "northStar": "O manual que sorri",
-    "overview": "O Manu transforma o manual de papel, aquele que ninguém lê, num personagem simpático: um manual com abas, de rosto redondo, que olha para você. A graça fica toda no mascote. O resto da interface é calmo e exato, porque o produto é a prova: toda resposta mostra o trecho do manual, grifado, com o número da página em destaque.",
+    "overview": "A Manu transforma o manual de papel, aquele que ninguém lê, numa personagem simpática: um manual com abas, de rosto redondo, que olha para você. A graça fica toda no mascote. O resto da interface é calmo e exato, porque o produto é a prova: toda resposta mostra o trecho do manual, grifado, com o número da página em destaque.",
     "keyCharacteristics": [
       "Um personagem lúdico; todo o resto é sóbrio.",
       "A prova (grifo amarelo + página) é o centro visual de cada resposta.",
-      "Papel branco sobre lavanda; o lilás só aparece no palco do Manu e no destaque do título.",
+      "Papel branco sobre lavanda; o lilás só aparece no palco da Manu e no destaque do título.",
       "Títulos em Bricolage extra-bold; texto em Geist.",
       "Só tema claro."
     ],

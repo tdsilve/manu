@@ -38,7 +38,7 @@ export function ChatMessage({ turn, onRetry, busy }: ChatMessageProps) {
       <div className="grid grid-cols-[32px_1fr] gap-3 md:gap-4">
         <Icons.logo className="mt-0.5" />
         <div className="min-w-0">
-          <p className="label">O Manu responde</p>
+          <p className="label">A Manu responde</p>
           <div className="mt-1.5">
             <ChatReply turn={turn} onRetry={onRetry} busy={busy} />
           </div>
