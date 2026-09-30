@@ -31,7 +31,7 @@ export function HomeView() {
 
       {/* Cantos (desktop), como etiquetas de capa. */}
       <p className="absolute top-8 left-(--gutter) z-10 hidden max-w-[240px] font-display text-[22px] leading-[1.05] font-extrabold tracking-[-0.03em] md:block">
-        O manual responde.
+        A Manu responde.
         <br />
         <span className="text-accent">Direto da fonte.</span>
       </p>
@@ -43,10 +43,10 @@ export function HomeView() {
       <main className="pointer-events-none relative z-10 flex flex-col items-center px-(--gutter) pt-[7vh] text-center md:pt-[9vh]">
         <h1 className="font-display text-[clamp(88px,17vw,208px)] leading-[0.8] font-extrabold tracking-[-0.07em]">
           manu<span className="text-gold">.</span>
-          <span className="sr-only">: o manual responde, direto da fonte.</span>
+          <span className="sr-only">: responde direto da fonte.</span>
         </h1>
         <p className="mt-3 font-display text-[19px] leading-tight font-bold tracking-[-0.02em] md:hidden">
-          O manual responde. <span className="text-accent">Direto da fonte.</span>
+          A Manu responde. <span className="text-accent">Direto da fonte.</span>
         </p>
         <Link
           href="/chat"

@@ -4,7 +4,7 @@ import { ImageResponse } from "next/og";
 
 // Imagem de compartilhamento (WhatsApp, LinkedIn…): título + o Manu renderizado do 3D (public/manu/full.png).
 
-export const alt = "Manu: o manual responde, direto da fonte.";
+export const alt = "Manu: a Manu responde, direto da fonte.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -55,7 +55,7 @@ export default async function OpengraphImage() {
             manu<span style={{ color: "#f3b93a" }}>.</span>
           </div>
           <div style={{ ...heading, marginTop: 56, fontSize: 76, fontWeight: 800, lineHeight: 1, letterSpacing: -3 }}>
-            O manual responde.
+            A Manu responde.
           </div>
           <div style={{ ...heading, fontSize: 76, fontWeight: 800, lineHeight: 1.05, letterSpacing: -3, color: "#6b57c7" }}>
             Direto da fonte.
