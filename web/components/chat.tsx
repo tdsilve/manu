@@ -105,7 +105,7 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
               Qual é a sua dúvida?
             </h1>
             <p className="mt-4 max-w-[44ch] text-[17px] leading-snug text-muted text-pretty">
-              Pergunte do seu jeito sobre a sua geladeira. A resposta vem do manual oficial, com a página.
+              Pergunte do seu jeito. A resposta vem do manual oficial, com a página.
             </p>
             <div className="mt-7 flex max-w-[640px] flex-wrap justify-center gap-2" aria-label="Exemplos">
               {EXAMPLES.map((ex) => (
