@@ -74,7 +74,7 @@ def generator() -> FakeGenerator:
 
 
 def _index(workspace: Path, embedder: FakeEmbedder) -> VectorStore:
-    store = VectorStore(workspace / "chroma")
+    store = VectorStore.local(workspace / "chroma")
     index_manuals(workspace / "manuals.yaml", workspace / "pdfs", embedder, store)
     return store
 

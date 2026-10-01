@@ -1,4 +1,4 @@
-"""Armazenamento vetorial sobre ChromaDB (persistente, um trecho por página)."""
+"""Armazenamento vetorial sobre ChromaDB (local ou Chroma Cloud, um trecho por página)."""
 
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import chromadb
+from chromadb.api import ClientAPI
 from chromadb.config import Settings
 
 from manu.generation import RetrievedChunk
@@ -28,15 +29,27 @@ class PageChunk:
 
 
 class VectorStore:
-    def __init__(self, path: Path) -> None:
-        client = chromadb.PersistentClient(
-            path=str(path), settings=Settings(anonymized_telemetry=False)
-        )
+    def __init__(self, client: ClientAPI) -> None:
         # Distância de cosseno: d = 1 - cos(a, b), entre 0 e 2.
         self._collection = client.get_or_create_collection(
             COLLECTION,
             configuration={"hnsw": {"space": "cosine"}},
             embedding_function=None,  # os vetores vêm sempre do nosso Embedder
+        )
+
+    @classmethod
+    def local(cls, path: Path) -> "VectorStore":
+        return cls(chromadb.PersistentClient(path=str(path), settings=Settings(anonymized_telemetry=False)))
+
+    @classmethod
+    def cloud(cls, api_key: str, tenant: str | None, database: str | None) -> "VectorStore":
+        return cls(
+            chromadb.CloudClient(
+                tenant=tenant,
+                database=database,
+                api_key=api_key,
+                settings=Settings(anonymized_telemetry=False),
+            )
         )
 
     def upsert(self, chunks: Sequence[PageChunk], embeddings: Sequence[Sequence[float]]) -> None:

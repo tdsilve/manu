@@ -41,7 +41,7 @@ ollama pull bge-m3
 ```bash
 cd api
 python -m venv .venv
-.venv/bin/pip install -e ".[dev]"
+.venv/bin/pip install -e ".[local,dev]"
 cp .env.example .env
 ```
 
@@ -79,6 +79,41 @@ npm run dev
 ```
 
 Abra http://localhost:3000.
+
+## Deploy (Vercel)
+
+Interface e API viram dois projetos na Vercel, ligados ao mesmo repositório. O Ollama não roda na Vercel e a base vetorial não vai para o git ([ADR 0006](docs/adr/0006-manuais-fora-do-repositorio.md)). Por isso, em produção, os embeddings vêm da [Voyage AI](https://www.voyageai.com) e a base fica no [Chroma Cloud](https://www.trychroma.com).
+
+### 1. Indexar na nuvem (uma vez, da sua máquina)
+
+Crie uma database no Chroma Cloud e uma chave na Voyage. Em `api/.env`, preencha:
+
+```
+EMBEDDING_PROVIDER=voyage
+EMBEDDING_MODEL=
+VOYAGE_API_KEY=...
+CHROMA_API_KEY=...
+CHROMA_TENANT=...
+CHROMA_DATABASE=...
+```
+
+Rode `.venv/bin/manu-index`. Para voltar ao modo local, apague essas linhas (ou volte `EMBEDDING_PROVIDER=ollama` e esvazie `CHROMA_API_KEY`).
+
+Os limiares de similaridade mudam de um modelo de embeddings para outro: recalibre `SIMILARITY_THRESHOLD` com `manu-eval` usando essa mesma configuração.
+
+### 2. Projeto da API
+
+Na Vercel: **Add New → Project**, importe o repositório e defina **Root Directory = `api`**. A Vercel detecta o FastAPI e usa `manu.main:app` (`[tool.vercel]` no `pyproject.toml`). Variáveis de ambiente:
+
+`EMBEDDING_PROVIDER=voyage`, `VOYAGE_API_KEY`, `CHROMA_API_KEY`, `CHROMA_TENANT`, `CHROMA_DATABASE`, `ANTHROPIC_API_KEY`, `CLAUDE_MODEL`, `SIMILARITY_THRESHOLD` e `CORS_ORIGIN` (URL da interface; preencha depois do passo 3).
+
+Confira em `https://<api>.vercel.app/health`.
+
+### 3. Projeto da interface
+
+Importe o mesmo repositório de novo, agora com **Root Directory = `web`**. Variável: `NEXT_PUBLIC_API_URL=https://<api>.vercel.app`. Depois do deploy, coloque a URL da interface em `CORS_ORIGIN` no projeto da API e faça um redeploy.
+
+A cada push no `main`, os dois projetos são publicados de novo.
 
 ### Testes
 

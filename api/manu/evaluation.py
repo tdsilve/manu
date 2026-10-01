@@ -155,8 +155,7 @@ def render_report(outcomes: list[Outcome], config: dict[str, object]) -> str:
 def main() -> None:
     from manu.claude import ClaudeGenerator
     from manu.config import Settings
-    from manu.embedder import OllamaEmbedder
-    from manu.store import VectorStore
+    from manu.wiring import build_embedder, build_store
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     settings = Settings.from_env()
@@ -167,8 +166,8 @@ def main() -> None:
 
     items = load_gabarito(args.gabarito)
     asker = Asker(
-        OllamaEmbedder(settings.ollama_url, settings.embedding_model),
-        VectorStore(settings.chroma_dir),
+        build_embedder(settings, "query"),
+        build_store(settings),
         ClaudeGenerator(settings.anthropic_api_key, settings.claude_model),
         top_k=settings.top_k,
         similarity_threshold=settings.similarity_threshold,

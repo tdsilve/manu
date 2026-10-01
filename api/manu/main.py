@@ -7,8 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from manu.app import create_app
 from manu.claude import ClaudeGenerator
 from manu.config import Settings
-from manu.embedder import OllamaEmbedder
-from manu.store import VectorStore
+from manu.wiring import build_embedder, build_store
 
 logging.basicConfig(level=logging.INFO)
 settings = Settings.from_env()
@@ -18,15 +17,15 @@ if not settings.anthropic_api_key:
     )
 
 app = create_app(
-    OllamaEmbedder(settings.ollama_url, settings.embedding_model),
-    VectorStore(settings.chroma_dir),
+    build_embedder(settings, "query"),
+    build_store(settings),
     ClaudeGenerator(settings.anthropic_api_key, settings.claude_model),
     top_k=settings.top_k,
     similarity_threshold=settings.similarity_threshold,
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.cors_origin],
+    allow_origins=settings.cors_origins,
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )

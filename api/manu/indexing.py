@@ -35,15 +35,15 @@ def index_manuals(registry_path: Path, pdf_dir: Path, embedder: Embedder, store:
 
 def main() -> None:
     from manu.config import Settings
-    from manu.embedder import OllamaEmbedder
+    from manu.wiring import build_embedder, build_store
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     settings = Settings.from_env()
     index_manuals(
         settings.registry_path,
         settings.pdf_dir,
-        OllamaEmbedder(settings.ollama_url, settings.embedding_model),
-        VectorStore(settings.chroma_dir),
+        build_embedder(settings, "document"),
+        build_store(settings),
     )
 
 
