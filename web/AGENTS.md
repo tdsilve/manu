@@ -7,3 +7,25 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+# Manu web
+
+Interface da Manu: a home mostra o mascote; o chat devolve a resposta com o trecho, o manual e a página. Todo texto de interface é em português.
+
+## Verificação
+
+Sem `lint` nem testes, o `npm run typecheck` é o único gate automático: rode antes de concluir. Em mudança visual, suba o dev server (`../.claude/launch.json`) e confira a home e o chat, com e sem cursor, porque cada caso mostra um mascote diferente.
+
+## Design
+
+Leia `../DESIGN.md` antes de mexer em cores, tipografia, layout ou espaçamento. Cores e fontes saem dos tokens em `app/globals.css` e `lib/fonts.ts`. O site tem só tema claro.
+
+## Código
+
+- `"use client"` só onde há estado, efeito ou API do navegador (`chat`, `home-view`, `manu*`); o resto é componente de servidor.
+- Componentes do shadcn entram pela CLI, em `components/ui`.
+- Toda animação respeita `prefers-reduced-motion`.
+
+## Regras por área
+
+Mascote, chamada à API e mapa de componentes ficam em `../.claude/rules/web-*.md`. O Claude Code as carrega ao tocar nos arquivos de cada área; outros agentes leem antes de mexer nelas.
