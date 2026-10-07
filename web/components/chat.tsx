@@ -74,27 +74,18 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
     }
   }
 
-  function reset() {
-    setTurns([]);
-    setDraft("");
-    inputRef.current?.focus();
-  }
-
   const empty = turns.length === 0;
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-10 flex items-center justify-between bg-linear-to-b from-bg from-60% to-transparent px-(--gutter) pt-5 pb-6">
+      <header className="sticky top-0 z-10 flex items-center bg-linear-to-b from-bg from-60% to-transparent px-(--gutter) pt-5 pb-6">
         <Wordmark />
-        <Button variant="outline" size="sm" onClick={reset} disabled={empty || busy}>
-          <Icons.plus /> Nova conversa
-        </Button>
       </header>
 
       <main className="mx-auto w-full max-w-[760px] flex-1 px-(--gutter) pb-[180px]">
         {empty ? (
           <div className="flex min-h-[64dvh] flex-col items-center justify-center text-center">
-            <div className="relative mb-4 h-[216px] w-full max-w-[520px] overflow-hidden rounded-[28px] stage md:h-[236px]">
+            <div className="relative mb-4 h-[216px] w-full max-w-[520px] overflow-hidden md:h-[236px]">
               <Manu
                 gaze={focused ? { x: 0, y: -1 } : null}
                 excited={focused || draft.length > 0}
