@@ -189,10 +189,9 @@ Lavanda calma de fundo, tinta berinjela para ler, um violeta de destaque e o ama
 
 ## Layout
 
-Cada tela cabe inteira, sem rolagem, na home. Margem lateral fluida: clamp(20px, 3.6vw, 48px).
+A tela inicial cabe inteira, sem rolagem. Margem lateral fluida: clamp(20px, 3.6vw, 48px).
 
-- **Home:** um layout só, centralizado, sobre o palco lilás de tela inteira. No topo, "manu." enorme (Bricolage 800, clamp(88px, 17vw, 208px)) e, logo abaixo, o botão "Converse com a Manu". A Manu ocupa a parte de baixo, com o topo do livro a 44% da altura (enquadramento *giant*). No desktop ele fica cortado na borda de baixo; no celular aparece inteiro. No desktop, o slogan "A Manu responde. Direto da fonte." fica no canto esquerdo e "Como funciona" no direito; no celular o slogan vai para baixo do nome.
-- **Chat:** coluna central de até 760px, cabeçalho fixo com degradê para o fundo, barra de pergunta fixa embaixo.
+- **Chat (página inicial, `/`):** coluna central de até 760px, cabeçalho fixo com degradê para o fundo, barra de pergunta fixa embaixo.
 - **Ritmo:** 8, 12, 16, 20, 36px. Blocos de conteúdo separados por 20px; seções maiores por 36px.
 
 ## Elevation & Depth

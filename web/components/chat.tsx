@@ -43,12 +43,12 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
     }
   }
 
-  // Pergunta vinda da home (?q=): envia uma vez e limpa a URL.
+  // Pergunta vinda da URL (?q=): envia uma vez e limpa a URL.
   useEffect(() => {
     if (sentInitial.current || !initialQuestion) return;
     sentInitial.current = true;
     send(initialQuestion);
-    router.replace("/chat");
+    router.replace("/");
   }, [initialQuestion, router]);
 
   useEffect(() => {

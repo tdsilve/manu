@@ -1,7 +1,7 @@
 ---
 paths:
   - web/components/manu*.tsx
-  - web/components/home-view.tsx
+  - web/components/chat.tsx
   - web/lib/manu-framing.ts
   - web/lib/use-pointer.ts
 ---

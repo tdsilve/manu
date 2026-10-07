@@ -1,5 +1,11 @@
-import { HomeView } from "@/components/home-view";
+import { Chat } from "@/components/chat";
 
-export default function Home() {
-  return <HomeView />;
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const { q } = await searchParams;
+  const initialQuestion = typeof q === "string" ? q.trim() : "";
+  return <Chat initialQuestion={initialQuestion} />;
 }

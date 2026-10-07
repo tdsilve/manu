@@ -10,11 +10,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Manu web
 
-Interface da Manu: a home mostra o mascote; o chat devolve a resposta com o trecho, o manual e a página. Todo texto de interface é em português.
+Interface da Manu: uma só tela, o chat, que mostra o mascote e devolve a resposta com o trecho, o manual e a página. Todo texto de interface é em português.
 
 ## Verificação
 
-Sem `lint` nem testes, o `npm run typecheck` é o único gate automático: rode antes de concluir. Em mudança visual, suba o dev server (`../.claude/launch.json`) e confira a home e o chat, com e sem cursor, porque cada caso mostra um mascote diferente.
+Sem `lint` nem testes, o `npm run typecheck` é o único gate automático: rode antes de concluir. Em mudança visual, suba o dev server (`../.claude/launch.json`) e confira o chat (`/`), com e sem cursor, porque cada caso mostra um mascote diferente.
 
 ## Design
 
@@ -22,7 +22,7 @@ Leia `../DESIGN.md` antes de mexer em cores, tipografia, layout ou espaçamento.
 
 ## Código
 
-- `"use client"` só onde há estado, efeito ou API do navegador (`chat`, `home-view`, `manu*`); o resto é componente de servidor.
+- `"use client"` só onde há estado, efeito ou API do navegador (`chat`, `manu*`); o resto é componente de servidor.
 - Componentes do shadcn entram pela CLI, em `components/ui`.
 - Toda animação respeita `prefers-reduced-motion`.
 
