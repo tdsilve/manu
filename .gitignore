@@ -27,3 +27,6 @@ next-env.d.ts
 
 # Screenshots temporários da skill impeccable
 .impeccable/review/
+
+# Vínculo local com a Vercel (CLI)
+.vercel/

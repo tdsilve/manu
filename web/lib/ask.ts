@@ -1,5 +1,3 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-
 export type Citation = {
   manual_id: string;
   brand: string;
@@ -16,7 +14,7 @@ export type AskResponse = {
 };
 
 export async function ask(question: string): Promise<AskResponse> {
-  const response = await fetch(`${API_URL}/ask`, {
+  const response = await fetch("/api/ask", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ question }),
