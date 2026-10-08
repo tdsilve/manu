@@ -191,6 +191,13 @@ items:
     evidence: 'recipiente|utensílio|vasilha'
     expected:
       - {manual_id: brastemp-bms45, pages: [12]}
+      - {manual_id: electrolux-mf33s, pages: [5]}
+      - {manual_id: electrolux-mga42, pages: [5]}
+      - {manual_id: electrolux-mb38t, pages: [5]}
+      - {manual_id: electrolux-me3ep, pages: [4]}
+      - {manual_id: electrolux-me41x, pages: [4]}
+      - {manual_id: electrolux-mto30, pages: [4]}
+      - {manual_id: brastemp-bmo40, pages: [4]}
 
   - id: q23
     question: como eu mudo a potência do micro-ondas?
@@ -198,6 +205,10 @@ items:
     evidence: 'potência'
     expected:
       - {manual_id: brastemp-bms45, pages: [7]}
+      - {manual_id: electrolux-mga42, pages: [18]}
+      - {manual_id: electrolux-mb38t, pages: [19]}
+      - {manual_id: electrolux-me3ep, pages: [13]}
+      - {manual_id: electrolux-mto30, pages: [12]}
 
   - id: q24
     question: qual é a garantia do micro-ondas?
@@ -219,7 +230,7 @@ items:
     category: micro-ondas
     evidence: 'LOC'
     expected:
-      - {manual_id: electrolux-me3ep, pages: [15]}
+      - {manual_id: electrolux-me3ep, pages: [15, 26]}
       - {manual_id: electrolux-me41x, pages: [15]}
       - {manual_id: electrolux-mto30, pages: [14]}
 
@@ -334,6 +345,15 @@ items:
       - {manual_id: brastemp-bmo40, pages: [27]}
       - {manual_id: brastemp-bms45, pages: [12]}
 
+  - id: q19
+    question: quanta energia a geladeira gasta por mês?
+    category: geladeira
+    evidence: 'kwh'
+    expected:
+      - {manual_id: electrolux-db53, pages: [28]}
+      - {manual_id: electrolux-df82, pages: [19]}
+      - {manual_id: electrolux-tf56, pages: [17]}
+
   # Sem resposta nos manuais (plausíveis, do mesmo domínio)
   - id: q17
     question: quanto custa uma prateleira nova de reposição?
@@ -345,11 +365,6 @@ items:
     category: geladeira
     no_answer: true
 
-  - id: q19
-    question: quantos reais a geladeira gasta de luz por mês?
-    category: geladeira
-    no_answer: true
-
   - id: q20
     question: a loja pode trocar minha geladeira se eu me arrepender da compra?
     category: geladeira
@@ -358,4 +373,9 @@ items:
   - id: q25
     question: dá pra controlar o micro-ondas pelo celular, pelo wi-fi?
     category: micro-ondas
+    no_answer: true
+
+  - id: q35
+    question: dá pra mandar consertar a geladeira em casa no domingo?
+    category: geladeira
     no_answer: true

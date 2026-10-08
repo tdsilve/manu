@@ -12,10 +12,10 @@ Perguntas em linguagem do dia a dia sobre geladeiras e micro-ondas Electrolux e 
 - **Extração de texto por página:** lê páginas em duas colunas, descarta páginas sem texto útil, respeita a área visível do PDF (CropBox) e recorta as folhas de impressão em painéis, numerando cada um pelo número impresso, para a citação bater com o manual.
 - **Indexação:** uma página vira um trecho, com identificador `manual + página`, então reindexar substitui em vez de duplicar. Os metadados (marca, modelo, categoria, página) alimentam as citações. Embeddings `bge-m3` (Ollama, local) ou `voyage-3.5` (deploy), e base no ChromaDB em disco ou no Chroma Cloud, escolhidos por variável de ambiente.
 - **Busca e recusa:** as 5 páginas mais parecidas com a pergunta, com similaridade. Se a melhor ficar abaixo do limiar (0,5), a Manu recusa sem chamar o Claude.
-- **Resposta:** o Claude responde só com os trechos recuperados, em português e em saída estruturada, e a citação traz só as páginas que ele usou. Se os trechos não bastam, ele recusa.
+- **Resposta:** o Claude responde só com os trechos recuperados, em português e em saída estruturada, e a citação traz só as páginas que ele usou. Se a pergunta não diz o modelo e os manuais divergem, ele responde por modelo; se os trechos não bastam, recusa.
 - **API (FastAPI):** `POST /ask` devolve resposta, se foi recusa e as citações (marca, modelo, página, trecho, similaridade). Pergunta vazia ou com mais de 1000 caracteres retorna 422. Falha do embedder ou do Claude retorna erro 5xx, nunca uma recusa disfarçada. `GET /health` confere se está no ar.
 - **Interface (Next.js):** o chat é a página inicial, com exemplos de pergunta. Cada resposta mostra as fontes (trecho destacado, manual, página e similaridade). Resposta, recusa e erro aparecem de formas distintas. A interface fala com a API pelo servidor, então o navegador não vê o endereço dela.
-- **Avaliação:** um gabarito de 34 perguntas (29 com resposta e 5 sem), em que cada item traz uma evidência conferida automaticamente com o texto dos PDFs (`manu-eval --check`). O `manu-eval` roda tudo pelo pipeline real e gera um relatório com as métricas, a distribuição das similaridades e o espaço para julgar cada resposta.
+- **Avaliação:** um gabarito de 35 perguntas (30 com resposta e 5 sem), em que cada item traz uma evidência conferida automaticamente com o texto dos PDFs (`manu-eval --check`). O `manu-eval` roda tudo pelo pipeline real e gera um relatório com as métricas, a distribuição das similaridades e o espaço para julgar cada resposta.
 - **Testes:** 21 testes automáticos, sem rede, sem Ollama e sem chave do Claude, com fixtures próprias.
 - **Deploy:** API e interface em dois projetos na Vercel, com embeddings da Voyage e base no Chroma Cloud. Veja [Deploy](#deploy-vercel).
 
@@ -155,40 +155,43 @@ O relatório é salvo em `api/eval/reports/`.
 - **Embeddings:** dois modelos multilíngues (manuais e perguntas estão em português). O `bge-m3` via Ollama roda local e sem custo por chamada. O deploy usa o `voyage-3.5`, porque a Vercel não roda o Ollama ([ADR 0008](docs/adr/0008-embeddings-e-base-hospedados-no-deploy.md)). A avaliação abaixo usa a configuração do deploy. Uma rodada anterior com o `bge-m3` (25 perguntas, top-3, 9 manuais) deu 75% de acerto de busca, mas não é comparável com a atual: o gabarito e o top-k mudaram. O limiar vale para um modelo só, então trocar de modelo exige recalibrar.
 - **Geração:** Claude com saída estruturada (`answer`, `refused`, `used_chunk_ids`). A resposta nunca depende de interpretar texto livre.
 - **Duas barreiras contra alucinação:** limiar de similaridade antes do LLM e instrução para recusar quando os trechos não bastam.
-- **top-k = 5:** com 3, o acerto de busca cai de 83% para 72% na mesma rodada.
-- **Limiar de similaridade = 0,5:** veja [Resultados](#resultados). Subir o limiar recusa mais perguntas com resposta sem pegar muito mais perguntas sem resposta.
+- **top-k = 5:** com 3, o acerto de busca cai de 93% para 83% na mesma rodada.
+- **Perguntas sem o modelo:** os manuais de modelos diferentes trazem procedimentos diferentes (relógio, potência, espaço de instalação). Em vez de recusar, o Claude responde por modelo. Foi o que corrigiu a recusa indevida do relógio; a solução de verdade é a Fase 2, que identifica o modelo antes de buscar.
+- **Limiar de similaridade = 0,5:** confirmado depois da avaliação de 07/10/2026 (veja [Resultados](#resultados)). Subir o limiar recusa mais perguntas com resposta sem pegar muito mais perguntas sem resposta.
 
 ## Resultados
 
-Rodada de 07/10/2026: 34 perguntas (29 com resposta nos manuais e 5 sem), 17 manuais, `voyage-3.5`, `claude-sonnet-5`, top-k 5, limiar 0,5. O relatório com cada resposta fica em `api/eval/reports/` (fora do git).
+Rodada de 07/10/2026: 35 perguntas (30 com resposta nos manuais e 5 sem), 17 manuais, `voyage-3.5`, `claude-sonnet-5`, top-k 5, limiar 0,5. O relatório com cada resposta fica em `api/eval/reports/` (fora do git).
 
 | Métrica | Valor | O que mede |
 |---|---|---|
-| Acerto de busca (top-5) | 83% (24/29) | a página esperada está entre as 5 recuperadas |
-| Recusa correta | 80% (4/5) | perguntas sem resposta que foram recusadas |
-| Recusa indevida | 14% (4/29) | perguntas com resposta que foram recusadas |
-| Respostas julgadas corretas | _pendente_ | julgamento manual das 34 respostas |
+| Acerto de busca (top-5) | 93% (28/30) | a página esperada está entre as 5 recuperadas |
+| Recusa correta | 100% (5/5) | perguntas sem resposta que foram recusadas |
+| Recusa indevida | 7% (2/30) | perguntas com resposta que foram recusadas |
+| Respostas julgadas corretas | _pendente_ | julgamento manual das 35 respostas |
+
+Esses números vêm depois de uma primeira rodada pior (acerto de busca 83%, recusa correta 80%, recusa indevida 14%, 34 perguntas). Três coisas mudaram entre as duas: o gabarito ficou mais justo (perguntas que os manuais respondem em mais de uma página passaram a aceitar todas; uma pergunta que tinha resposta parcial, a do gasto de energia, virou pergunta com resposta e entrou outra sem resposta no lugar), o prompt passou a pedir resposta por modelo, e o Claude varia um pouco de uma execução para outra. Parte da melhora, portanto, vem de um teste mais justo, e não de um sistema melhor.
 
 ### Por que o limiar é 0,5
 
-A melhor similaridade das perguntas com resposta vai de 0,52 a 0,79; a das sem resposta, de 0,44 a 0,65. As faixas se sobrepõem, então nenhum valor separa os dois grupos. Simulando só o limiar, sem o Claude:
+A melhor similaridade das perguntas com resposta vai de 0,52 a 0,79; a das sem resposta, de 0,44 a 0,63. As faixas se sobrepõem, então nenhum valor separa os dois grupos. Simulando só o limiar, sem o Claude:
 
 | Limiar | Sem resposta recusadas | Com resposta recusadas |
 |---|---|---|
-| 0,5 | 20% (1/5) | 0% (0/29) |
-| 0,6 | 20% (1/5) | 14% (4/29) |
-| 0,7 | 100% (5/5) | 72% (21/29) |
+| 0,5 | 20% (1/5) | 0% (0/30) |
+| 0,6 | 40% (2/5) | 13% (4/30) |
+| 0,7 | 100% (5/5) | 73% (22/30) |
 
-Em 0,6 o limiar já recusa perguntas com resposta sem pegar mais nenhuma sem resposta; em 0,7 pega todas, mas recusa quase três quartos das perguntas que os manuais respondem. Por isso o limiar fica baixo e a recusa depende sobretudo da segunda barreira: das 4 perguntas sem resposta recusadas, 3 foram recusadas pelo Claude e só 1 pelo limiar.
+Em 0,6 o limiar recusa 4 perguntas com resposta para pegar apenas uma pergunta sem resposta a mais; em 0,7 pega todas, mas recusa quase três quartos das perguntas que os manuais respondem. Por isso o limiar fica baixo e a recusa depende sobretudo da segunda barreira: das 5 perguntas sem resposta, 4 foram recusadas pelo Claude e só 1 pelo limiar.
 
-### O que não funcionou
+### O que ainda falha
 
-- **Duas falhas de busca (q01, q06):** a página que responde ficou fora das 5 recuperadas. Na q01, três páginas quase idênticas dos manuais Brastemp ocuparam o topo.
-- **Duas recusas indevidas com a página certa recuperada (q28, q32):** o Claude recusou mesmo com a página no contexto. Ainda a investigar.
-- **Uma pergunta sem resposta que foi respondida (q19):** o Claude respondeu com o consumo em kWh, que o manual traz, e explicou que o valor em reais depende da tarifa. A resposta é boa; a pergunta é que não era totalmente sem resposta.
+- **Duas falhas de busca (q01, q06), as únicas recusas indevidas:** a página que responde ficou fora das 5 recuperadas. Na q01, três páginas quase idênticas dos manuais Brastemp ocuparam o topo.
+- **Variação entre execuções:** a q32 (espaço em volta do micro-ondas) foi recusada na primeira rodada e respondida nas seguintes, com as mesmas páginas. O resultado do Claude não é determinístico, então os percentuais têm uma margem de alguns pontos.
+- **Perguntas ambíguas:** sem o modelo, a resposta correta muda de manual para manual. O Claude agora responde por modelo, mas o ideal é perguntar o modelo (Fase 2).
 
 ### Próximos passos
 
-- **Fase 2:** identificar o modelo do produto e buscar só no manual dele. Evita a mistura entre manuais quase idênticos, como no q01.
+- **Fase 2:** identificar o modelo do produto e buscar só no manual dele. Evita a mistura entre manuais quase idênticos, como no q01, e as respostas por modelo.
 - **Fase 6:** trechos menores que uma página, busca por palavra-chave junto com os embeddings (termos como "LOC" escapam da busca por significado) e reranking.
 - **Avaliação:** gabarito maior e julgamento das respostas com ajuda de um LLM.

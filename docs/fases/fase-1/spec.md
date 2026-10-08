@@ -95,7 +95,7 @@ Na Fase 1:
 - Chave da API do Claude e modelo do Claude.
 - URL do Ollama e modelo de embeddings (deve ser multilíngue, porque manuais e perguntas estão em português).
 - Local da base do ChromaDB e da pasta de PDFs.
-- top-k (padrão 5; era 3 no desenho inicial, a avaliação de 07/10/2026 mostrou acerto de busca de 72% com 3 e 83% com 5) e limiar de similaridade (valor inicial provisório, recalibrado com a avaliação).
+- top-k (padrão 5; era 3 no desenho inicial, a avaliação de 07/10/2026 mostrou acerto de busca de 83% com 3 e 93% com 5) e limiar de similaridade (valor inicial provisório, recalibrado com a avaliação).
 - Origem permitida para CORS (a URL da interface web).
 
 ### Contrato da API
