@@ -14,7 +14,7 @@ log = logging.getLogger(__name__)
 def index_manuals(registry_path: Path, pdf_dir: Path, embedder: Embedder, store: VectorStore) -> None:
     total_indexed = total_discarded = 0
     for manual in load_manuals(registry_path):
-        extraction = extract_pages(pdf_dir / manual.file)
+        extraction = extract_pages(pdf_dir / manual.file, manual.grid)
         chunks = [
             PageChunk(
                 manual_id=manual.id,

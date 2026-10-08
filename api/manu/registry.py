@@ -20,6 +20,8 @@ class Manual:
     category: str
     source_url: str
     file: str
+    # (colunas, linhas) quando o PDF é folha de impressão, com vários painéis por folha
+    grid: tuple[int, int] | None = None
 
     @property
     def models_label(self) -> str:
@@ -55,6 +57,11 @@ def validate(registry_path: Path, pdf_dir: Path) -> list[str]:
         if label in seen:
             problems.append(f"{label}: identificador duplicado")
         seen.add(label)
+        grid = entry.get("grid")
+        if grid is not None and not (
+            isinstance(grid, list) and len(grid) == 2 and all(isinstance(n, int) and n > 0 for n in grid)
+        ):
+            problems.append(f"{label}: grid precisa ser [colunas, linhas] com inteiros positivos")
         file = entry.get("file")
         if file and not (pdf_dir / file).is_file():
             problems.append(f"{label}: arquivo não encontrado: {pdf_dir / file}")
@@ -70,6 +77,7 @@ def load_manuals(registry_path: Path) -> list[Manual]:
             category=str(e["category"]),
             source_url=str(e["source_url"]),
             file=str(e["file"]),
+            grid=(int(e["grid"][0]), int(e["grid"][1])) if e.get("grid") else None,
         )
         for e in _read_entries(registry_path)
     ]
