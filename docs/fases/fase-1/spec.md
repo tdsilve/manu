@@ -15,7 +15,7 @@ A Manu responde perguntas em linguagem do dia a dia sobre geladeiras e micro-ond
 Na Fase 1:
 
 - 15 a 20 manuais baixados à mão são indexados localmente (texto extraído por página, embeddings locais com Ollama, ChromaDB).
-- Uma API (FastAPI) expõe `POST /ask`: busca as 3 páginas mais parecidas com a pergunta; se nenhuma passar do limiar de similaridade, recusa sem chamar o LLM; se passar, pede ao Claude uma resposta restrita ao contexto, com citações.
+- Uma API (FastAPI) expõe `POST /ask`: busca as 5 páginas mais parecidas com a pergunta; se nenhuma passar do limiar de similaridade, recusa sem chamar o LLM; se passar, pede ao Claude uma resposta restrita ao contexto, com citações.
 - Uma interface web simples (Next.js) permite perguntar e ver resposta, trechos citados e páginas, com a similaridade disponível em "ver detalhes".
 - Um gabarito escrito à mão e um script de avaliação medem a qualidade da busca e a taxa de recusa correta, e fornecem a distribuição de similaridades para calibrar o limiar.
 
@@ -59,7 +59,7 @@ Na Fase 1:
 31. Como desenvolvedora, quero escrever um gabarito de perguntas em linguagem leiga com a resposta esperada (manual e página), para medir a qualidade de forma objetiva.
 32. Como desenvolvedora, quero incluir no gabarito 3 ou 4 perguntas que os manuais não respondem, para medir a taxa de recusa correta.
 33. Como desenvolvedora, quero rodar um script de avaliação que passe cada pergunta do gabarito pelo pipeline real, para ver as páginas recuperadas, as similaridades e a resposta gerada.
-34. Como desenvolvedora, quero que a avaliação calcule se a página esperada apareceu entre as 3 recuperadas, para medir a busca separadamente da geração.
+34. Como desenvolvedora, quero que a avaliação calcule se a página esperada apareceu entre as recuperadas (top-k), para medir a busca separadamente da geração.
 35. Como desenvolvedora, quero que a avaliação mostre a distribuição de similaridades das perguntas com resposta e das sem resposta, para escolher o limiar com base em dados.
 36. Como desenvolvedora, quero que a avaliação gere um relatório fácil de ler, para julgar manualmente cada resposta na Fase 1.
 37. Como desenvolvedora, quero testes automáticos do `POST /ask` que não dependam de Ollama nem do Claude, para rodá-los rápido, sem custo e sem rede.
@@ -85,7 +85,7 @@ Na Fase 1:
 
 - **Extração:** recebe um PDF e devolve uma lista de páginas (número da página a partir de 1, texto). Usa pdfplumber. Normaliza espaços em branco; páginas sem texto útil são descartadas e contadas. Também consegue salvar o texto por página em disco, para a conferência manual do primeiro PR.
 - **Indexação:** lê o registro de manuais, extrai cada um, gera embeddings via Ollama e grava no ChromaDB. Um trecho equivale a uma página (chunking por página). O identificador de cada trecho é `manual + página`, então reindexar substitui em vez de duplicar. Os metadados de cada trecho são: identificador do manual, marca, modelo, categoria e página.
-- **Busca:** gera o embedding da pergunta (mesmo modelo da indexação), consulta o ChromaDB com top-k = 3 e converte a distância em similaridade (quanto maior, mais parecido), para facilitar o limiar e a leitura na interface.
+- **Busca:** gera o embedding da pergunta (mesmo modelo da indexação), consulta o ChromaDB com top-k = 5 e converte a distância em similaridade (quanto maior, mais parecido), para facilitar o limiar e a leitura na interface.
 - **Geração:** monta o prompt com as páginas recuperadas (cada uma rotulada com manual e página) e chama o Claude. O prompt instrui: responder apenas com base nos trechos, em português, de forma curta; indicar quais trechos foram usados; e, se os trechos não bastarem, sinalizar recusa de forma estruturada, sem depender de texto livre.
 - **Orquestração do `/ask`:** busca → se a melhor similaridade estiver abaixo do limiar, retorna recusa sem chamar o Claude → senão, gera → retorna resposta e citações.
 - Embedder, cliente do Claude e armazenamento vetorial são dependências injetadas na orquestração, o que permite substituí-las por versões falsas nos testes.
@@ -95,7 +95,7 @@ Na Fase 1:
 - Chave da API do Claude e modelo do Claude.
 - URL do Ollama e modelo de embeddings (deve ser multilíngue, porque manuais e perguntas estão em português).
 - Local da base do ChromaDB e da pasta de PDFs.
-- top-k (padrão 3) e limiar de similaridade (valor inicial provisório, recalibrado com a avaliação).
+- top-k (padrão 5; era 3 no desenho inicial, a avaliação de 07/10/2026 mostrou acerto de busca de 72% com 3 e 83% com 5) e limiar de similaridade (valor inicial provisório, recalibrado com a avaliação).
 - Origem permitida para CORS (a URL da interface web).
 
 ### Contrato da API
@@ -121,7 +121,7 @@ Na Fase 1:
 
 - Gabarito versionado, escrito à mão pela autora: cada item tem a pergunta, a categoria e o manual e as páginas esperadas, ou a marcação "sem resposta". Inclui 3 ou 4 perguntas sem resposta nos manuais.
 - Script de avaliação executado manualmente: roda cada pergunta pelo pipeline real (Ollama, ChromaDB e Claude de verdade) e gera um relatório com páginas recuperadas, similaridades, resposta e recusa.
-- Métricas: acerto de busca (a página esperada está entre as top-3), taxa de recusa correta (perguntas sem resposta que foram recusadas) e taxa de recusa indevida (perguntas com resposta que foram recusadas).
+- Métricas: acerto de busca (a página esperada está entre as top-5), taxa de recusa correta (perguntas sem resposta que foram recusadas) e taxa de recusa indevida (perguntas com resposta que foram recusadas).
 - O relatório mostra a distribuição das melhores similaridades, separada entre perguntas com e sem resposta, para calibrar o limiar.
 - O julgamento da qualidade da resposta gerada é manual nesta fase: o relatório tem espaço para a autora anotar certo/errado.
 

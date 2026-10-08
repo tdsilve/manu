@@ -22,7 +22,7 @@ Escopo do MVP: geladeiras e micro-ondas, marcas Electrolux e Brastemp, 15 a 20 m
 
 - **Extração de PDF:** pdfplumber → avaliar OCR ou modelo de visão (Fase 6).
 - **Chunking:** por página → comparar com tamanho fixo (com sobreposição) e divisão por seção ou parágrafo (Fase 6).
-- **Retrieval:** top-k = 3 fixo → reranking ou método mais avançado (Fase 6).
+- **Retrieval:** top-k = 5 fixo → reranking ou método mais avançado (Fase 6).
 - **Avaliação (execução):** script manual → GitHub Actions (fase intermediária).
 - **Avaliação (julgamento):** manual → LLM como juiz quando o gabarito crescer.
 - **Gabarito:** escrito à mão → expandido com ajuda de LLM, com revisão da autora.

@@ -58,7 +58,7 @@ class Settings:
             chroma_database=env("CHROMA_DATABASE") or None,
             anthropic_api_key=env("ANTHROPIC_API_KEY") or None,
             claude_model=env("CLAUDE_MODEL", "claude-opus-5"),
-            top_k=int(env("TOP_K", "3")),
+            top_k=int(env("TOP_K", "5")),
             similarity_threshold=float(env("SIMILARITY_THRESHOLD", "0.5")),
             # Várias origens separadas por vírgula (ex.: domínio de produção e localhost).
             cors_origins=[o.strip() for o in env("CORS_ORIGIN", "http://localhost:3000").split(",") if o.strip()],
