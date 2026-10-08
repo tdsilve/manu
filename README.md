@@ -4,7 +4,11 @@ Assistente que responde dúvidas sobre eletrodomésticos com base no manual ofic
 
 ## Fase 1: RAG básico
 
-Perguntas em linguagem do dia a dia sobre geladeiras e micro-ondas Electrolux e Brastemp, respondidas só com o conteúdo dos manuais. Toda resposta mostra o trecho, o manual e a página. Quando os manuais não trazem a resposta, a Manu diz que não sabe.
+A Fase 1 entrega um pipeline de perguntas e respostas sobre manuais de eletrodomésticos: toda resposta cita o manual e a página de onde veio, e a Manu diz "não sei" em vez de inventar. É a base sobre a qual as próximas fases são construídas.
+
+**O problema.** Quando a geladeira ou o micro-ondas dá problema, o dono raramente tem o manual em mãos. Mesmo com o PDF, precisa folhear dezenas de páginas para saber se o comportamento é normal, como resolver ou se a garantia cobre. O resultado é uma visita técnica desnecessária, ou uma garantia que nunca é acionada.
+
+**O que a Fase 1 prova.** A Manu responde perguntas do dia a dia sobre geladeiras e micro-ondas Electrolux e Brastemp usando só os manuais oficiais. A fase também é um objetivo de aprendizado da autora, na migração de frontend para engenharia de IA. Por isso o pipeline é feito de peças soltas, sem framework de RAG como LangChain ou LlamaIndex. A qualidade é medida com um gabarito escrito à mão.
 
 ### O que a Fase 1 entrega
 
@@ -21,21 +25,55 @@ Perguntas em linguagem do dia a dia sobre geladeiras e micro-ondas Electrolux e 
 
 Fora desta fase: identificação do produto pela foto da etiqueta (fases 2 e 3), filtro por modelo, OCR, memória de conversa. Detalhes no [spec](docs/fases/fase-1/spec.md).
 
-### Arquitetura
+### Como funciona
 
-Sem framework de RAG: cada etapa é uma peça solta.
+Uma pergunta vira uma resposta citada em quatro passos: embedding, busca, verificação e geração. Duas barreiras decidem quando a Manu recusa.
 
+```mermaid
+flowchart TD
+    subgraph idx["Indexação, com manu-index"]
+        A["PDFs dos manuais<br/>listados em manuals.yaml"] --> B["pdfplumber<br/>texto página por página"]
+        B --> C["Embeddings<br/>Voyage no deploy, bge-m3 local"]
+        C --> D[("ChromaDB ou Chroma Cloud<br/>1 trecho = 1 página")]
+    end
+    subgraph ask["Cada pergunta, POST /ask"]
+        Q["Pergunta<br/>digitada na interface"] --> E["Embedding da pergunta<br/>mesmo modelo da indexação"]
+        E --> S["Busca na base<br/>5 páginas mais próximas"]
+        S --> G1{"Barreira 1<br/>similaridade ≥ limiar?"}
+        G1 -- não --> R["Recusa<br/>sugere um próximo passo"]
+        G1 -- sim --> CL["Claude<br/>responde só com essas páginas"]
+        CL --> G2{"Barreira 2<br/>cita alguma página?"}
+        G2 -- não --> R
+        G2 -- sim --> OK["Resposta + citações<br/>manual, página, trecho"]
+    end
+    D -. consulta .-> S
 ```
-PDF ──pdfplumber──> texto por página ──embeddings──> ChromaDB
-                                                        │
-pergunta ──embeddings──> top-k páginas ──limiar──┬── abaixo: recusa (sem chamar o LLM)
-                                                 └── acima: Claude (saída estruturada) ──> resposta + citações
-```
 
-Embeddings: `bge-m3` via Ollama no desenvolvimento local e `voyage-3.5` (Voyage AI) no deploy. Veja [Decisões](#decisões).
+**A indexação** roda uma vez. Ela lê cada manual, extrai o texto página por página e grava um vetor por página na base. Cada trecho guarda marca, modelo, categoria e página, e seu ID é manual + página, então reindexar substitui em vez de duplicar.
 
-- `api/`: pipeline e API em Python (FastAPI).
-- `web/`: interface em Next.js.
+**A barreira 1** atua antes de qualquer chamada paga: se nem a melhor página passa do limiar de similaridade (0,5), a API recusa sem chamar o Claude. **A barreira 2** é o prompt: o Claude só pode responder com base nas páginas recuperadas, precisa dizer quais usou e sinaliza a recusa num campo estruturado. Uma resposta que não cita nenhuma página recuperada também conta como recusa. Falha no serviço de embeddings ou no Claude retorna erro 5xx, nunca uma recusa disfarçada.
+
+### Tecnologias
+
+O projeto é um monorepo com duas partes: a API em Python (`api/`), com o pipeline de RAG, e a interface em Next.js (`web/`).
+
+| Camada | Tecnologia | Papel na Manu | Por que esta escolha |
+| --- | --- | --- | --- |
+| Linguagem (API) | Python 3.12+ | Todo o pipeline: extração, indexação, busca, geração, avaliação | Linguagem padrão em IA; tipagem estrita com mypy |
+| Extração de PDF | pdfplumber | Extrai o texto de cada manual, página por página; lê páginas em duas colunas uma coluna por vez, respeita a área visível do PDF e recorta folhas de impressão em painéis | Dá o texto com posições, o que permite tratar colunas e recortes |
+| Registro de manuais | YAML (PyYAML) | `manuals.yaml` lista marca, códigos de modelo, categoria, link de origem, arquivo e, quando preciso, a grade de recorte | Legível; documenta a origem de cada PDF |
+| Embeddings | Voyage AI (`voyage-3.5`) no deploy; Ollama com `bge-m3` local | Transforma cada página e cada pergunta num vetor | Os dois são multilíngues, necessário para manuais e perguntas em português; a Vercel não roda o Ollama ([ADR 0008](docs/adr/0008-embeddings-e-base-hospedados-no-deploy.md)) |
+| Cliente HTTP | httpx | Chama os serviços de embeddings | Simples e tipado |
+| Banco vetorial | ChromaDB em disco, ou Chroma Cloud no deploy | Guarda um vetor por página com seus metadados e devolve as 5 mais próximas | Embutido e sem servidor no desenvolvimento; hospedado em produção |
+| Geração da resposta | Claude, via SDK da Anthropic | Escreve uma resposta curta em português só com as páginas recuperadas e diz quais usou, em saída estruturada | Segue bem a instrução "responda só com este contexto"; modelo definido por configuração |
+| API | FastAPI + Uvicorn | `POST /ask` e `GET /health`; validação da entrada; CORS para a interface | Validação e contratos tipados de graça |
+| Interface | Next.js 16, React 19, TypeScript | Chat com a resposta e as fontes (trecho destacado, manual, página e similaridade); fala com a API pelo servidor | Experiência da autora em frontend |
+| Estilo | Tailwind CSS 4 | Sistema visual da interface, descrito em `DESIGN.md` | Rápido de iterar |
+| Testes | pytest + fpdf2 | Testes do `/ask`, da extração, dos embeddings e da avaliação; o fpdf2 gera os PDFs de teste no código | Nenhum manual de terceiros nos testes e nenhuma rede |
+| Deploy | Vercel (dois projetos) | Publica a API e a interface a cada push no `main` | Ver [Deploy](#deploy-vercel) |
+| Configuração | Variáveis de ambiente (`.env`, `.env.example`) | Modelos, chaves, top-k, limiar, origem do CORS | Trocar modelos ou ajustar a busca sem mexer no código; segredos fora do git |
+
+A API também traz quatro comandos: `manu-extract`, `manu-validate`, `manu-index` e `manu-eval`.
 
 ## Como rodar
 
