@@ -4,7 +4,7 @@ Assistente que responde dúvidas sobre eletrodomésticos só com o manual oficia
 
 ## Convenções
 
-- PDFs, `api/data/chroma/` e relatórios de avaliação ficam na máquina local, fora do git ([ADR 0006](docs/adr/0006-manuais-fora-do-repositorio.md)).
+- Os PDFs dos manuais ficam versionados em `api/data/pdfs/` ([ADR 0006](docs/adr/0006-manuais-fora-do-repositorio.md)); `api/data/chroma/` e relatórios de avaliação ficam na máquina local, fora do git.
 - Texto de produto, comentários e mensagens de commit em português; a mensagem do commit descreve o resultado para quem usa a Manu.
 - Cada etapa do RAG é uma peça solta, sem framework de RAG.
 - Segredos só em `.env` (modelo em `.env.example`).

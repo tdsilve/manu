@@ -1,4 +1,4 @@
-# Registro de manuais (ADR 0006): os PDFs ficam em data/pdfs/ (fora do git);
+# Registro de manuais (ADR 0006): os PDFs ficam em data/pdfs/ (versionados);
 # este arquivo permite a qualquer pessoa baixar os mesmos manuais.
 #
 # Campos de cada manual:
@@ -8,6 +8,8 @@
 #   category     geladeira | micro-ondas
 #   source_url   link de onde o PDF foi baixado
 #   file         nome do arquivo em data/pdfs/
+#   grid         (opcional) [colunas, linhas] quando o PDF é folha de impressão, com vários
+#                painéis por folha; cada painel vira uma página, numerada pelo número impresso
 #
 # Valide com: manu-validate
 #
@@ -89,3 +91,69 @@ manuals:
     category: micro-ondas
     source_url: https://conteudoproduto.magazineluiza.com.br/manual/01/011356800/Brastemp_Micro_ondas_BMS45CR_Manual_Versao_digital.pdf
     file: Brastemp_Micro-ondas_BMS45CR_Manual.pdf
+
+  # Micro-ondas Electrolux em versão página a página (A5), hospedados pela Madeira Madeira
+  # (documento do fabricante).
+  - id: electrolux-mf33s
+    brand: Electrolux
+    model_codes: [MF33S]
+    category: micro-ondas
+    source_url: https://product-hub-prd.madeiramadeira.com.br/334535/documents/d4703213-b9d4-4f1c-b1a4-70b4333945fb09002manualinstrmf33smai17.pdf
+    file: Electrolux_Micro-ondas_MF33S_Manual.pdf
+
+  - id: electrolux-mga42
+    brand: Electrolux
+    model_codes: [MGA42]
+    category: micro-ondas
+    source_url: https://product-hub-prd.madeiramadeira.com.br/334538/documents/623ab9fa-4f6e-43ac-ac07-de03d76811947601ag0012663001mga42mar17.pdf
+    file: Electrolux_Micro-ondas_MGA42_Manual.pdf
+
+  - id: electrolux-mb38t
+    brand: Electrolux
+    model_codes: [MB38T]
+    category: micro-ondas
+    source_url: https://product-hub-prd.madeiramadeira.com.br/334515/documents/24d155c5-487a-4450-8b80-e9afb53471ac1501ag0012562001mb38tnov16.pdf
+    file: Electrolux_Micro-ondas_MB38T_Manual.pdf
+
+  # Link exato do download não foi anotado; página de assistência da marca.
+  - id: brastemp-bmo40
+    brand: Brastemp
+    model_codes: [BMO40AR]
+    category: micro-ondas
+    source_url: https://www.brastemp.com.br/assistencia
+    file: Brastemp_Micro_ondas_BMO40AR_Manual_Digital.pdf
+
+  # Folhas de impressão (painéis A5, 4 colunas x 4 linhas): a extração recorta cada painel e usa
+  # o número impresso nele como página. Os links exatos dos downloads não foram anotados.
+  - id: electrolux-me3ep
+    brand: Electrolux
+    model_codes: [ME3EP]
+    category: micro-ondas
+    source_url: https://cuida.electrolux.com.br
+    file: A17605602_C_G0025505_008_MANUAL_INSTR_ME3EP.pdf
+    grid: [4, 4]
+
+  - id: electrolux-me41x
+    brand: Electrolux
+    model_codes: [ME41X]
+    category: micro-ondas
+    source_url: https://cuida.electrolux.com.br
+    file: Electrolux_Micro-ondas_ME41X_Manual.pdf
+    grid: [4, 4]
+
+  - id: electrolux-mto30
+    brand: Electrolux
+    model_codes: [MTO30]
+    category: micro-ondas
+    source_url: https://cuida.electrolux.com.br
+    file: Electrolux_Micro-ondas_MTO30_Manual.pdf
+    grid: [4, 4]
+
+  # Hospedado pela Madeira Madeira (documento do fabricante). Cada página do PDF mostra só uma
+  # parte da folha (CropBox), tratada pela extração.
+  - id: brastemp-bmg45
+    brand: Brastemp
+    model_codes: [BMG45AR]
+    category: micro-ondas
+    source_url: https://product-hub-prd.madeiramadeira.com.br/304181/documents/7e4a3dcc-7a58-4fc4-a606-bb92887091c7empmicroondasbmg45armanual.pdf
+    file: Brastemp_Micro-ondas_BMG45AR_Manual.pdf

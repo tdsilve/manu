@@ -13,8 +13,8 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 
-# Dados locais (nunca versionados: ADR 0006)
-api/data/pdfs/
+# Dados locais (nunca versionados)
+# Os PDFs em api/data/pdfs/ são versionados: ver ADR 0006
 api/data/chroma/
 api/data/extracted/
 api/eval/reports/
