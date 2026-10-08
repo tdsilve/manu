@@ -1,42 +1,29 @@
-# Gabarito de avaliação (ticket 07). Escrito à mão pela autora.
+# Gabarito de avaliação (ticket 07).
 #
 # Cada item:
 #   id         identificador curto e estável (q01, q02, ...)
 #   question   em linguagem leiga, como um usuário escreveria
 #   category   geladeira | micro-ondas
 #   expected   lista de {manual_id, pages: [...]} com as páginas que respondem
-#   no_answer  true quando nenhum manual responde (use no lugar de expected)
+#   evidence   expressão regular que aparece em toda página de expected (maiúsculas e minúsculas
+#              não importam; hifenização de fim de linha é desfeita antes). Confere o gabarito
+#              com o texto extraído: rode `manu-eval --check` depois de qualquer mudança.
+#   no_answer  true quando nenhum manual responde (use no lugar de expected e evidence)
 #
-# Cobertura sugerida: códigos de erro, barulhos e comportamentos normais,
-# garantia (prazo, cobertura, o que invalida), instalação, limpeza e uso.
-# Inclua de 3 a 4 itens no_answer plausíveis, do mesmo domínio.
+# `page` é o número que o manual traz impresso. Nos manuais em folha de impressão (ME3EP, ME41X,
+# MTO30), é o número impresso no painel, não a posição no PDF.
 #
-# Exemplos de formato (substitua pelos itens reais):
-#   - id: q01
-#     question: a geladeira está fazendo barulho de água
-#     category: geladeira
-#     expected:
-#       - manual_id: electrolux-df44
-#         pages: [32]
-#   - id: q02
-#     question: posso usar o micro-ondas para secar roupa?
-#     category: micro-ondas
-#     no_answer: true
+# Onde a mesma informação aparece em mais de um manual (os três Brastemp de geladeira são quase
+# idênticos; o IM7 repete o G0045837; os micro-ondas Electrolux dividem texto), todos entram em
+# expected: basta um deles no top-k para contar como acerto.
 #
 # Rode a avaliação com: manu-eval
-
-# RASCUNHO (29/09/2026): gerado a partir do texto extraído dos manuais, com as páginas
-# localizadas por busca no texto. A autora precisa conferir cada página no PDF original
-# antes de usar os números no README. Onde a mesma informação aparece em mais de um
-# manual (os três Brastemp são quase idênticos; o IM7 repete o G0045837), todos entram
-# em expected: basta um deles no top-k para contar como acerto.
-# Micro-ondas: só o Brastemp BMS45 por enquanto (os outros manuais de micro-ondas
-# encontrados estão em formato de impressão).
 
 items:
   - id: q01
     question: a lateral da geladeira está quente, é defeito?
     category: geladeira
+    evidence: 'aquecimento|quent|calor'
     expected:
       - {manual_id: electrolux-g0045837, pages: [5]}
       - {manual_id: electrolux-im7, pages: [5]}
@@ -45,6 +32,7 @@ items:
   - id: q02
     question: a porta não fecha sozinha, como eu nivelo a geladeira?
     category: geladeira
+    evidence: 'nivel'
     expected:
       - {manual_id: electrolux-g0045837, pages: [4]}
       - {manual_id: electrolux-im7, pages: [4]}
@@ -52,6 +40,7 @@ items:
   - id: q03
     question: quanto tempo dura a garantia da geladeira?
     category: geladeira
+    evidence: 'garantia'
     expected:
       - {manual_id: electrolux-g0045837, pages: [5]}
       - {manual_id: electrolux-im7, pages: [5]}
@@ -65,6 +54,7 @@ items:
   - id: q04
     question: o que faz eu perder a garantia da geladeira?
     category: geladeira
+    evidence: 'perda|perde|invalid|cancel'
     expected:
       - {manual_id: electrolux-g0045837, pages: [6]}
       - {manual_id: electrolux-im7, pages: [6]}
@@ -73,6 +63,7 @@ items:
   - id: q05
     question: quais peças da geladeira brastemp têm só 90 dias de garantia?
     category: geladeira
+    evidence: '90|noventa'
     expected:
       - {manual_id: brastemp-bre57fe, pages: [7]}
       - {manual_id: brastemp-bre85ab, pages: [7]}
@@ -81,6 +72,7 @@ items:
   - id: q06
     question: a geladeira fica apitando quando deixo a porta aberta
     category: geladeira
+    evidence: 'alarme|apit|sonoro|bip'
     expected:
       - {manual_id: electrolux-tf56, pages: [10]}
       - {manual_id: electrolux-df82, pages: [7]}
@@ -89,6 +81,7 @@ items:
   - id: q07
     question: a geladeira está fazendo um barulho estranho
     category: geladeira
+    evidence: 'ruíd|barulh'
     expected:
       - {manual_id: electrolux-db53, pages: [24]}
       - {manual_id: electrolux-tf56, pages: [16]}
@@ -96,6 +89,7 @@ items:
   - id: q08
     question: a geladeira está suando por fora, está com problema?
     category: geladeira
+    evidence: 'suor|condens|umidade'
     expected:
       - {manual_id: electrolux-db53, pages: [25]}
       - {manual_id: electrolux-df82, pages: [15]}
@@ -106,6 +100,7 @@ items:
   - id: q09
     question: pra que serve a função férias da geladeira?
     category: geladeira
+    evidence: 'férias'
     expected:
       - {manual_id: electrolux-db53, pages: [9]}
       - {manual_id: electrolux-df82, pages: [6]}
@@ -114,12 +109,14 @@ items:
   - id: q10
     question: quanto tempo o turbo freezer fica ligado?
     category: geladeira
+    evidence: 'turbo'
     expected:
       - {manual_id: electrolux-db53, pages: [10]}
 
   - id: q11
     question: quanto espaço preciso deixar entre a geladeira e a parede?
     category: geladeira
+    evidence: 'cm'
     expected:
       - {manual_id: electrolux-tf56, pages: [5]}
       - {manual_id: electrolux-db53, pages: [13]}
@@ -131,12 +128,14 @@ items:
   - id: q12
     question: posso limpar a porta da geladeira com esponja de aço?
     category: geladeira
+    evidence: 'esponja|abrasiv|palha'
     expected:
       - {manual_id: electrolux-df82, pages: [13]}
 
   - id: q13
     question: com o que eu limpo a geladeira por dentro?
     category: geladeira
+    evidence: 'limp'
     expected:
       - {manual_id: electrolux-g0045837, pages: [5]}
       - {manual_id: electrolux-im7, pages: [5]}
@@ -150,6 +149,7 @@ items:
   - id: q14
     question: tem uma bandeja com água atrás da geladeira, é normal?
     category: geladeira
+    evidence: 'bandeja|evapora'
     expected:
       - {manual_id: electrolux-db53, pages: [19]}
       - {manual_id: electrolux-df82, pages: [13]}
@@ -158,12 +158,14 @@ items:
   - id: q15
     question: quantos litros cabem na geladeira DF82?
     category: geladeira
+    evidence: 'litros'
     expected:
       - {manual_id: electrolux-df82, pages: [19]}
 
   - id: q16
     question: vou viajar por um mês, o que faço com a geladeira?
     category: geladeira
+    evidence: 'viaj|ausên|férias|desligad'
     expected:
       - {manual_id: electrolux-db53, pages: [15, 20]}
       - {manual_id: electrolux-df82, pages: [17]}
@@ -174,26 +176,163 @@ items:
   - id: q21
     question: posso esquentar a mamadeira do bebê no micro-ondas?
     category: micro-ondas
+    evidence: 'mamadeira'
     expected:
       - {manual_id: brastemp-bms45, pages: [4]}
+      - {manual_id: electrolux-mga42, pages: [5]}
+      - {manual_id: electrolux-mb38t, pages: [5]}
+      - {manual_id: electrolux-me3ep, pages: [4]}
+      - {manual_id: brastemp-bmo40, pages: [4]}
+      - {manual_id: brastemp-bmg45, pages: [1]}
 
   - id: q22
     question: que tipo de pote eu posso usar no micro-ondas?
     category: micro-ondas
+    evidence: 'recipiente|utensílio|vasilha'
     expected:
       - {manual_id: brastemp-bms45, pages: [12]}
 
   - id: q23
     question: como eu mudo a potência do micro-ondas?
     category: micro-ondas
+    evidence: 'potência'
     expected:
       - {manual_id: brastemp-bms45, pages: [7]}
 
   - id: q24
     question: qual é a garantia do micro-ondas?
     category: micro-ondas
+    evidence: 'meses'
     expected:
       - {manual_id: brastemp-bms45, pages: [15]}
+      - {manual_id: electrolux-mf33s, pages: [30]}
+      - {manual_id: electrolux-mga42, pages: [34]}
+      - {manual_id: electrolux-mb38t, pages: [30]}
+      - {manual_id: electrolux-me3ep, pages: [28]}
+      - {manual_id: electrolux-me41x, pages: [24]}
+      - {manual_id: electrolux-mto30, pages: [25]}
+      - {manual_id: brastemp-bmo40, pages: [31]}
+      - {manual_id: brastemp-bmg45, pages: [9]}
+
+  - id: q26
+    question: apareceu LOC no visor do micro-ondas, o que é isso?
+    category: micro-ondas
+    evidence: 'LOC'
+    expected:
+      - {manual_id: electrolux-me3ep, pages: [15]}
+      - {manual_id: electrolux-me41x, pages: [15]}
+      - {manual_id: electrolux-mto30, pages: [14]}
+
+  - id: q27
+    question: como eu travo o painel do micro-ondas pra criança não mexer?
+    category: micro-ondas
+    evidence: 'trava|bloque'
+    expected:
+      - {manual_id: electrolux-mf33s, pages: [17]}
+      - {manual_id: electrolux-mga42, pages: [16]}
+      - {manual_id: electrolux-me3ep, pages: [15]}
+      - {manual_id: electrolux-me41x, pages: [15]}
+      - {manual_id: electrolux-mto30, pages: [14]}
+      - {manual_id: brastemp-bmo40, pages: [11]}
+      - {manual_id: brastemp-bms45, pages: [6]}
+      - {manual_id: brastemp-bmg45, pages: [3]}
+
+  - id: q28
+    question: como eu acerto a hora do relógio do micro-ondas?
+    category: micro-ondas
+    evidence: 'ajustando o rel|ajuste do rel|acertando o rel|ajustar o hor'
+    expected:
+      - {manual_id: electrolux-mf33s, pages: [12]}
+      - {manual_id: electrolux-mga42, pages: [14]}
+      - {manual_id: electrolux-mb38t, pages: [14]}
+      - {manual_id: electrolux-me3ep, pages: [11]}
+      - {manual_id: electrolux-me41x, pages: [11]}
+      - {manual_id: electrolux-mto30, pages: [10]}
+      - {manual_id: brastemp-bmo40, pages: [11]}
+      - {manual_id: brastemp-bms45, pages: [6]}
+      - {manual_id: brastemp-bmg45, pages: [2]}
+
+  - id: q29
+    question: posso colocar papel alumínio ou vasilha de metal no micro-ondas?
+    category: micro-ondas
+    evidence: 'alumínio|metálic|detalhe em metal'
+    expected:
+      - {manual_id: electrolux-mf33s, pages: [5]}
+      - {manual_id: electrolux-mga42, pages: [5]}
+      - {manual_id: electrolux-mb38t, pages: [5]}
+      - {manual_id: electrolux-me3ep, pages: [4]}
+      - {manual_id: electrolux-me41x, pages: [4]}
+      - {manual_id: electrolux-mto30, pages: [4]}
+      - {manual_id: brastemp-bmo40, pages: [4]}
+      - {manual_id: brastemp-bms45, pages: [12]}
+      - {manual_id: brastemp-bmg45, pages: [7]}
+
+  - id: q30
+    question: posso esquentar ovo inteiro no micro-ondas?
+    category: micro-ondas
+    evidence: 'ovos? (com casca|na casca)'
+    expected:
+      - {manual_id: electrolux-mf33s, pages: [6]}
+      - {manual_id: electrolux-mga42, pages: [6]}
+      - {manual_id: electrolux-mb38t, pages: [6]}
+      - {manual_id: electrolux-me3ep, pages: [4]}
+      - {manual_id: electrolux-me41x, pages: [4]}
+      - {manual_id: electrolux-mto30, pages: [4]}
+      - {manual_id: brastemp-bmo40, pages: [4]}
+      - {manual_id: brastemp-bms45, pages: [3]}
+      - {manual_id: brastemp-bmg45, pages: [1]}
+
+  - id: q31
+    question: como eu faço pipoca no micro-ondas?
+    category: micro-ondas
+    evidence: 'pipoca'
+    expected:
+      - {manual_id: electrolux-mga42, pages: [28]}
+      - {manual_id: electrolux-mb38t, pages: [21]}
+      - {manual_id: electrolux-me3ep, pages: [22]}
+      - {manual_id: electrolux-me41x, pages: [18]}
+      - {manual_id: electrolux-mto30, pages: [18]}
+      - {manual_id: brastemp-bmo40, pages: [26]}
+      - {manual_id: brastemp-bms45, pages: [7]}
+      - {manual_id: brastemp-bmg45, pages: [4]}
+
+  - id: q32
+    question: quanto espaço eu preciso deixar em volta do micro-ondas?
+    category: micro-ondas
+    evidence: '10 cm|20 cm'
+    expected:
+      - {manual_id: electrolux-mga42, pages: [8]}
+      - {manual_id: electrolux-me41x, pages: [6]}
+      - {manual_id: electrolux-mto30, pages: [6]}
+      - {manual_id: brastemp-bms45, pages: [5]}
+      - {manual_id: brastemp-bmg45, pages: [3]}
+
+  - id: q33
+    question: como eu limpo o micro-ondas por dentro?
+    category: micro-ondas
+    evidence: 'sabão|detergente'
+    expected:
+      - {manual_id: electrolux-mf33s, pages: [25]}
+      - {manual_id: electrolux-mga42, pages: [30]}
+      - {manual_id: electrolux-mb38t, pages: [26]}
+      - {manual_id: electrolux-me3ep, pages: [23]}
+      - {manual_id: electrolux-me41x, pages: [20]}
+      - {manual_id: electrolux-mto30, pages: [21]}
+      - {manual_id: brastemp-bms45, pages: [12]}
+
+  - id: q34
+    question: como eu tiro o cheiro de comida de dentro do micro-ondas?
+    category: micro-ondas
+    evidence: 'odor'
+    expected:
+      - {manual_id: electrolux-mf33s, pages: [13]}
+      - {manual_id: electrolux-mga42, pages: [21]}
+      - {manual_id: electrolux-mb38t, pages: [25]}
+      - {manual_id: electrolux-me3ep, pages: [16]}
+      - {manual_id: electrolux-me41x, pages: [19]}
+      - {manual_id: electrolux-mto30, pages: [14]}
+      - {manual_id: brastemp-bmo40, pages: [27]}
+      - {manual_id: brastemp-bms45, pages: [12]}
 
   # Sem resposta nos manuais (plausíveis, do mesmo domínio)
   - id: q17
@@ -217,6 +356,6 @@ items:
     no_answer: true
 
   - id: q25
-    question: o micro-ondas funciona como air fryer?
+    question: dá pra controlar o micro-ondas pelo celular, pelo wi-fi?
     category: micro-ondas
     no_answer: true

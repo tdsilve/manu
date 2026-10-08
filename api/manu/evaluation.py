@@ -6,6 +6,8 @@ de verdade, e os manuais que não estão no repositório.
 
 import argparse
 import logging
+import re
+import sys
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -13,6 +15,7 @@ from pathlib import Path
 import yaml
 
 from manu.ask import Asker, AskResult
+from manu.config import Settings
 
 log = logging.getLogger(__name__)
 
@@ -31,6 +34,9 @@ class Item:
     question: str
     category: str
     expected: tuple[Expected, ...]  # vazio quando no_answer
+    # Expressão regular que deve aparecer em toda página esperada (confere o gabarito com o texto
+    # extraído, ver find_problems).
+    evidence: str | None = None
 
     @property
     def no_answer(self) -> bool:
@@ -67,9 +73,31 @@ def load_gabarito(path: Path) -> list[Item]:
                 question=str(raw["question"]),
                 category=str(raw["category"]),
                 expected=expected,
+                evidence=str(raw["evidence"]) if raw.get("evidence") else None,
             )
         )
     return items
+
+
+def _flatten(text: str) -> str:
+    # Remove a hifenização de fim de linha ("afasta- do") para a evidência casar com a palavra.
+    return re.sub(r"(\w)- (\w)", r"\1\2", text)
+
+
+def find_problems(items: list[Item], pages: dict[tuple[str, int], str]) -> list[str]:
+    """Confere o gabarito com o texto extraído: toda página esperada existe e traz a evidência."""
+    problems = []
+    for item in items:
+        if item.expected and not item.evidence:
+            problems.append(f"{item.id}: item com resposta sem evidence")
+        for expected in item.expected:
+            for page in expected.pages:
+                text = pages.get((expected.manual_id, page))
+                if text is None:
+                    problems.append(f"{item.id}: {expected.manual_id} p. {page} não existe na extração")
+                elif item.evidence and not re.search(item.evidence, _flatten(text), re.IGNORECASE):
+                    problems.append(f"{item.id}: {expected.manual_id} p. {page} não traz /{item.evidence}/")
+    return problems
 
 
 def _hit(item: Item, result: AskResult) -> bool:
@@ -152,9 +180,28 @@ def render_report(outcomes: list[Outcome], config: dict[str, object]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _check(items: list[Item], settings: Settings) -> None:
+    from manu.extraction import extract_pages
+    from manu.registry import load_manuals
+
+    manuals = {m.id: m for m in load_manuals(settings.registry_path)}
+    pages: dict[tuple[str, int], str] = {}
+    used = {e.manual_id for item in items for e in item.expected}
+    problems = [f"manual_id fora do registro: {m}" for m in sorted(used - manuals.keys())]
+    for manual_id in sorted(used & manuals.keys()):
+        manual = manuals[manual_id]
+        for page in extract_pages(settings.pdf_dir / manual.file, manual.grid).pages:
+            pages[(manual_id, page.number)] = page.text
+    problems += find_problems(items, pages)
+    for problem in problems:
+        print(f"- {problem}")
+    if problems:
+        sys.exit(f"{len(problems)} problema(s) no gabarito.")
+    print(f"Gabarito ok: {len(items)} itens conferidos com o texto extraído.")
+
+
 def main() -> None:
     from manu.claude import ClaudeGenerator
-    from manu.config import Settings
     from manu.wiring import build_embedder, build_store
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -162,9 +209,17 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Roda o gabarito pelo pipeline real.")
     parser.add_argument("--gabarito", type=Path, default=Path("eval/gabarito.yaml"))
     parser.add_argument("--out-dir", type=Path, default=Path("eval/reports"))
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="só confere o gabarito com o texto extraído dos PDFs (sem rede e sem custo)",
+    )
     args = parser.parse_args()
 
     items = load_gabarito(args.gabarito)
+    if args.check:
+        _check(items, settings)
+        return
     asker = Asker(
         build_embedder(settings, "query"),
         build_store(settings),
