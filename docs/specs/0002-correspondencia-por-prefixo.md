@@ -18,7 +18,7 @@ A fatia 1 só reconhece código exato (spec 0001). Os 73 códigos do registro t�
 - Como pessoa cujo código combina com mais de um manual, quero escolher o meu.
 
 **Acceptance criteria**:
-- **AC-1**: Sem correspondência exata, um token que começa com um código do registro e termina com 1 a 3 caracteres, o primeiro deles uma letra, é reconhecido como esse código ("DB44SX" acha "DB44S"; "IB7X" acha "IB7").
+- **AC-1**: Sem correspondência exata, um token que começa com um código do registro e termina com 1 a 3 caracteres, o primeiro deles uma letra, é reconhecido como esse código ("DB44SX" acha "DB44S"; "TF38X" acha "TF38").
 - **AC-2**: O sufixo que começa com número não vale ("IB70" não acha "IB7").
 - **AC-3**: Só entram tokens que começam com letra, têm algum número e 5 ou mais caracteres; a correspondência exata sempre vence a de prefixo.
 - **AC-4**: Dentro de um manual vale o prefixo mais longo; quando manuais diferentes combinam, cada um vira um item, e a interface mostra a escolha entre aparelhos (spec 0001, AC-16).
