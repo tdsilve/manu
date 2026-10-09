@@ -4,13 +4,22 @@
 const API_URL = process.env.MANU_API_URL ?? "http://localhost:8000";
 const BYPASS_SECRET = process.env.API_BYPASS_SECRET;
 
-export async function GET(_request: Request, { params }: { params: Promise<{ code: string }> }) {
+// O limite de chamadas da API vale por pessoa: repassa o IP de quem chamou o site.
+function clientIp(request: Request): Record<string, string> {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  return ip ? { "x-manu-client-ip": ip } : {};
+}
+
+export async function GET(request: Request, { params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
 
   let upstream: Response;
   try {
     upstream = await fetch(`${API_URL}/products/${encodeURIComponent(code)}`, {
-      headers: BYPASS_SECRET ? { "x-vercel-protection-bypass": BYPASS_SECRET } : {},
+      headers: {
+        ...(BYPASS_SECRET ? { "x-vercel-protection-bypass": BYPASS_SECRET } : {}),
+        ...clientIp(request),
+      },
       cache: "no-store",
     });
   } catch {

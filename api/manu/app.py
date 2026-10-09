@@ -12,6 +12,7 @@ from manu.ask import Asker
 from manu.embedder import Embedder, EmbeddingError
 from manu.generation import GenerationError, Generator
 from manu.missing import MissingModels
+from manu.ratelimit import CLIENT_IP_HEADER, RETRY_MESSAGE, RateLimiter, bucket_for
 from manu.registry import MAX_CODE_LENGTH, Manual, ProductRegistry, is_valid_code, normalize_code
 from manu.store import VectorStore
 
@@ -92,10 +93,28 @@ def create_app(
     similarity_threshold: float,
     manuals: Iterable[Manual],
     missing: MissingModels | None = None,
+    limiter: RateLimiter | None = None,
 ) -> FastAPI:
     registry = ProductRegistry(manuals)
     asker = Asker(embedder, store, generator, top_k, similarity_threshold)
     app = FastAPI(title="Manu")
+    limits = limiter or RateLimiter()
+
+    @app.middleware("http")
+    async def rate_limit(request: Request, call_next):  # type: ignore[no-untyped-def]
+        bucket = bucket_for(request.method, request.url.path)
+        if bucket is None:
+            return await call_next(request)
+        forwarded = request.headers.get("x-forwarded-for", "").split(",")[0].strip()
+        client = request.headers.get(CLIENT_IP_HEADER) or forwarded or (request.client.host if request.client else "?")
+        wait = limits.allow(bucket, client)
+        if wait is not None:
+            return JSONResponse(
+                status_code=429,
+                content={"detail": RETRY_MESSAGE},
+                headers={"Retry-After": str(int(wait))},
+            )
+        return await call_next(request)
 
     # Falhas de serviço viram erro, nunca uma recusa disfarçada. O detalhe só vai para o log.
     @app.exception_handler(EmbeddingError)

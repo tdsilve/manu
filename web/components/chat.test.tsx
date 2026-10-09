@@ -57,6 +57,7 @@ describe("Nova conversa e logo (feature 5)", () => {
     expect(screen.queryByRole("button", { name: /Nova conversa/ })).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Qual é a sua dúvida?" })).toBeInTheDocument();
     expect(screen.getByLabelText("Exemplos")).toBeInTheDocument();
+    expect(screen.getByText(/diga o que acontece, onde e quando/)).toBeInTheDocument(); // dica de boa pergunta (spec 0004)
   });
 
   it("o botão limpa as mensagens e o aparelho e fica na tela de conversa, com o foco na barra", async () => {

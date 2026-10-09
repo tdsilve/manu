@@ -235,6 +235,10 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
             <p className="mt-4 max-w-[44ch] text-[17px] leading-snug text-muted text-pretty">
               Pergunte do seu jeito. Se citar o modelo, como DB44, a resposta vem só do manual dele.
             </p>
+            <p className="mt-2 max-w-[44ch] text-[14px] leading-snug text-muted text-pretty">
+              Para uma resposta melhor, diga o que acontece, onde e quando, com as palavras do manual (por exemplo,
+              &ldquo;quente&rdquo;).
+            </p>
             <div className="mt-7 flex max-w-[640px] flex-wrap justify-center gap-2" aria-label="Exemplos">
               {EXAMPLES.map((ex) => (
                 <Button

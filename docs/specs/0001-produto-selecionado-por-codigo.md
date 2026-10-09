@@ -261,7 +261,7 @@ Abordagem Tracer Bullet: primeiro um fio mínimo de ponta a ponta (código exato
 
 ## Follow-up
 
-- [ ] Limitar a taxa dos endpoints públicos (`/ask`, `/products`, `/products/detect`) na Vercel. O `/ask` já está sem limite hoje; vale decidir isso à parte.
+- [x] Limitar a taxa dos endpoints públicos (`/ask`, `/products`, `/products/detect`): feito em 2026-10-08 em `api/manu/ratelimit.py` (por IP, 20/min no `/ask` e 60/min nos outros, em memória por instância; o web repassa o IP em `x-manu-client-ip`). Um limite de borda no Firewall da Vercel continua sendo decisão de quem administra o projeto na Vercel. O `/ask` já está sem limite hoje; vale decidir isso à parte.
 - [ ] Fatia 4: recalibrar o limiar com a busca restrita, conferir o prompt com `model_code` e comparar com os 93% de acerto da Fase 1.
 - [ ] Atualizar o `CONTEXT.md` ("Produto selecionado" passa a existir de fato) e o `PRODUCT.md`, que já pode citar o código do modelo na interface.
 - [ ] Atualizar `.claude/rules/api.md` com a nota sobre `data/manuals.yaml` na função e o novo endpoint, quando a fatia for construída.

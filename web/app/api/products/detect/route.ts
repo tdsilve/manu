@@ -4,6 +4,12 @@
 const API_URL = process.env.MANU_API_URL ?? "http://localhost:8000";
 const BYPASS_SECRET = process.env.API_BYPASS_SECRET;
 
+// O limite de chamadas da API vale por pessoa: repassa o IP de quem chamou o site.
+function clientIp(request: Request): Record<string, string> {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  return ip ? { "x-manu-client-ip": ip } : {};
+}
+
 export async function POST(request: Request) {
   let upstream: Response;
   try {
@@ -12,6 +18,7 @@ export async function POST(request: Request) {
       headers: {
         "Content-Type": "application/json",
         ...(BYPASS_SECRET ? { "x-vercel-protection-bypass": BYPASS_SECRET } : {}),
+        ...clientIp(request),
       },
       body: await request.text(),
       cache: "no-store",

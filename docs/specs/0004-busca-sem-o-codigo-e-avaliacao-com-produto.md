@@ -24,7 +24,7 @@ Medido em 2026-10-08 com o pipeline real: a mesma pergunta cai de 0,514 para 0,4
 - **AC-3**: Sem `manual_id`, a busca usa a pergunta original, como na Fase 1.
 - **AC-4**: `manu-eval --product` roda cada pergunta do gabarito com o manual esperado selecionado e o código do modelo escrito na pergunta, e o relatório compara com a busca sem produto (acerto de busca, recusa correta, recusa indevida e a tabela de limiares).
 - **AC-5**: O limiar de similaridade só muda se o relatório mostrar ganho de recusa correta sem perder acerto; a decisão fica registrada nesta spec.
-- **AC-6**: O cartão de recusa do chat mostra uma dica: descrever o sintoma com as palavras do manual (por exemplo "quente" em vez de "esquenta") e citar o modelo.
+- **AC-6**: O cartão de recusa do chat mostra uma dica: descrever o sintoma com as palavras do manual (por exemplo "quente" em vez de "esquenta") e citar o modelo; a tela inicial traz a mesma orientação antes da primeira pergunta ("diga o que acontece, onde e quando, com as palavras do manual").
 
 ## Decision
 
