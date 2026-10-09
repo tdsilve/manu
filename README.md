@@ -23,7 +23,7 @@ A Fase 1 entrega um pipeline de perguntas e respostas sobre manuais de eletrodom
 - **Testes:** 21 testes automáticos, sem rede, sem Ollama e sem chave do Claude, com fixtures próprias.
 - **Deploy:** API e interface em dois projetos na Vercel, com embeddings da Voyage e base no Chroma Cloud. Veja [Deploy](#deploy-vercel).
 
-Fora desta fase: identificação do produto pela foto da etiqueta (fases 2 e 3), filtro por modelo, OCR, memória de conversa. Detalhes no [spec](docs/fases/fase-1/spec.md).
+Fora desta fase: identificação do produto pela foto da etiqueta (fases 2 e 3), filtro por modelo, OCR, memória de conversa.
 
 ### Como funciona
 
@@ -102,7 +102,7 @@ Preencha `ANTHROPIC_API_KEY` no `.env`.
 
 ### 2. Manuais
 
-Os PDFs dos 17 manuais vêm junto com o repositório, em `api/data/pdfs/` ([ADR 0006](docs/adr/0006-manuais-fora-do-repositorio.md)). Eles pertencem aos fabricantes; o [`api/data/manuals.yaml`](api/data/manuals.yaml) guarda o `source_url` de cada um, para baixar de novo ou conferir a origem. Alguns PDFs são folhas de impressão, com vários painéis por folha: o campo `grid` do registro diz como recortar, e a página citada é o número impresso no painel. Confira o registro:
+Os PDFs dos 17 manuais vêm junto com o repositório, em `api/data/pdfs/` ([ADR 0006](docs/adr/0006-manuais-versionados-no-repositorio.md)). Eles pertencem aos fabricantes; o [`api/data/manuals.yaml`](api/data/manuals.yaml) guarda o `source_url` de cada um, para baixar de novo ou conferir a origem. Alguns PDFs são folhas de impressão, com vários painéis por folha: o campo `grid` do registro diz como recortar, e a página citada é o número impresso no painel. Confira o registro:
 
 ```bash
 .venv/bin/manu-validate
@@ -135,7 +135,7 @@ Abra http://localhost:3000.
 
 ## Deploy (Vercel)
 
-Interface e API viram dois projetos na Vercel, ligados ao mesmo repositório. O Ollama não roda na Vercel e a base vetorial não vai para o git ([ADR 0006](docs/adr/0006-manuais-fora-do-repositorio.md)). Por isso, em produção, os embeddings vêm da [Voyage AI](https://www.voyageai.com) e a base fica no [Chroma Cloud](https://www.trychroma.com).
+Interface e API viram dois projetos na Vercel, ligados ao mesmo repositório. O Ollama não roda na Vercel e a base vetorial não vai para o git, só os PDFs ([ADR 0006](docs/adr/0006-manuais-versionados-no-repositorio.md)). Por isso, em produção, os embeddings vêm da [Voyage AI](https://www.voyageai.com) e a base fica no [Chroma Cloud](https://www.trychroma.com).
 
 ### 1. Indexar na nuvem (uma vez, da sua máquina)
 
