@@ -25,3 +25,7 @@ O deploy na Vercel instala só `dependencies` e tem limite de 500 MB por funçã
 ## Testes
 
 Os testes rodam sem rede, sem Ollama e sem chave do Claude: mantenha esse isolamento em teste novo, com fixtures em `api/tests/fixtures/`.
+
+## Produto selecionado
+
+`GET /products/{código}` acha o manual pelo código (sem caixa, espaço nem hífen), `POST /products/detect` acha no texto da pergunta os códigos do registro (tokens de `[A-Za-z0-9]`, janelas de até 3 tokens, comparação exata; devolve `matches`, `unrecognized` e `only_codes`) e `POST /ask` aceita `manual_id` e `model_code` opcionais; com `manual_id`, a busca filtra só aquele manual. O registro `data/manuals.yaml` vai para a função da Vercel (o `vercel.json` só exclui `data/{pdfs,chroma,extracted}`) e a API não sobe sem ele. `manu-validate` falha com código repetido depois de normalizado.

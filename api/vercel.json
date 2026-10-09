@@ -3,7 +3,7 @@
   "functions": {
     "manu/main.py": {
       "maxDuration": 60,
-      "excludeFiles": "{tests/**,eval/**,data/**}"
+      "excludeFiles": "{tests/**,eval/**,data/{pdfs,chroma,extracted}/**}"
     }
   }
 }

@@ -72,11 +72,14 @@ class VectorStore:
             ],
         )
 
-    def query(self, embedding: Sequence[float], k: int) -> list[RetrievedChunk]:
-        """Os k trechos mais parecidos, do mais para o menos parecido."""
+    def query(
+        self, embedding: Sequence[float], k: int, manual_id: str | None = None
+    ) -> list[RetrievedChunk]:
+        """Os k trechos mais parecidos, do mais para o menos parecido; com manual_id, só desse manual."""
         result = self._collection.query(
             query_embeddings=[embedding],
             n_results=k,
+            where={"manual_id": manual_id} if manual_id else None,
             include=["documents", "metadatas", "distances"],
         )
         ids = result["ids"][0]

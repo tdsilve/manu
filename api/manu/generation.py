@@ -29,4 +29,6 @@ class GenerationError(Exception):
 
 
 class Generator(Protocol):
-    def generate(self, question: str, chunks: list[RetrievedChunk]) -> Generation: ...
+    def generate(
+        self, question: str, chunks: list[RetrievedChunk], model_code: str | None = None
+    ) -> Generation: ...

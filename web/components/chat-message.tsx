@@ -2,17 +2,26 @@ import type { ReactNode } from "react";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import type { AskResponse } from "@/lib/ask";
+import { productLabel } from "@/lib/detection-flow";
+import type { SelectedProduct } from "@/lib/products";
 
 export type Turn = {
   id: number;
   question: string;
-  status: "loading" | "error" | "done";
+  // detecting e loading mostram o mesmo "Procurando"; choosing espera a pessoa escolher o aparelho;
+  // closed é a pergunta que tinha só o código: o aparelho foi escolhido e não há resposta.
+  status: "detecting" | "loading" | "choosing" | "closed" | "error" | "done";
   result?: AskResponse;
+  sentWith?: SelectedProduct | null; // o produto com que o turno foi enviado (vale no "Tentar de novo")
+  options?: SelectedProduct[];
+  onlyCodes?: boolean;
+  resolution?: string; // "Escolhido: DB44 · …" ou "Sem aparelho", depois da escolha
 };
 
 type ChatMessageProps = {
   turn: Turn;
   onRetry: () => void;
+  onChoose: (option: SelectedProduct | null) => void;
   busy: boolean;
 };
 
@@ -29,7 +38,7 @@ function highlight(text: string, terms: string[]): ReactNode {
   return parts.map((part, i) => (i % 2 === 1 ? <mark key={i}>{part}</mark> : part));
 }
 
-export function ChatMessage({ turn, onRetry, busy }: ChatMessageProps) {
+export function ChatMessage({ turn, onRetry, onChoose, busy }: ChatMessageProps) {
   return (
     <article data-slot="chat-message" className="mb-12 flex animate-settle flex-col gap-5">
       <p className="max-w-[85%] self-end rounded-[22px_22px_6px_22px] bg-ink px-[18px] py-3 whitespace-pre-wrap text-white">
@@ -40,7 +49,8 @@ export function ChatMessage({ turn, onRetry, busy }: ChatMessageProps) {
         <div className="min-w-0">
           <p className="label">A Manu responde</p>
           <div className="mt-1.5">
-            <ChatReply turn={turn} onRetry={onRetry} busy={busy} />
+            {turn.resolution && turn.status !== "closed" && <p className="mb-2 text-[13px] text-muted">{turn.resolution}</p>}
+            <ChatReply turn={turn} onRetry={onRetry} onChoose={onChoose} busy={busy} />
           </div>
         </div>
       </div>
@@ -51,8 +61,30 @@ export function ChatMessage({ turn, onRetry, busy }: ChatMessageProps) {
 const noteClass = "max-w-[62ch] rounded-2xl bg-paper px-[18px] py-4 shadow-card";
 const noteTitleClass = "mb-1 font-display text-[18px] font-bold tracking-[-0.02em]";
 
-function ChatReply({ turn, onRetry, busy }: ChatMessageProps) {
-  if (turn.status === "loading") {
+function ChatReply({ turn, onRetry, onChoose, busy }: ChatMessageProps) {
+  if (turn.status === "closed") {
+    return <p className="max-w-[62ch] text-[15px] text-muted">{turn.resolution}</p>;
+  }
+
+  if (turn.status === "choosing" && turn.options) {
+    return (
+      <div className={noteClass}>
+        <p className={noteTitleClass}>Qual destes é o seu aparelho?</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {turn.options.map((option) => (
+            <Button key={option.product.manual_id} variant="soft" size="sm" onClick={() => onChoose(option)}>
+              {productLabel(option)}
+            </Button>
+          ))}
+          <Button variant="outline" size="sm" onClick={() => onChoose(null)}>
+            Nenhum destes
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (turn.status === "detecting" || turn.status === "loading") {
     return (
       <p className="inline-flex items-center gap-2.5 text-muted" role="status">
         <span aria-hidden="true" className="flex gap-1">
@@ -87,7 +119,6 @@ function ChatReply({ turn, onRetry, busy }: ChatMessageProps) {
       <div className={noteClass}>
         <p className={noteTitleClass}>Isso não está no manual.</p>
         <p className="leading-normal">{result.answer}</p>
-        <p className="mt-2 text-[13px] text-muted">Prefiro dizer que não sei a inventar uma resposta.</p>
       </div>
     );
   }
