@@ -262,7 +262,7 @@ Abordagem Tracer Bullet: primeiro um fio mínimo de ponta a ponta (código exato
 ## Follow-up
 
 - [x] Limitar a taxa dos endpoints públicos (`/ask`, `/products`, `/products/detect`): feito em 2026-10-08 em `api/manu/ratelimit.py` (por IP, 20/min no `/ask` e 60/min nos outros, em memória por instância; o web repassa o IP em `x-manu-client-ip`). Um limite de borda no Firewall da Vercel continua sendo decisão de quem administra o projeto na Vercel. O `/ask` já está sem limite hoje; vale decidir isso à parte.
-- [ ] Fatia 4: recalibrar o limiar com a busca restrita, conferir o prompt com `model_code` e comparar com os 93% de acerto da Fase 1.
-- [ ] Atualizar o `CONTEXT.md` ("Produto selecionado" passa a existir de fato) e o `PRODUCT.md`, que já pode citar o código do modelo na interface.
-- [ ] Atualizar `.claude/rules/api.md` com a nota sobre `data/manuals.yaml` na função e o novo endpoint, quando a fatia for construída.
-- [ ] Fatia 2: estender a detecção no texto ao prefixo com cuidado (um prefixo curto dentro de texto livre aumenta os falsos positivos).
+- [x] Fatia 4: recalibrar o limiar com a busca restrita, conferir o prompt com `model_code` e comparar com os 93% de acerto da Fase 1. Feito na spec 0004: 100% de acerto com produto contra 93%, limiar mantido em 0,5.
+- [x] Atualizar o `CONTEXT.md` ("Produto selecionado" passa a existir de fato) e o `PRODUCT.md`, que já pode citar o código do modelo na interface.
+- [x] Atualizar `.claude/rules/api.md` com a nota sobre `data/manuals.yaml` na função e o novo endpoint, quando a fatia for construída.
+- [x] Fatia 2: estender a detecção no texto ao prefixo com cuidado (um prefixo curto dentro de texto livre aumenta os falsos positivos).

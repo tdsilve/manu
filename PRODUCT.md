@@ -42,7 +42,7 @@ A resposta sai só do manual oficial, nunca de fórum ou do conhecimento geral d
 
 ## Evidence on Hand
 
-- Manuais listados em `api/data/manuals.yaml` (PDFs fora do repositório, ver ADR 0006).
+- Manuais listados em `api/data/manuals.yaml` (PDFs versionados no repositório, ver ADR 0006).
 - Não existem depoimentos, métricas de uso, número de usuários nem parcerias com fabricantes. Nada disso pode ser inventado.
 - Marcas Electrolux e Brastemp aparecem só como texto: não usar logotipos dos fabricantes.
 

@@ -9,7 +9,7 @@ Escopo do MVP: geladeiras e micro-ondas, marcas Electrolux e Brastemp, 15 a 20 m
 ## Fases
 
 1. RAG básico
-2. Identificação por código digitado: registro com os códigos de modelo cobertos por cada manual, correspondência por prefixo (com escolha entre candidatos), busca restrita ao produto selecionado e registro de modelos sem manual
+2. (concluída) Identificação por código digitado: registro com os códigos de modelo cobertos por cada manual, correspondência por prefixo (com escolha entre candidatos), busca restrita ao produto selecionado e registro de modelos sem manual
 3. Identificação pela foto da etiqueta: Claude com visão, confirmação do código lido, gabarito com fotos de etiquetas
 4. Citações
 5. Benchmark e avaliação

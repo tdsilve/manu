@@ -249,6 +249,6 @@ Em 0,6 o limiar recusa 4 perguntas com resposta para pegar apenas uma pergunta s
 
 ### Próximos passos
 
-- **Fase 2:** identificar o modelo do produto e buscar só no manual dele. Evita a mistura entre manuais quase idênticos, como no q01, e as respostas por modelo.
+- **Fase 3:** identificar o produto pela foto da etiqueta. A Fase 2 já faz isso pelo código citado na pergunta, com a busca só no manual do aparelho (100% de acerto de busca contra 93%).
 - **Fase 6:** trechos menores que uma página, busca por palavra-chave junto com os embeddings (termos como "LOC" escapam da busca por significado) e reranking.
 - **Avaliação:** gabarito maior e julgamento das respostas com ajuda de um LLM.

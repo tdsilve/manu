@@ -39,9 +39,3 @@ _Avoid_: Filtro, sessão
 **Modelo sem manual**:
 Um código do modelo identificado para o qual a base de manuais não tem manual; fica registrado para orientar o que adicionar (e, no futuro, disparar a busca de manual).
 _Avoid_: Miss, pedido pendente
-
-### Consulta
-
-**Produto selecionado**:
-O produto identificado e confirmado pelo usuário; as perguntas seguintes são respondidas só com os manuais dele, até o usuário trocar de produto.
-_Avoid_: Produto atual, contexto, sessão
