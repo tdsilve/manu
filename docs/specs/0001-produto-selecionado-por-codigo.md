@@ -1,7 +1,7 @@
 # 0001. Produto selecionado por código exato
 
 **Date**: 2026-10-08
-**Status**: In Progress
+**Status**: Accepted
 **Updated**: 2026-10-08 (AC-8: a Manu acha o modelo no texto da pergunta, sem o botão "Procurar código"; cross check aplicado)
 
 ## Summary

@@ -15,7 +15,7 @@ _Isto são recomendações para manter a construção em ordem, não exigências
 | B | Pergunta e resposta com página citada | Fase 1 | existing |
 | C | Avaliação com gabarito | Fase 1 | existing |
 | D | Interface de chat | Fase 1 | existing |
-| 1 | Produto selecionado por código exato | Slice 1 | in-progress |
+| 1 | Produto selecionado por código exato | Slice 1 | done |
 | 2 | Correspondência por prefixo e escolha entre candidatos | Slice 2 | planned |
 | 3 | Modelo sem manual registrado | Slice 3 | planned |
 | 4 | Avaliação da busca restrita ao produto | Slice 4 | planned |
@@ -37,7 +37,7 @@ Chat em Next.js que conversa com a API. code in `web/`
 
 ## Slice 1: Produto selecionado por código exato
 
-### 1. Produto selecionado por código exato · in-progress
+### 1. Produto selecionado por código exato · done
 O fio mais fino que atravessa tudo: a pessoa digita um código que está no registro, a API acha o manual e a busca olha só aquele manual. A interface mostra o produto selecionado e deixa trocar de produto. Este é o walking skeleton da fase.
 **Done when:** digitar um código exato do registro seleciona o produto, as perguntas seguintes são respondidas só com o manual dele, a interface mostra qual produto está selecionado e permite trocá-lo, e código desconhecido não quebra o fluxo.
 - [x] Design it (spec): `/architect produto selecionado por código exato`
@@ -49,7 +49,7 @@ O fio mais fino que atravessa tudo: a pessoa digita um código que está no regi
    - [x] A Manu identifica o modelo sozinha: detecta o código no texto da pergunta (`POST /products/detect`), escolhe entre vários aparelhos e sem botão "Procurar código" (AC-8, AC-9, AC-10, AC-14 a AC-18)
    - [x] Deploy: `vercel.json`, caminho do registro, API e web em produção na Vercel, consulta filtrada no Chroma Cloud conferida (AC-12)
 - [x] Verify it: `/check verify produto selecionado por código exato`
-- [ ] Test it: `/test produto selecionado por código exato`
+- [x] Test it: `/test produto selecionado por código exato`
 Spec [0001](../specs/0001-produto-selecionado-por-codigo.md) · code in `api/manu/`, `web/components/chat.tsx`, `web/lib/detection-flow.ts`, `web/app/api/products/`
 
 ### 5. Nova conversa e logo · in-progress
