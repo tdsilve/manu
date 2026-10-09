@@ -14,7 +14,7 @@ Interface da Manu: uma só tela, o chat, que mostra o mascote e devolve a respos
 
 ## Verificação
 
-Sem `lint` nem testes, o `npm run typecheck` é o único gate automático: rode antes de concluir. Em mudança visual, suba o dev server (`../.claude/launch.json`) e confira o chat (`/`), com e sem cursor, porque cada caso mostra um mascote diferente.
+Sem `lint`, os gates automáticos são `npm run typecheck` e `npm test` (Vitest, em `lib/` e `components/`): rode os dois antes de concluir. Em mudança visual, suba o dev server (`../.claude/launch.json`) e confira o chat (`/`), com e sem cursor, porque cada caso mostra um mascote diferente.
 
 ## Design
 

@@ -1,7 +1,7 @@
 # 0004. Busca sem o código na pergunta e avaliação com produto
 
 **Date**: 2026-10-08
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

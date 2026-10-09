@@ -1,4 +1,4 @@
-# Scope: Manu, Fase 2 (identificação por código digitado)
+# Scope: Manu, Fase 2 (identificação por código digitado) · concluída em 2026-10-08
 
 A Manu responde dúvidas sobre eletrodomésticos só com o manual oficial, citando a página. Esta fatia faz a pessoa dizer qual é o produto digitando o código do modelo, e a busca passa a olhar só o manual dele.
 
@@ -16,10 +16,10 @@ _Isto são recomendações para manter a construção em ordem, não exigências
 | C | Avaliação com gabarito | Fase 1 | existing |
 | D | Interface de chat | Fase 1 | existing |
 | 1 | Produto selecionado por código exato | Slice 1 | done |
-| 2 | Correspondência por prefixo e escolha entre candidatos | Slice 2 | planned |
-| 3 | Modelo sem manual registrado | Slice 3 | planned |
-| 4 | Avaliação da busca restrita ao produto | Slice 4 | planned |
-| 5 | Nova conversa e logo | Slice 1 | in-progress |
+| 2 | Correspondência por prefixo e escolha entre candidatos | Slice 2 | done |
+| 3 | Modelo sem manual registrado | Slice 3 | done |
+| 4 | Avaliação da busca restrita ao produto | Slice 4 | done |
+| 5 | Nova conversa e logo | Slice 1 | done |
 
 ## Já existe (Fase 1)
 
@@ -52,34 +52,49 @@ O fio mais fino que atravessa tudo: a pessoa digita um código que está no regi
 - [x] Test it: `/test produto selecionado por código exato`
 Spec [0001](../specs/0001-produto-selecionado-por-codigo.md) · code in `api/manu/`, `web/components/chat.tsx`, `web/lib/detection-flow.ts`, `web/app/api/products/`
 
-### 5. Nova conversa e logo · in-progress
+### 5. Nova conversa e logo · done
 Quem já conversou precisa começar de novo sem recarregar a página. O botão "Nova conversa" (canto superior direito) limpa as mensagens e o aparelho e fica na tela de conversa; o logo volta à tela inicial. A API não guarda histórico, então só a tela é limpa. Sem decisão pendente: é interface sobre estado que já existe.
 **Done when:** "Nova conversa" apaga as mensagens e o aparelho escolhido e deixa a barra de pergunta pronta, sem voltar à tela inicial; o logo leva à tela inicial com o mascote e os exemplos; uma resposta que ainda estava a caminho não reaparece na conversa nova.
 - [x] Build it: `/develop nova conversa e logo` (já construído, sem spec: não há decisão em aberto)
-- [ ] Verify it: `/check verify nova conversa e logo`
-- [ ] Test it: `/test nova conversa e logo`
-code in `web/components/chat.tsx`, `web/components/wordmark.tsx`
+- [x] Verify it: `/check verify nova conversa e logo`
+- [x] Test it: `/test nova conversa e logo` (testes de componente do chat em `web/components/chat.test.tsx`)
+code in `web/components/chat.tsx`, `web/components/wordmark.tsx`, `web/components/chat.test.tsx`
 
 ## Slice 2: Correspondência por prefixo
 
-### 2. Correspondência por prefixo e escolha entre candidatos · needs a decision
+### 2. Correspondência por prefixo e escolha entre candidatos · done
 Códigos de etiqueta costumam trazer sufixos que o manual não lista. A API compara pelo começo do código e, quando mais de um manual combina, a pessoa escolhe entre os candidatos.
 **Done when:** um código com sufixo extra encontra o manual certo, um código ambíguo mostra os candidatos para escolha, e um código que não combina com nada cai no caso sem manual.
-- [ ] Design it (spec): `/architect correspondência por prefixo`
+- [x] Design it (spec): `/architect correspondência por prefixo`
+- [x] Build it: `/develop correspondência por prefixo`
+   - [x] Prefixo na detecção (`DB44SX` acha `DB44S`), `approximate` na resposta e aviso no chat (AC-1 a AC-7)
+- [x] Verify it: `/check verify correspondência por prefixo`
+- [x] Test it: `/test correspondência por prefixo`
+Spec [0002](../specs/0002-correspondencia-por-prefixo.md) · code in `api/manu/registry.py`, `web/lib/detection-flow.ts`
 
 ## Slice 3: Modelo sem manual
 
-### 3. Modelo sem manual registrado · needs a decision
+### 3. Modelo sem manual registrado · done
 Quando o código não tem manual na base, a Manu diz isso com clareza e registra o código para orientar quais manuais adicionar (e, no futuro, a busca de manual, ADR 0007).
 **Done when:** um código sem manual gera uma mensagem honesta na interface, o código fica registrado sem dado pessoal, e o registro pode ser lido por quem mantém a base.
-- [ ] Design it (spec): `/architect modelo sem manual registrado`
+- [x] Design it (spec): `/architect modelo sem manual registrado`
+- [x] Build it: `/develop modelo sem manual registrado`
+   - [x] Anotar o código sem manual no Chroma, aviso no chat e o comando `manu-missing` (AC-1 a AC-5)
+- [x] Verify it: `/check verify modelo sem manual registrado`
+- [x] Test it: `/test modelo sem manual registrado`
+Spec [0003](../specs/0003-modelo-sem-manual-registrado.md) · code in `api/manu/missing.py`, `api/manu/app.py`
 
 ## Slice 4: Medir o ganho
 
-### 4. Avaliação da busca restrita ao produto · needs a decision
+### 4. Avaliação da busca restrita ao produto · done
 Estender o gabarito e o `manu-eval` para medir a busca já com o produto selecionado, e comparar com os 93% da Fase 1.
 **Done when:** `manu-eval` roda com o produto selecionado, o relatório compara com a busca sem filtro, e o limiar de similaridade segue calibrado.
-- [ ] Design it (spec): `/architect avaliação com produto selecionado`
+- [x] Design it (spec): `/architect avaliação com produto selecionado`
+- [x] Build it: `/develop avaliação com produto selecionado`
+   - [x] Busca sem o código citado, `manu-eval --product` e dica na recusa (AC-1 a AC-6)
+- [x] Verify it: `/check verify avaliação com produto selecionado`
+- [x] Test it: `/test avaliação com produto selecionado`
+Spec [0004](../specs/0004-busca-sem-o-codigo-e-avaliacao-com-produto.md) · code in `api/manu/registry.py`, `api/manu/ask.py`, `api/manu/evaluation.py`
 
 ## Deferred
 Fora desta fatia, mantido para o plano ficar honesto.

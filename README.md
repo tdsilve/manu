@@ -75,6 +75,25 @@ O projeto é um monorepo com duas partes: a API em Python (`api/`), com o pipeli
 
 A API também traz quatro comandos: `manu-extract`, `manu-validate`, `manu-index` e `manu-eval`.
 
+## Fase 2: identificação do aparelho
+
+A Fase 2 faz a Manu responder só com o manual do aparelho da pessoa. Quem cita o modelo na pergunta ("minha DB44 está quente") vê o aparelho no chip e recebe a resposta só do manual dele; quem não cita pergunta como na Fase 1.
+
+- **Detecção no texto:** a API acha os códigos do registro dentro da pergunta (sem caixa, espaço nem hífen) e aceita o começo do código ("DB44SX" acha "DB44S"). Dois aparelhos na pergunta abrem a escolha entre eles.
+- **Busca restrita ao manual:** o filtro por manual vem do registro; a busca usa a pergunta sem o código, que só atrapalhava o vetor.
+- **Modelo sem manual:** o chat avisa que não reconheceu o modelo e a API anota o código (sem dado pessoal) para a base crescer. `manu-missing` lista os mais citados.
+- **Conversa:** "Nova conversa" limpa as mensagens e o aparelho; o logo volta à tela inicial.
+
+Rodada de 08/10/2026 com `manu-eval --product` (35 perguntas, `voyage-3.5`, limiar 0,5):
+
+| Métrica | Sem produto (Fase 1) | Com produto, código na busca | Com produto, código fora da busca |
+|---|---|---|---|
+| Acerto de busca | 93% (28/30) | 100% (30/30) | 100% (30/30) |
+| Recusa correta | 100% (5/5) | 80% (4/5) | 80% (4/5) |
+| Recusa indevida | 7% (2/30) | 3% (1/30) | 0% (0/30) |
+
+A recusa correta cai porque, com o micro-ondas escolhido, a pergunta sobre controle por celular passa a ser respondida com o aviso do manual de que o aparelho não é para controle remoto (resposta fundamentada, não inventada). O limiar continua em 0,5: as similaridades das perguntas com e sem resposta se misturam. As decisões estão em [`docs/specs/`](docs/specs/) e o escopo em [`docs/scope/scope.md`](docs/scope/scope.md).
+
 ## Como rodar
 
 ### Pré-requisitos
@@ -171,8 +190,8 @@ A cada push no `main`, os dois projetos são publicados de novo.
 ### Testes
 
 ```bash
-cd api
-.venv/bin/pytest
+cd api && .venv/bin/pytest   # API
+cd web && npm test           # interface (Vitest)
 ```
 
 Os testes não usam rede, Ollama nem a chave do Claude.

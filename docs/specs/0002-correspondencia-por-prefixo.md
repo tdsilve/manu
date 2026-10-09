@@ -1,7 +1,7 @@
 # 0002. Correspondência por prefixo e escolha entre candidatos
 
 **Date**: 2026-10-08
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

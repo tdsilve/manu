@@ -1,7 +1,7 @@
 # 0003. Modelo sem manual registrado
 
 **Date**: 2026-10-08
-**Status**: In Progress
+**Status**: Accepted
 
 ## Summary
 

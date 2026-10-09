@@ -26,8 +26,8 @@ A resposta sai só do manual oficial, nunca de fórum ou do conhecimento geral d
 
 ## Capabilities and Constraints
 
-- Existe hoje (Fase 1): perguntas em texto sobre geladeiras e micro-ondas Electrolux e Brastemp; resposta com trecho, manual e página; recusa quando a similaridade fica abaixo do limiar.
-- A interface cita apenas o que já existe. Nada de "em breve": identificação pela foto da etiqueta, código do modelo, mais marcas e memória de conversa não aparecem na interface enquanto não forem construídos.
+- Existe hoje (Fases 1 e 2): perguntas em texto sobre geladeiras e micro-ondas Electrolux e Brastemp; resposta com trecho, manual e página; recusa quando a similaridade fica abaixo do limiar. Quem cita o código do modelo na pergunta tem o aparelho reconhecido (chip "Tirar aparelho") e a resposta sai só do manual dele; "Nova conversa" limpa a tela.
+- A interface cita apenas o que já existe. Nada de "em breve": identificação pela foto da etiqueta, mais marcas e memória de conversa não aparecem na interface enquanto não forem construídos.
 - Terminologia do domínio em `CONTEXT.md` (Manual, Base de manuais, Código do modelo, Etiqueta de identificação).
 
 ## Brand Commitments
