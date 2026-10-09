@@ -84,15 +84,15 @@ A Fase 2 faz a Manu responder só com o manual do aparelho da pessoa. Quem cita 
 - **Modelo sem manual:** o chat avisa que não reconheceu o modelo e a API anota o código (sem dado pessoal) para a base crescer. `manu-missing` lista os mais citados.
 - **Conversa:** "Nova conversa" limpa as mensagens e o aparelho; o logo volta à tela inicial.
 
-Rodada de 08/10/2026 com `manu-eval --product` (35 perguntas: 31 com resposta e 4 sem, `voyage-3.5`, `claude-sonnet-5`, limiar 0,5, 0 falhas de execução):
+Rodada de 08/10/2026 com `manu-eval --product` (35 perguntas, `voyage-3.5`, limiar 0,5), já com a q25 reclassificada no gabarito (31 com resposta e 4 sem):
 
 | Métrica | Sem produto (Fase 1) | Com produto, código na busca | Com produto, código fora da busca |
 |---|---|---|---|
 | Acerto de busca | 90% (28/31) | 100% (31/31) | 100% (31/31) |
-| Recusa correta | 100% (4/4) | 100% (4/4) | 100% (4/4) |
+| Recusa correta | 100% (4/4) | 75% (3/4) | 75% (3/4) |
 | Recusa indevida | 10% (3/31) | 3% (1/31) | 0% (0/31) |
 
-A q25 (micro-ondas pelo celular) foi reclassificada no gabarito como "com resposta": sete manuais dizem que o aparelho não é destinado a controle remoto, e com o produto escolhido a Manu responde "não" com a página citada. Por isso a linha "Sem produto" aqui (90%) difere dos 93% da Fase 1, que contava a q25 como sem resposta. O limiar continua em 0,5: subir para 0,6 recusaria 19% das perguntas com resposta (6/31) para ganhar recusa correta. As decisões estão em [`docs/specs/`](docs/specs/) e o escopo em [`docs/scope/scope.md`](docs/scope/scope.md).
+A q25 (controle do micro-ondas por celular) saiu das perguntas sem resposta: sete manuais trazem a frase de que o aparelho não é para controle remoto, então a Manu responde com a página citada. A única recusa que falta é a q35 (conserto em casa no domingo): a Manu diz que o manual não informa dias nem horários, mas cita as páginas de garantia e por isso não conta como recusa. O limiar continua em 0,5: as similaridades das perguntas com e sem resposta se misturam (a q35 chega a 0,52 e a q17 fica em 0,44). As decisões estão em [`docs/specs/`](docs/specs/) e o escopo em [`docs/scope/scope.md`](docs/scope/scope.md).
 
 ## Como rodar
 
@@ -245,7 +245,7 @@ Em 0,6 o limiar recusa 4 perguntas com resposta para pegar apenas uma pergunta s
 
 - **Duas falhas de busca (q01, q06), as únicas recusas indevidas:** a página que responde ficou fora das 5 recuperadas. Na q01, três páginas quase idênticas dos manuais Brastemp ocuparam o topo.
 - **Variação entre execuções:** a q32 (espaço em volta do micro-ondas) foi recusada na primeira rodada e respondida nas seguintes, com as mesmas páginas. O resultado do Claude não é determinístico, então os percentuais têm uma margem de alguns pontos.
-- **Recusa correta com produto selecionado (80%, 4 de 5):** é a q25, que o manual responde de fato (ver Fase 2); ela foi reclassificada no gabarito. A tabela foi medida antes disso, e repetir `manu-eval --product` está pendente. O limiar volta a ser calibrado na Fase 5.
+- **Recusa correta com produto selecionado (75%, 3 de 4):** é a q35, em que a Manu admite que o manual não informa mas ainda cita páginas, então não conta como recusa. O limiar volta a ser calibrado na Fase 5.
 - **Perguntas ambíguas:** sem o modelo, a resposta correta muda de manual para manual. O Claude agora responde por modelo, mas o ideal é perguntar o modelo (Fase 2).
 
 ### Próximos passos

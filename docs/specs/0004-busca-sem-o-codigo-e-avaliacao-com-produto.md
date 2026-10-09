@@ -78,4 +78,4 @@ Reclassificação da q25 (2026-10-08): "dá pra controlar o micro-ondas pelo cel
 ## Follow-up
 
 - [x] Reescrita da pergunta com modelo de linguagem: adiada para a Fase 6 (retrieval), porque a busca com produto já chega a 100% de acerto.
-- [x] Recusa correta em 80% (4 de 5, contra 100% na Fase 1): a única recusa a menos é a q25, que o manual responde de fato e foi reclassificada no gabarito; o limiar fica em 0,5 e volta na Fase 5 (benchmark). Repetir `manu-eval --product` com o gabarito novo está pendente.
+- [x] Recusa correta em 75% (3 de 4, rodada de 08/10 com a q25 reclassificada): a recusa que falta é a q35, em que a Manu diz que o manual não informa mas cita páginas; o limiar fica em 0,5 e volta na Fase 5 (benchmark).
