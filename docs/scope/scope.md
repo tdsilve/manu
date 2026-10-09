@@ -41,13 +41,13 @@ Chat em Next.js que conversa com a API. code in `web/`
 O fio mais fino que atravessa tudo: a pessoa digita um código que está no registro, a API acha o manual e a busca olha só aquele manual. A interface mostra o produto selecionado e deixa trocar de produto. Este é o walking skeleton da fase.
 **Done when:** digitar um código exato do registro seleciona o produto, as perguntas seguintes são respondidas só com o manual dele, a interface mostra qual produto está selecionado e permite trocá-lo, e código desconhecido não quebra o fluxo.
 - [x] Design it (spec): `/architect produto selecionado por código exato`
-- [ ] Build it: `/develop produto selecionado por código exato`
+- [x] Build it: `/develop produto selecionado por código exato`
    - [x] Fio mínimo de ponta a ponta: registro, `GET /products`, busca filtrada, campo e chip simples (AC-1, AC-4, AC-8)
    - [x] API completa: normalização, 404 e 422, validação de duplicados no `manu-validate`, `model_code` no prompt (AC-2, AC-3, AC-5, AC-6, AC-11, AC-13)
    - [x] Recusa com produto e interface completa: Trocar, estados de erro e carregando (AC-7, AC-9, AC-10)
    - [x] Barra única com modo aparelho (feita; substituída pelo próximo item)
    - [x] A Manu identifica o modelo sozinha: detecta o código no texto da pergunta (`POST /products/detect`), escolhe entre vários aparelhos e sem botão "Procurar código" (AC-8, AC-9, AC-10, AC-14 a AC-18)
-   - [ ] Deploy: `vercel.json`, caminho do registro, teste numa prévia (AC-12)
+   - [x] Deploy: `vercel.json`, caminho do registro, API e web em produção na Vercel, consulta filtrada no Chroma Cloud conferida (AC-12)
 - [ ] Verify it: `/check verify produto selecionado por código exato`
 - [ ] Test it: `/test produto selecionado por código exato`
 Spec [0001](../specs/0001-produto-selecionado-por-codigo.md) · code in `api/manu/`, `web/components/chat.tsx`, `web/lib/detection-flow.ts`, `web/app/api/products/`
