@@ -5,7 +5,7 @@ O deploy público roda na Vercel, que não executa o Ollama e só enxerga o que 
 ## Considered Options
 
 - **Servidor próprio com Ollama:** mantém tudo local, mas exige uma VM com memória para o `bge-m3` e manutenção contínua.
-- **Base vetorial no pacote da função:** esbarra no [ADR 0006](0006-manuais-fora-do-repositorio.md), porque um deploy pelo GitHub só leva o que está versionado.
+- **Base vetorial no pacote da função:** esbarra no [ADR 0006](0006-manuais-versionados-no-repositorio.md), porque um deploy pelo GitHub só leva o que está versionado.
 
 ## Consequences
 

@@ -16,6 +16,7 @@ import yaml
 
 from manu.ask import Asker, AskResult
 from manu.config import Settings
+from manu.registry import Manual, ProductRegistry
 
 log = logging.getLogger(__name__)
 
@@ -120,6 +121,54 @@ def run(asker: Asker, items: list[Item]) -> list[Outcome]:
     return outcomes
 
 
+def product_for(item: Item, manuals: list[Manual]) -> Manual:
+    """O produto que a pessoa teria escolhido: o manual esperado; sem resposta, o primeiro da categoria."""
+    by_id = {m.id: m for m in manuals}
+    if item.expected:
+        return by_id[item.expected[0].manual_id]
+    return next(m for m in manuals if m.category == item.category)
+
+
+def run_product(
+    asker: Asker, registry: ProductRegistry, manuals: list[Manual], items: list[Item], strip: bool = True
+) -> list[Outcome]:
+    """Cada pergunta com o produto selecionado e o código do modelo escrito nela, como no chat."""
+    outcomes = []
+    for item in items:
+        outcome = Outcome(item=item)
+        try:
+            manual = product_for(item, manuals)
+            code = manual.model_codes[0]
+            question = f"Na minha {code}, {item.question}"
+            search_text = registry.strip_codes(question) if strip else None
+            outcome.result = asker.ask(question, manual, code, search_text)
+            outcome.retrieval_hit = not item.no_answer and _hit(item, outcome.result)
+        except Exception as error:
+            log.exception("Falha em %s", item.id)
+            outcome.error = f"{type(error).__name__}: {error}"
+        outcomes.append(outcome)
+    return outcomes
+
+
+def render_comparison(runs: dict[str, list[Outcome]]) -> str:
+    """Tabela lado a lado: o mesmo gabarito sem produto (Fase 1) e com produto."""
+    names = list(runs)
+    lines = ["## Comparação", "", "| Métrica | " + " | ".join(names) + " |", "|---|" + "---|" * len(names)]
+
+    def row(label: str, fn: "object") -> None:
+        cells = []
+        for outcomes in runs.values():
+            answered = [o for o in outcomes if not o.item.no_answer and o.result]
+            unanswerable = [o for o in outcomes if o.item.no_answer and o.result]
+            cells.append(fn(answered, unanswerable))  # type: ignore[operator]
+        lines.append(f"| {label} | " + " | ".join(cells) + " |")
+
+    row("Acerto de busca", lambda a, u: _pct(sum(o.retrieval_hit for o in a), len(a)))
+    row("Recusa correta", lambda a, u: _pct(sum(bool(o.result and o.result.refused) for o in u), len(u)))
+    row("Recusa indevida", lambda a, u: _pct(sum(bool(o.result and o.result.refused) for o in a), len(a)))
+    return "\n".join(lines) + "\n"
+
+
 def _pct(part: int, total: int) -> str:
     return f"{100 * part / total:.0f}% ({part}/{total})" if total else "n/a (0 itens)"
 
@@ -210,6 +259,11 @@ def main() -> None:
     parser.add_argument("--gabarito", type=Path, default=Path("eval/gabarito.yaml"))
     parser.add_argument("--out-dir", type=Path, default=Path("eval/reports"))
     parser.add_argument(
+        "--product",
+        action="store_true",
+        help="roda também com o produto selecionado (código na pergunta) e compara com a busca sem produto",
+    )
+    parser.add_argument(
         "--check",
         action="store_true",
         help="só confere o gabarito com o texto extraído dos PDFs (sem rede e sem custo)",
@@ -234,7 +288,20 @@ def main() -> None:
         "top-k": settings.top_k,
         "Limiar de similaridade": settings.similarity_threshold,
     }
-    report = render_report(run(asker, items), config)
+    if args.product:
+        from manu.registry import load_manuals
+
+        manuals = load_manuals(settings.registry_path)
+        registry = ProductRegistry(manuals)
+        runs = {
+            "Sem produto (Fase 1)": run(asker, items),
+            "Com produto, código na busca": run_product(asker, registry, manuals, items, strip=False),
+            "Com produto, código fora da busca": run_product(asker, registry, manuals, items, strip=True),
+        }
+        config["Modo"] = "comparação com produto selecionado"
+        report = render_comparison(runs) + "\n" + render_report(list(runs.values())[-1], config)
+    else:
+        report = render_report(run(asker, items), config)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     out = args.out_dir / f"relatorio-{datetime.now():%Y%m%d-%H%M%S}.md"

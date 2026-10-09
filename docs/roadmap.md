@@ -8,8 +8,8 @@ Escopo do MVP: geladeiras e micro-ondas, marcas Electrolux e Brastemp, 15 a 20 m
 
 ## Fases
 
-1. RAG básico ([spec](fases/fase-1/spec.md))
-2. Identificação por código digitado: registro com os códigos de modelo cobertos por cada manual, correspondência por prefixo (com escolha entre candidatos), busca restrita ao produto selecionado e registro de modelos sem manual
+1. RAG básico
+2. (concluída) Identificação por código digitado: registro com os códigos de modelo cobertos por cada manual, correspondência por prefixo (com escolha entre candidatos), busca restrita ao produto selecionado e registro de modelos sem manual
 3. Identificação pela foto da etiqueta: Claude com visão, confirmação do código lido, gabarito com fotos de etiquetas
 4. Citações
 5. Benchmark e avaliação
@@ -34,4 +34,4 @@ Escopo do MVP: geladeiras e micro-ondas, marcas Electrolux e Brastemp, 15 a 20 m
 
 - Se no futuro houver upload de nota fiscal (para validar a garantia), mascarar o CPF.
 - O risco de responsabilidade é baixo neste domínio: um erro leva, no pior caso, a uma ligação desnecessária para a assistência técnica, sem prejuízo financeiro direto nem consequência jurídica.
-- Termos de uso dos fabricantes: ver [ADR 0006](adr/0006-manuais-fora-do-repositorio.md).
+- Termos de uso dos fabricantes: ver [ADR 0006](adr/0006-manuais-versionados-no-repositorio.md).

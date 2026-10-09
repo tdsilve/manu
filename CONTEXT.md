@@ -15,7 +15,7 @@ O identificador do fabricante que distingue um modelo de aparelho (ex.: o texto 
 _Avoid_: Modelo (sozinho), SKU, referência
 
 **Identificação do produto**:
-O passo que determina marca e código do modelo, a partir da foto da etiqueta ou do código digitado pelo usuário.
+O passo que determina marca e código do modelo, a partir da foto da etiqueta ou do código que o usuário cita na pergunta.
 _Avoid_: Reconhecimento, detecção
 
 ### Manuais
@@ -32,12 +32,10 @@ _Avoid_: Knowledge base, acervo, banco
 Obtenção automática, no site do fabricante, do manual de um modelo que não está na base de manuais. Melhoria futura; só acontece quando a base não tem o manual.
 _Avoid_: Scraping, crawler, download
 
+**Produto selecionado**:
+O aparelho que a Manu entendeu na conversa (o código citado na pergunta, exato ou pelo começo do código): mostrado no chip, e a busca olha só o manual dele até a pessoa tirá-lo ou citar outro.
+_Avoid_: Filtro, sessão
+
 **Modelo sem manual**:
 Um código do modelo identificado para o qual a base de manuais não tem manual; fica registrado para orientar o que adicionar (e, no futuro, disparar a busca de manual).
 _Avoid_: Miss, pedido pendente
-
-### Consulta
-
-**Produto selecionado**:
-O produto identificado e confirmado pelo usuário; as perguntas seguintes são respondidas só com os manuais dele, até o usuário trocar de produto.
-_Avoid_: Produto atual, contexto, sessão

@@ -17,6 +17,9 @@ def _load_dotenv(path: Path) -> None:
         os.environ.setdefault(key.strip(), value.strip().strip("\"'"))
 
 
+# Relativo ao pacote, não ao diretório de trabalho: na Vercel o cwd não é garantidamente api/.
+DEFAULT_REGISTRY = Path(__file__).resolve().parent.parent / "data" / "manuals.yaml"
+
 DEFAULT_EMBEDDING_MODEL = {"ollama": "bge-m3", "voyage": "voyage-3.5"}
 
 
@@ -46,7 +49,7 @@ class Settings:
         if provider not in DEFAULT_EMBEDDING_MODEL:
             raise ValueError(f"EMBEDDING_PROVIDER inválido: {provider}")
         return cls(
-            registry_path=Path(env("MANU_REGISTRY", "data/manuals.yaml")),
+            registry_path=Path(env("MANU_REGISTRY") or DEFAULT_REGISTRY),
             pdf_dir=Path(env("MANU_PDF_DIR", "data/pdfs")),
             chroma_dir=Path(env("MANU_CHROMA_DIR", "data/chroma")),
             embedding_provider=provider,

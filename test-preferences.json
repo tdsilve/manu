@@ -1,0 +1,14 @@
+{
+  "tool": "vitest",
+  "gate": null,
+  "additionalTools": [],
+  "e2eTool": "none",
+  "testDir": "beside the source (web/lib/*.test.ts)",
+  "filePattern": "*.test.ts",
+  "packageManager": "npm",
+  "api": {
+    "tool": "pytest",
+    "testDir": "api/tests",
+    "filePattern": "test_*.py"
+  }
+}

@@ -62,8 +62,16 @@ class ClaudeGenerator:
         self._api_key = api_key
         self._model = model
 
-    def generate(self, question: str, chunks: list[RetrievedChunk]) -> Generation:
+    def generate(
+        self, question: str, chunks: list[RetrievedChunk], model_code: str | None = None
+    ) -> Generation:
         content = f"Trechos dos manuais:\n\n{_format_context(chunks)}\n\nPergunta: {question}"
+        if model_code:
+            # model_code já foi validado contra o manual escolhido e só tem [A-Za-z0-9 -].
+            content += (
+                f"\n\nO aparelho da pessoa é o modelo {model_code}. O manual cobre vários modelos: "
+                "responda para esse código, sem listar outros modelos como se fossem o dela."
+            )
         use_fallback = self._model in FALLBACK_MODELS
         try:
             client = anthropic.Anthropic(api_key=self._api_key)
