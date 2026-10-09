@@ -23,6 +23,10 @@ CATEGORY_LABEL = {"geladeira": "da geladeira", "micro-ondas": "do micro-ondas"}
 TOKEN_PATTERN = re.compile(r"[A-Za-z0-9]+")
 JOINER_PATTERN = re.compile(r"[ -]+")
 MAX_CODE_TOKENS = 3
+# Prefixo: o token começa com um código do registro e traz 1 a 3 caracteres a mais, o primeiro uma letra
+# ("DB44SX" acha "DB44S"); número depois do código é outro modelo ("IB70" não acha "IB7").
+MIN_PREFIX_TOKEN = 5
+MAX_PREFIX_SUFFIX = 3
 CONNECTORS = {"E", "OU"}
 # "Cara de código" para o aviso de não reconhecido: começa com letra, tem número, 3 a 15 caracteres
 # (assim "220V" e "60Hz", que começam com número, ficam de fora).
@@ -136,6 +140,7 @@ class DetectedProduct:
     manual: Manual
     code: str  # o código como está no registro
     matched: str  # o trecho do texto, como a pessoa escreveu
+    approximate: bool = False  # achado pelo começo do código (a pessoa escreveu um sufixo a mais)
 
 
 @dataclass(frozen=True)
@@ -152,6 +157,7 @@ class ProductRegistry:
         self.by_id: dict[str, Manual] = {}
         self.by_code: dict[str, Manual] = {}
         self.canonical_code: dict[str, str] = {}  # código normalizado -> como está no YAML
+        self._codes_by_length: list[str] = []
         for manual in manuals:
             self.by_id[manual.id] = manual
             for code in manual.model_codes:
@@ -162,6 +168,7 @@ class ProductRegistry:
                     )
                 self.by_code[key] = manual
                 self.canonical_code[key] = code
+        self._codes_by_length = sorted(self.by_code, key=len, reverse=True)
 
     def find_by_code(self, code: str) -> Manual | None:
         if not is_valid_code(code):
@@ -197,6 +204,18 @@ class ProductRegistry:
         while i < len(tokens):
             hit = self._match_at(text, tokens, i)
             if hit is None:
+                for key in self._prefix_candidates(tokens[i].group()):
+                    manual = self.by_code[key]
+                    if manual.id not in matches:
+                        matches[manual.id] = DetectedProduct(
+                            manual=manual,
+                            code=self.canonical_code[key],
+                            matched=tokens[i].group(),
+                            approximate=True,
+                        )
+                    consumed[i] = True
+                if consumed[i]:
+                    spans.append((tokens[i].start(), tokens[i].end()))
                 i += 1
                 continue
             size, key = hit
@@ -225,6 +244,18 @@ class ProductRegistry:
                 unrecognized.append(word)
         detection = Detection(matches=list(matches.values()), unrecognized=unrecognized, only_codes=only_codes)
         return detection, spans
+
+    def _prefix_candidates(self, word: str) -> list[str]:
+        """Códigos do registro que são o começo de `word`, o mais longo de cada manual."""
+        if len(word) < MIN_PREFIX_TOKEN or not word[0].isalpha() or not any(c.isdigit() for c in word):
+            return []
+        upper = word.upper()
+        best: dict[str, str] = {}  # manual -> código normalizado mais longo
+        for key in self._codes_by_length:
+            suffix = upper[len(key) :]
+            if upper.startswith(key) and 1 <= len(suffix) <= MAX_PREFIX_SUFFIX and suffix[0].isalpha():
+                best.setdefault(self.by_code[key].id, key)
+        return list(best.values())
 
     def _match_at(self, text: str, tokens: list[re.Match[str]], start: int) -> tuple[int, str] | None:
         """Tenta 3, 2 e 1 tokens a partir de `start`; devolve (tamanho, código normalizado)."""

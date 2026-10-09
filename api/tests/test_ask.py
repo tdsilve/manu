@@ -380,6 +380,7 @@ def test_detect_finds_the_product_in_the_question(client: TestClient) -> None:
             {
                 "code": "XYZ100S",
                 "matched": "xyz 100s",
+                "approximate": False,
                 "product": {
                     "manual_id": "teste-xyz100",
                     "brand": "Electrolux",

@@ -141,3 +141,57 @@ def test_detect_every_real_code_finds_its_own_manual_inside_a_sentence() -> None
 )
 def test_strip_codes_removes_only_registry_codes(tmp_path: Path, text: str, expected: str) -> None:
     assert _registry(tmp_path).strip_codes(text) == expected
+
+
+# Prefixo (spec 0002)
+def _prefix_registry(tmp_path: Path) -> ProductRegistry:
+    path = _write(tmp_path, {"a": ["DB44", "DB44S", "IB7"], "b": ["DB44SX1", "G0045837"], "c": ["TF38"]})
+    return ProductRegistry(load_manuals(path))
+
+
+def test_prefix_finds_the_code_with_a_short_letter_suffix(tmp_path: Path) -> None:
+    detection = _prefix_registry(tmp_path).detect("minha DB44SX esquenta")
+
+    # DB44SX começa com DB44S (manual a, mais longo do manual) e com DB44 (mesmo manual): um item só
+    assert [m.manual.id for m in detection.matches] == ["a"]
+    assert detection.matches[0].code == "DB44S"
+    assert detection.matches[0].approximate is True
+    assert detection.matches[0].matched == "DB44SX"
+    assert detection.unrecognized == []
+
+
+def test_prefix_shorter_than_the_exact_suffix_rule_does_not_match(tmp_path: Path) -> None:
+    registry = _prefix_registry(tmp_path)
+
+    assert registry.detect("IB70 faz barulho").matches == []  # sufixo começa com número: outro modelo
+    assert registry.detect("TF38ABCD faz barulho").matches == []  # sufixo com mais de 3 caracteres
+    assert registry.detect("TF3 faz barulho").matches == []  # curto demais e sem correspondência
+
+
+def test_exact_match_always_beats_prefix(tmp_path: Path) -> None:
+    detection = _prefix_registry(tmp_path).detect("DB44S")
+
+    assert detection.matches[0].code == "DB44S"
+    assert detection.matches[0].approximate is False
+
+
+def test_prefix_matching_several_manuals_returns_one_item_each(tmp_path: Path) -> None:
+    path = _write(tmp_path, {"a": ["DB44"], "b": ["DB44S"]})
+    detection = ProductRegistry(load_manuals(path)).detect("minha DB44SX")
+
+    assert {m.manual.id for m in detection.matches} == {"a", "b"}
+    assert all(m.approximate for m in detection.matches)
+
+
+def test_prefix_token_needs_a_letter_start_a_number_and_five_characters(tmp_path: Path) -> None:
+    registry = _prefix_registry(tmp_path)
+
+    assert registry.detect("44SXY").matches == []  # começa com número
+    assert registry.detect("TF38X").matches[0].code == "TF38"  # 5 caracteres, vale
+
+
+def test_prefix_text_leaves_the_search_and_is_not_unrecognized(tmp_path: Path) -> None:
+    registry = _prefix_registry(tmp_path)
+
+    assert registry.strip_codes("Minha DB44SX esquenta?") == "Minha esquenta?"
+    assert registry.detect("DB44SX").only_codes is True

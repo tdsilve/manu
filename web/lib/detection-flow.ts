@@ -1,6 +1,6 @@
 import type { Detection, SelectedProduct } from "@/lib/products";
 
-export type Notice = { kind: "switched" | "unrecognized"; text: string };
+export type Notice = { kind: "switched" | "unrecognized" | "prefix"; text: string };
 
 // O que o chat faz com uma pergunta depois da detecção (spec 0001, tabela de transições).
 export type Action =
@@ -44,6 +44,14 @@ export function decide(detection: Detection, current: SelectedProduct | null): A
 
   if (found.length > 1) return { kind: "choose", options: found, onlyCodes: detection.only_codes };
 
-  const { product, notice } = applyFound(current, found[0]);
+  const [match] = detection.matches;
+  const applied = applyFound(current, found[0]);
+  const { product } = applied;
+  // Achado pelo começo do código: mostra o que foi entendido, a menos que já haja o aviso de troca.
+  const notice: Notice | null =
+    applied.notice ??
+    (match.approximate
+      ? { kind: "prefix", text: `Achei ${match.matched} pelo modelo ${match.code}.` }
+      : null);
   return detection.only_codes ? { kind: "select", product, notice } : { kind: "ask", product, notice };
 }

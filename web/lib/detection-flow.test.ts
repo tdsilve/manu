@@ -153,3 +153,40 @@ describe("decide: vários aparelhos (AC-16)", () => {
     expect(action).not.toHaveProperty("product");
   });
 });
+
+describe("decide: achado pelo começo do código (spec 0002, AC-6)", () => {
+  const byPrefix = { code: "DB44", matched: "DB44SX", product: electrolux, approximate: true };
+
+  it("avisa o que foi entendido e segue com o produto", () => {
+    const action = decide(detection({ matches: [byPrefix] }), null);
+
+    expect(action).toEqual({
+      kind: "ask",
+      product: db44,
+      notice: { kind: "prefix", text: "Achei DB44SX pelo modelo DB44." },
+    });
+  });
+
+  it("o aviso de troca de aparelho vale mais que o de prefixo", () => {
+    const other = { code: "BRE57FE", matched: "BRE57FEX", product: brastemp, approximate: true };
+
+    const action = decide(detection({ matches: [other] }), db44);
+
+    expect(action).toMatchObject({ kind: "ask", notice: { kind: "switched" } });
+  });
+
+  it("só o código por prefixo escolhe sem perguntar e avisa", () => {
+    const action = decide(detection({ matches: [byPrefix], only_codes: true }), null);
+
+    expect(action).toMatchObject({ kind: "select", notice: { kind: "prefix" } });
+  });
+
+  it("vários candidatos por prefixo viram a escolha entre aparelhos", () => {
+    const second = { code: "BRE57FE", matched: "DB44SX", product: brastemp, approximate: true };
+
+    const action = decide(detection({ matches: [byPrefix, second] }), null);
+
+    expect(action).toMatchObject({ kind: "choose", options: [db44, bre] });
+  });
+});
+

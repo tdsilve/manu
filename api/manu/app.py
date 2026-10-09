@@ -58,6 +58,7 @@ class DetectRequest(BaseModel):
 class DetectedProductResponse(BaseModel):
     code: str
     matched: str
+    approximate: bool
     product: ProductResponse
 
 
@@ -130,6 +131,7 @@ def create_app(
                 DetectedProductResponse(
                     code=m.code,
                     matched=m.matched,
+                    approximate=m.approximate,
                     product=ProductResponse(
                         manual_id=m.manual.id,
                         brand=m.manual.brand,

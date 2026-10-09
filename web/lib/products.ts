@@ -14,6 +14,7 @@ export type SelectedProduct = {
 export type DetectedProduct = {
   code: string;
   matched: string;
+  approximate?: boolean; // achado pelo começo do código: a pessoa escreveu um sufixo a mais
   product: Product;
 };
 
