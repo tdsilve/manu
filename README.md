@@ -245,7 +245,7 @@ Em 0,6 o limiar recusa 4 perguntas com resposta para pegar apenas uma pergunta s
 
 - **Duas falhas de busca (q01, q06), as únicas recusas indevidas:** a página que responde ficou fora das 5 recuperadas. Na q01, três páginas quase idênticas dos manuais Brastemp ocuparam o topo.
 - **Variação entre execuções:** a q32 (espaço em volta do micro-ondas) foi recusada na primeira rodada e respondida nas seguintes, com as mesmas páginas. O resultado do Claude não é determinístico, então os percentuais têm uma margem de alguns pontos.
-- **Recusa correta com produto selecionado (80%, 4 de 5):** uma pergunta sem resposta no manual passa do limiar de 0,5. É a troca aceita por 100% de acerto de busca; o limiar volta a ser calibrado na Fase 5.
+- **Recusa correta com produto selecionado (80%, 4 de 5):** é a q25, que o manual responde de fato (ver Fase 2); ela foi reclassificada no gabarito. A tabela foi medida antes disso, e repetir `manu-eval --product` está pendente. O limiar volta a ser calibrado na Fase 5.
 - **Perguntas ambíguas:** sem o modelo, a resposta correta muda de manual para manual. O Claude agora responde por modelo, mas o ideal é perguntar o modelo (Fase 2).
 
 ### Próximos passos
