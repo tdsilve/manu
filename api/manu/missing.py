@@ -5,8 +5,7 @@ import logging
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from datetime import date
-
-from chromadb.api import ClientAPI
+from typing import Any
 
 log = logging.getLogger(__name__)
 
@@ -25,7 +24,7 @@ class MissingModel:
 
 
 class MissingModels:
-    def __init__(self, client: ClientAPI) -> None:
+    def __init__(self, client: Any) -> None:  # chromadb.ClientAPI ou HttpChromaClient
         self._collection = client.get_or_create_collection(COLLECTION, embedding_function=None)
 
     def record(self, codes: Iterable[str], today: date | None = None) -> None:
@@ -35,7 +34,7 @@ class MissingModels:
             existing = self._collection.get(ids=[raw], include=["metadatas"])
             metadatas = existing["metadatas"] or []
             previous = metadatas[0] if metadatas else None
-            mentions = int(previous["mentions"]) + 1 if previous else 1  # type: ignore[arg-type]
+            mentions = int(previous["mentions"]) + 1 if previous else 1
             first = str(previous["first_seen"]) if previous else day
             self._collection.upsert(
                 ids=[raw],
@@ -49,7 +48,7 @@ class MissingModels:
         models = [
             MissingModel(
                 code=code,
-                mentions=int(meta["mentions"]),  # type: ignore[arg-type]
+                mentions=int(meta["mentions"]),
                 first_seen=str(meta["first_seen"]),
                 last_seen=str(meta["last_seen"]),
             )
