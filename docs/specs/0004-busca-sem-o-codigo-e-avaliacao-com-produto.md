@@ -75,4 +75,5 @@ Decisão do AC-5: o limiar **continua em 0,5**. As melhores similaridades das pe
 
 ## Follow-up
 
-- [ ] Reescrita da pergunta com modelo de linguagem, se os números pedirem.
+- [x] Reescrita da pergunta com modelo de linguagem: adiada para a Fase 6 (retrieval), porque a busca com produto já chega a 100% de acerto.
+- [x] Recusa correta em 80% (4 de 5, contra 100% na Fase 1): troca aceita em 2026-10-08 por 100% de acerto de busca; o limiar fica em 0,5 e volta na Fase 5 (benchmark).

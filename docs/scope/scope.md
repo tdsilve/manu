@@ -99,6 +99,8 @@ Spec [0004](../specs/0004-busca-sem-o-codigo-e-avaliacao-com-produto.md) · code
 ## Deferred
 Fora desta fatia, mantido para o plano ficar honesto.
 - **Identificação pela foto da etiqueta**: Claude com visão e confirmação do código lido · Fase 3 · needs a decision
+- **Limite de chamadas na borda (Firewall da Vercel)**: a API já limita por IP; o Firewall é tarefa de deploy de quem administra o projeto na Vercel · fora da Fase 2
+- **Reescrita da pergunta com modelo de linguagem**: só se a avaliação pedir · Fase 6
 - **Busca de manual no site do fabricante**: só quando o código não tem manual · Fase 9 · needs a decision
 
 ## Legend
