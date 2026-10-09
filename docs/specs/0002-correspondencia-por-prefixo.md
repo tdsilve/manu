@@ -61,4 +61,4 @@ Sufixos de etiqueta são letras curtas (cor, versão, mercado); número depois d
 
 ## Follow-up
 
-- [ ] Medir quantos códigos reais de etiqueta o prefixo cobre, quando houver registro de modelos sem manual (spec 0003).
+- [x] O registro de modelos sem manual existe (spec 0003): o prefixo já pode ser avaliado com uso real lendo `manu-missing` (códigos com sufixo que ainda não casam aparecem lá). A medição depende de uso real e acontece rodando o comando de tempos em tempos, sem trabalho de código pendente.

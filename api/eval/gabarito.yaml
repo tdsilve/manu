@@ -373,7 +373,17 @@ items:
   - id: q25
     question: dá pra controlar o micro-ondas pelo celular, pelo wi-fi?
     category: micro-ondas
-    no_answer: true
+    # Reclassificada em 2026-10-08: com o produto escolhido a Manu respondeu "não", e os manuais dizem
+    # que o aparelho não é destinado a controle remoto (resposta fundamentada, não um caso sem resposta).
+    evidence: 'controle remoto'
+    expected:
+      - {manual_id: brastemp-bms45, pages: [4]}
+      - {manual_id: brastemp-bmg45, pages: [1]}
+      - {manual_id: electrolux-mf33s, pages: [6]}
+      - {manual_id: electrolux-mga42, pages: [6]}
+      - {manual_id: electrolux-mb38t, pages: [6]}
+      - {manual_id: electrolux-me3ep, pages: [5]}
+      - {manual_id: electrolux-mto30, pages: [5]}
 
   - id: q35
     question: dá pra mandar consertar a geladeira em casa no domingo?

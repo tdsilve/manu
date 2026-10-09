@@ -92,7 +92,7 @@ Rodada de 08/10/2026 com `manu-eval --product` (35 perguntas, `voyage-3.5`, limi
 | Recusa correta | 100% (5/5) | 80% (4/5) | 80% (4/5) |
 | Recusa indevida | 7% (2/30) | 3% (1/30) | 0% (0/30) |
 
-A recusa correta cai porque, com o micro-ondas escolhido, a pergunta sobre controle por celular passa a ser respondida com o aviso do manual de que o aparelho não é para controle remoto (resposta fundamentada, não inventada). O limiar continua em 0,5: as similaridades das perguntas com e sem resposta se misturam. As decisões estão em [`docs/specs/`](docs/specs/) e o escopo em [`docs/scope/scope.md`](docs/scope/scope.md).
+A recusa correta cai porque, com o micro-ondas escolhido, a pergunta sobre controle por celular (q25) passa a ser respondida com o aviso do manual de que o aparelho não é para controle remoto: uma resposta fundamentada, não inventada. Por isso a q25 foi reclassificada no gabarito como "com resposta" (sete manuais trazem a frase). A tabela foi medida antes dessa mudança, e repetir `manu-eval --product` com o gabarito novo está pendente. O limiar continua em 0,5: as similaridades das perguntas com e sem resposta se misturam. As decisões estão em [`docs/specs/`](docs/specs/) e o escopo em [`docs/scope/scope.md`](docs/scope/scope.md).
 
 ## Como rodar
 

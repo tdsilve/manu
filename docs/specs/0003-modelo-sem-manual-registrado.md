@@ -60,4 +60,4 @@ O Chroma Cloud já está no projeto e na função, então não entra serviço no
 
 ## Follow-up
 
-- [ ] Limite de taxa nos endpoints públicos, que agora também gravam.
+- [x] Limite de taxa nos endpoints públicos, que agora também gravam: feito em `api/manu/ratelimit.py` (20/min no `/ask`, 60/min nos outros, por IP), conferido em produção (60 respostas 200 e as seguintes 429).
