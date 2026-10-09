@@ -48,7 +48,7 @@ O fio mais fino que atravessa tudo: a pessoa digita um código que está no regi
    - [x] Barra única com modo aparelho (feita; substituída pelo próximo item)
    - [x] A Manu identifica o modelo sozinha: detecta o código no texto da pergunta (`POST /products/detect`), escolhe entre vários aparelhos e sem botão "Procurar código" (AC-8, AC-9, AC-10, AC-14 a AC-18)
    - [x] Deploy: `vercel.json`, caminho do registro, API e web em produção na Vercel, consulta filtrada no Chroma Cloud conferida (AC-12)
-- [ ] Verify it: `/check verify produto selecionado por código exato`
+- [x] Verify it: `/check verify produto selecionado por código exato`
 - [ ] Test it: `/test produto selecionado por código exato`
 Spec [0001](../specs/0001-produto-selecionado-por-codigo.md) · code in `api/manu/`, `web/components/chat.tsx`, `web/lib/detection-flow.ts`, `web/app/api/products/`
 
