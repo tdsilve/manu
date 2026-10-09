@@ -66,7 +66,7 @@ describe("decide: nenhum aparelho achado (AC-9, AC-18)", () => {
     expect(action).toEqual({
       kind: "ask",
       product: null,
-      notice: { kind: "unrecognized", text: "Não reconheci XY99; respondi com todos os manuais." },
+      notice: { kind: "unrecognized", text: "Não reconheci XY99; respondi com todos os manuais. Anotei o modelo para a base crescer." },
     });
   });
 
@@ -76,7 +76,7 @@ describe("decide: nenhum aparelho achado (AC-9, AC-18)", () => {
     expect(action).toEqual({
       kind: "ask",
       product: db44,
-      notice: { kind: "unrecognized", text: "Não reconheci XY99; respondi com o manual de DB44." },
+      notice: { kind: "unrecognized", text: "Não reconheci XY99; respondi com o manual de DB44. Anotei o modelo para a base crescer." },
     });
   });
 });

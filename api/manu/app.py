@@ -11,6 +11,7 @@ from pydantic import BaseModel, StringConstraints, model_validator
 from manu.ask import Asker
 from manu.embedder import Embedder, EmbeddingError
 from manu.generation import GenerationError, Generator
+from manu.missing import MissingModels
 from manu.registry import MAX_CODE_LENGTH, Manual, ProductRegistry, is_valid_code, normalize_code
 from manu.store import VectorStore
 
@@ -90,6 +91,7 @@ def create_app(
     top_k: int,
     similarity_threshold: float,
     manuals: Iterable[Manual],
+    missing: MissingModels | None = None,
 ) -> FastAPI:
     registry = ProductRegistry(manuals)
     asker = Asker(embedder, store, generator, top_k, similarity_threshold)
@@ -126,6 +128,11 @@ def create_app(
     @app.post("/products/detect")
     def detect(request: DetectRequest) -> DetectResponse:
         detection = registry.detect(request.text)
+        if missing is not None and detection.unrecognized:
+            try:
+                missing.record(detection.unrecognized)
+            except Exception:  # anotar é ajuda: a detecção responde mesmo se a gravação falhar
+                log.exception("Falha ao anotar modelo sem manual")
         return DetectResponse(
             matches=[
                 DetectedProductResponse(

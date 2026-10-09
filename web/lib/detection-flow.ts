@@ -1,5 +1,8 @@
 import type { Detection, SelectedProduct } from "@/lib/products";
 
+// A API anota o código sem manual (spec 0003); o aviso diz isso para a pessoa.
+const NOTED = "Anotei o modelo para a base crescer.";
+
 export type Notice = { kind: "switched" | "unrecognized" | "prefix"; text: string };
 
 // O que o chat faz com uma pergunta depois da detecção (spec 0001, tabela de transições).
@@ -35,8 +38,8 @@ export function decide(detection: Detection, current: SelectedProduct | null): A
       ? {
           kind: "unrecognized",
           text: current
-            ? `Não reconheci ${unknown}; respondi com o manual de ${current.code}.`
-            : `Não reconheci ${unknown}; respondi com todos os manuais.`,
+            ? `Não reconheci ${unknown}; respondi com o manual de ${current.code}. ${NOTED}`
+            : `Não reconheci ${unknown}; respondi com todos os manuais. ${NOTED}`,
         }
       : null;
     return { kind: "ask", product: current, notice };

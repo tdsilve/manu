@@ -30,6 +30,7 @@ manu-extract = "manu.extraction:main"
 manu-validate = "manu.registry:main"
 manu-index = "manu.indexing:main"
 manu-eval = "manu.evaluation:main"
+manu-missing = "manu.missing:main"
 
 [build-system]
 requires = ["setuptools>=69"]

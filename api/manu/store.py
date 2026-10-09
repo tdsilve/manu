@@ -30,6 +30,7 @@ class PageChunk:
 
 class VectorStore:
     def __init__(self, client: ClientAPI) -> None:
+        self.client = client
         # Distância de cosseno: d = 1 - cos(a, b), entre 0 e 2.
         self._collection = client.get_or_create_collection(
             COLLECTION,
