@@ -106,3 +106,49 @@ def test_detect_still_answers_when_recording_fails(workspace: Path, embedder: Fa
 
     assert response.status_code == 200
     assert response.json()["unrecognized"] == ["ABC999"]
+
+
+def test_manu_missing_prints_the_list_from_the_most_cited(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    import sys
+
+    import manu.wiring
+    from manu import missing as missing_module
+
+    missing = _missing(tmp_path)
+    missing.record(["AAA1"], today=date(2026, 10, 1))
+    missing.record(["BBB2"], today=date(2026, 10, 2))
+    missing.record(["BBB2"], today=date(2026, 10, 3))
+
+    class FakeStore:
+        client = missing._collection  # só precisa devolver algo que o MissingModels aceite
+
+    monkeypatch.setattr(manu.wiring, "build_store", lambda settings: FakeStore())
+    monkeypatch.setattr(missing_module, "MissingModels", lambda client: missing)
+    monkeypatch.setattr(sys, "argv", ["manu-missing", "--limit", "5"])
+
+    missing_module.main()
+
+    lines = capsys.readouterr().out.strip().splitlines()
+    assert lines[0].startswith("menções")
+    assert lines[1].split() == ["2", "2026-10-03", "BBB2"]
+    assert lines[2].split() == ["1", "2026-10-01", "AAA1"]
+
+
+def test_manu_missing_says_when_nothing_was_noted(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
+    import sys
+
+    import manu.wiring
+    from manu import missing as missing_module
+
+    empty = _missing(tmp_path)
+
+    class FakeStore:
+        client = empty._collection
+
+    monkeypatch.setattr(manu.wiring, "build_store", lambda settings: FakeStore())
+    monkeypatch.setattr(missing_module, "MissingModels", lambda client: empty)
+    monkeypatch.setattr(sys, "argv", ["manu-missing"])
+
+    missing_module.main()
+
+    assert capsys.readouterr().out.strip() == "Nenhum modelo anotado ainda."
