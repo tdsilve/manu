@@ -84,15 +84,15 @@ A Fase 2 faz a Manu responder só com o manual do aparelho da pessoa. Quem cita 
 - **Modelo sem manual:** o chat avisa que não reconheceu o modelo e a API anota o código (sem dado pessoal) para a base crescer. `manu-missing` lista os mais citados.
 - **Conversa:** "Nova conversa" limpa as mensagens e o aparelho; o logo volta à tela inicial.
 
-Rodada de 08/10/2026 com `manu-eval --product` (35 perguntas, `voyage-3.5`, limiar 0,5):
+Rodada de 08/10/2026 com `manu-eval --product` (35 perguntas: 31 com resposta e 4 sem, `voyage-3.5`, `claude-sonnet-5`, limiar 0,5, 0 falhas de execução):
 
 | Métrica | Sem produto (Fase 1) | Com produto, código na busca | Com produto, código fora da busca |
 |---|---|---|---|
-| Acerto de busca | 93% (28/30) | 100% (30/30) | 100% (30/30) |
-| Recusa correta | 100% (5/5) | 80% (4/5) | 80% (4/5) |
-| Recusa indevida | 7% (2/30) | 3% (1/30) | 0% (0/30) |
+| Acerto de busca | 90% (28/31) | 100% (31/31) | 100% (31/31) |
+| Recusa correta | 100% (4/4) | 100% (4/4) | 100% (4/4) |
+| Recusa indevida | 10% (3/31) | 3% (1/31) | 0% (0/31) |
 
-A recusa correta cai porque, com o micro-ondas escolhido, a pergunta sobre controle por celular (q25) passa a ser respondida com o aviso do manual de que o aparelho não é para controle remoto: uma resposta fundamentada, não inventada. Por isso a q25 foi reclassificada no gabarito como "com resposta" (sete manuais trazem a frase). A tabela foi medida antes dessa mudança, e repetir `manu-eval --product` com o gabarito novo está pendente. O limiar continua em 0,5: as similaridades das perguntas com e sem resposta se misturam. As decisões estão em [`docs/specs/`](docs/specs/) e o escopo em [`docs/scope/scope.md`](docs/scope/scope.md).
+A q25 (micro-ondas pelo celular) foi reclassificada no gabarito como "com resposta": sete manuais dizem que o aparelho não é destinado a controle remoto, e com o produto escolhido a Manu responde "não" com a página citada. Por isso a linha "Sem produto" aqui (90%) difere dos 93% da Fase 1, que contava a q25 como sem resposta. O limiar continua em 0,5: subir para 0,6 recusaria 19% das perguntas com resposta (6/31) para ganhar recusa correta. As decisões estão em [`docs/specs/`](docs/specs/) e o escopo em [`docs/scope/scope.md`](docs/scope/scope.md).
 
 ## Como rodar
 

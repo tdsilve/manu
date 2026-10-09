@@ -57,15 +57,17 @@ Decisões minhas (RECOMMEND): a avaliação com produto escreve o código na per
 5. Web: dica no cartão de recusa, satisfies **AC-6**
 6. Testes em `api/tests/`, satisfies **AC-1** a **AC-4**
 
-## Resultado da avaliação (2026-10-08, `manu-eval --product`, 35 itens, voyage-3.5, limiar 0,5)
+## Resultado da avaliação (2026-10-08, `manu-eval --product`, 35 itens: 31 com resposta e 4 sem, voyage-3.5, limiar 0,5, 0 falhas)
 
 | Métrica | Sem produto (Fase 1) | Com produto, código na busca | Com produto, código fora da busca |
 |---|---|---|---|
-| Acerto de busca | 93% (28/30) | 100% (30/30) | 100% (30/30) |
-| Recusa correta | 100% (5/5) | 80% (4/5) | 80% (4/5) |
-| Recusa indevida | 7% (2/30) | 3% (1/30) | 0% (0/30) |
+| Acerto de busca | 90% (28/31) | 100% (31/31) | 100% (31/31) |
+| Recusa correta | 100% (4/4) | 100% (4/4) | 100% (4/4) |
+| Recusa indevida | 10% (3/31) | 3% (1/31) | 0% (0/31) |
 
-Decisão do AC-5: o limiar **continua em 0,5**. As melhores similaridades das perguntas sem resposta (0,444 a 0,633) se misturam às das com resposta (0,520 a 0,658), então subir o limiar recusaria perguntas com resposta (q01 e q26) sem recusar as sem resposta. A única recusa correta que se perdeu é a q25 (micro-ondas pelo celular): com o produto escolhido, o manual traz o aviso de que o aparelho não é para controle remoto, e a resposta sai fundamentada, não inventada. Decisão (2026-10-08): a q25 passa a ser "com resposta" no gabarito, porque sete micro-ondas (Brastemp BMS45 e BMG45, Electrolux MF33S, MGA42, MB38T, ME3EP e MTO30) trazem a frase de que o aparelho "não é destinado a ser operado por… controle remoto", e `manu-eval --check` confirma o texto nas páginas. A tabela acima foi medida com a q25 ainda como "sem resposta". **Falta repetir `manu-eval --product`** com o gabarito novo: a tentativa de 2026-10-08 falhou porque o crédito da Anthropic acabou (`credit balance is too low`), então os números novos dependem de recarregar o saldo.
+Decisão do AC-5: o limiar **continua em 0,5**. Subir para 0,6 recusa corretamente 75% das perguntas sem resposta (3/4), mas passa a recusar 19% das com resposta (6/31), e isso piora o uso real. As melhores similaridades das perguntas sem resposta (0,444 a 0,607) se misturam às das com resposta (0,520 a 0,765).
+
+Reclassificação da q25 (2026-10-08): "dá pra controlar o micro-ondas pelo celular, pelo wi-fi?" passou a ter resposta no gabarito, porque sete micro-ondas (Brastemp BMS45 e BMG45, Electrolux MF33S, MGA42, MB38T, ME3EP e MTO30) trazem a frase de que o aparelho "não é destinado a ser operado por… controle remoto", e `manu-eval --check` confirma o texto nas páginas. Uma primeira medição, ainda com a q25 como "sem resposta", deu 93% de acerto sem produto; os números acima já usam o gabarito novo.
 
 ## Consequences
 
