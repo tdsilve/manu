@@ -13,6 +13,7 @@ REFUSAL_MESSAGE = (
 )
 
 
+MIN_SEARCH_TEXT = 3
 _ASSISTANCE = "Se o problema continuar, procure a assistência técnica autorizada do fabricante."
 
 
@@ -48,10 +49,16 @@ class Asker:
         self._threshold = similarity_threshold
 
     def ask(
-        self, question: str, manual: Manual | None = None, model_code: str | None = None
+        self,
+        question: str,
+        manual: Manual | None = None,
+        model_code: str | None = None,
+        search_text: str | None = None,
     ) -> AskResult:
         refusal = refusal_message(manual)
-        [embedding] = self._embedder.embed([question])
+        # A busca pode usar um texto mais limpo (sem o código do modelo); o gerador recebe a pergunta inteira.
+        query = search_text if search_text and len(search_text.strip()) >= MIN_SEARCH_TEXT else question
+        [embedding] = self._embedder.embed([query])
         chunks = self._store.query(embedding, self._top_k, manual.id if manual else None)
         if manual:
             # Defesa extra: com produto selecionado, nada de outro manual chega ao gerador.

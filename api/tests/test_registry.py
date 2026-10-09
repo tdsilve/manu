@@ -125,3 +125,19 @@ def test_detect_every_real_code_finds_its_own_manual_inside_a_sentence() -> None
         for code in manual.model_codes:
             detection = registry.detect(f"Minha geladeira {code} faz barulho. O que fazer?")
             assert [m.manual.id for m in detection.matches] == [manual.id], code
+
+
+# Busca sem o código (spec 0004, AC-1 e AC-2)
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        ("Minha DB44: a lateral está quente", "Minha: a lateral está quente"),
+        ("Na minha db 44, com o que limpo?", "Na minha, com o que limpo?"),
+        ("a lateral esquenta? (DB44)", "a lateral esquenta? ()"),
+        ("DB44 ou G0045837 esquentam?", "ou esquentam?"),
+        ("sem código nenhum", "sem código nenhum"),
+        ("XDB44Y não é código", "XDB44Y não é código"),
+    ],
+)
+def test_strip_codes_removes_only_registry_codes(tmp_path: Path, text: str, expected: str) -> None:
+    assert _registry(tmp_path).strip_codes(text) == expected

@@ -155,7 +155,9 @@ def create_app(
                 owner = registry.by_code.get(normalize_code(request.model_code))
                 if owner is None or owner.id != manual.id:
                     raise HTTPException(status_code=422, detail="model_code não pertence a esse manual.")
-        result = asker.ask(request.question, manual, request.model_code)
+        # Com produto, o filtro já resolve o aparelho: o código citado só atrapalharia o vetor da busca.
+        search_text = registry.strip_codes(request.question) if manual else None
+        result = asker.ask(request.question, manual, request.model_code, search_text)
         return AskResponse(
             answer=result.answer,
             refused=result.refused,

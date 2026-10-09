@@ -119,6 +119,10 @@ function ChatReply({ turn, onRetry, onChoose, busy }: ChatMessageProps) {
       <div className={noteClass}>
         <p className={noteTitleClass}>Isso não está no manual.</p>
         <p className="leading-normal">{result.answer}</p>
+        <p className="mt-2 text-[13px] text-muted">
+          Dica: descreva o que acontece com as palavras do manual (por exemplo, &ldquo;quente&rdquo; em vez de
+          &ldquo;esquenta&rdquo;) e cite o modelo.
+        </p>
       </div>
     );
   }

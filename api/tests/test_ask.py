@@ -407,3 +407,41 @@ def test_detect_code_alone_is_only_codes(client: TestClient) -> None:
 @pytest.mark.parametrize("text", ["", "   ", "a" * 1001])
 def test_detect_rejects_empty_or_long_text(client: TestClient, text: str) -> None:
     assert client.post("/products/detect", json={"text": text}).status_code == 422
+
+
+def test_search_uses_the_question_without_the_model_code_but_the_generator_gets_it_whole(
+    client: TestClient, embedder: FakeEmbedder, generator: FakeGenerator
+) -> None:
+    searched: list[str] = []
+    original = embedder.embed
+    embedder.embed = lambda texts: (searched.extend(texts), original(texts))[1]  # type: ignore[method-assign]
+    question = "Minha xyz100: a porta está com erro"
+
+    client.post("/ask", json={"question": question, "manual_id": "teste-xyz100", "model_code": "XYZ100"})
+
+    assert searched == ["Minha: a porta está com erro"]
+    assert generator.calls and generator.calls[0][0] == question
+
+
+def test_search_keeps_the_original_question_without_a_product(
+    client: TestClient, embedder: FakeEmbedder
+) -> None:
+    searched: list[str] = []
+    original = embedder.embed
+    embedder.embed = lambda texts: (searched.extend(texts), original(texts))[1]  # type: ignore[method-assign]
+
+    client.post("/ask", json={"question": "Minha xyz100: a porta está com erro"})
+
+    assert searched == ["Minha xyz100: a porta está com erro"]
+
+
+def test_search_falls_back_to_the_original_question_when_nothing_is_left(
+    client: TestClient, embedder: FakeEmbedder
+) -> None:
+    searched: list[str] = []
+    original = embedder.embed
+    embedder.embed = lambda texts: (searched.extend(texts), original(texts))[1]  # type: ignore[method-assign]
+
+    client.post("/ask", json={"question": "xyz100", "manual_id": "teste-xyz100"})
+
+    assert searched == ["xyz100"]

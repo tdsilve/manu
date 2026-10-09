@@ -171,8 +171,27 @@ class ProductRegistry:
 
     def detect(self, text: str) -> Detection:
         """Acha no texto livre os códigos do registro (comparação exata, sem chute)."""
+        detection, _ = self._scan(text)
+        return detection
+
+    def strip_codes(self, text: str) -> str:
+        """O texto sem os códigos do registro citados nele (para a busca, que o filtro já resolve)."""
+        _, spans = self._scan(text)
+        if not spans:
+            return text
+        pieces: list[str] = []
+        last = 0
+        for start, end in spans:
+            pieces.append(text[last:start])
+            last = end
+        pieces.append(text[last:])
+        cleaned = re.sub(r"\s+", " ", "".join(pieces))
+        return re.sub(r"\s+([,.;:?!])", r"\1", cleaned).strip()
+
+    def _scan(self, text: str) -> tuple[Detection, list[tuple[int, int]]]:
         tokens = list(TOKEN_PATTERN.finditer(text))
         matches: dict[str, DetectedProduct] = {}
+        spans: list[tuple[int, int]] = []
         consumed = [False] * len(tokens)
         i = 0
         while i < len(tokens):
@@ -188,6 +207,7 @@ class ProductRegistry:
                     code=self.canonical_code[key],
                     matched=text[tokens[i].start() : tokens[i + size - 1].end()],
                 )
+            spans.append((tokens[i].start(), tokens[i + size - 1].end()))
             for j in range(i, i + size):
                 consumed[j] = True
             i += size
@@ -203,7 +223,8 @@ class ProductRegistry:
             only_codes = False
             if LOOKS_LIKE_CODE.fullmatch(word) and word not in unrecognized:
                 unrecognized.append(word)
-        return Detection(matches=list(matches.values()), unrecognized=unrecognized, only_codes=only_codes)
+        detection = Detection(matches=list(matches.values()), unrecognized=unrecognized, only_codes=only_codes)
+        return detection, spans
 
     def _match_at(self, text: str, tokens: list[re.Match[str]], start: int) -> tuple[int, str] | None:
         """Tenta 3, 2 e 1 tokens a partir de `start`; devolve (tamanho, código normalizado)."""
