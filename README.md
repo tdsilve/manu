@@ -81,7 +81,7 @@ A Fase 2 faz a Manu responder só com o manual do aparelho da pessoa. Quem cita 
 
 - **Detecção no texto:** a API acha os códigos do registro dentro da pergunta (sem caixa, espaço nem hífen) e aceita o começo do código ("DB44SX" acha "DB44S"). Dois aparelhos na pergunta abrem a escolha entre eles.
 - **Busca restrita ao manual:** o filtro por manual vem do registro; a busca usa a pergunta sem o código, que só atrapalhava o vetor.
-- **Modelo sem manual:** o chat avisa que não reconheceu o modelo e a API anota o código (sem dado pessoal) para a base crescer. `manu-missing` lista os mais citados.
+- **Modelo sem manual:** o chat avisa que não reconheceu o modelo e a API anota o código (sem dado pessoal) para a base crescer. `manu-missing` lista os mais citados, tira um código da lista com `--remove CÓDIGO` e apaga os que não são citados desde uma data com `--before AAAA-MM-DD --yes` (sem `--yes`, só mostra o que sairia).
 - **Conversa:** "Nova conversa" limpa as mensagens e o aparelho; o logo volta à tela inicial.
 
 Rodada de 08/10/2026 com `manu-eval --product` (35 perguntas, `voyage-3.5`, limiar 0,5), já com a q25 reclassificada no gabarito (31 com resposta e 4 sem):

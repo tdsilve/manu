@@ -1,5 +1,6 @@
 """Modelos sem manual: só o código é anotado, contado e lido (spec 0003, AC-1 a AC-5)."""
 
+from collections.abc import Callable
 from datetime import date
 from pathlib import Path
 
@@ -9,7 +10,7 @@ from chromadb.config import Settings
 from fastapi.testclient import TestClient
 
 from manu.app import create_app
-from manu.missing import MissingModels
+from manu.missing import MissingModel, MissingModels
 from manu.registry import load_manuals
 from manu.store import VectorStore
 from test_ask import FakeEmbedder, FakeGenerator, _index, embedder, generator, workspace  # noqa: F401  (fixtures reaproveitadas)
@@ -152,3 +153,180 @@ def test_manu_missing_says_when_nothing_was_noted(tmp_path: Path, monkeypatch: p
     missing_module.main()
 
     assert capsys.readouterr().out.strip() == "Nenhum modelo anotado ainda."
+
+
+Command = Callable[..., tuple[int, str, str]]
+
+
+@pytest.fixture
+def command(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> tuple[Command, MissingModels]:
+    """Roda o `manu-missing` com os argumentos dados sobre uma base local e devolve status, saída e erro."""
+    import sys
+
+    import manu.wiring
+    from manu import missing as missing_module
+
+    missing = _missing(tmp_path)
+
+    class FakeStore:
+        client = missing._collection
+
+    monkeypatch.setattr(manu.wiring, "build_store", lambda settings: FakeStore())
+    monkeypatch.setattr(missing_module, "MissingModels", lambda client: missing)
+
+    def run(*args: str) -> tuple[int, str, str]:
+        monkeypatch.setattr(sys, "argv", ["manu-missing", *args])
+        status = 0
+        try:
+            missing_module.main()
+        except SystemExit as exit_:
+            status = exit_.code if isinstance(exit_.code, int) else 1
+            if isinstance(exit_.code, str):
+                print(exit_.code, file=sys.stderr)  # o que o Python faz ao sair com uma mensagem
+        captured = capsys.readouterr()
+        return status, captured.out, captured.err
+
+    return run, missing
+
+
+def _three_days(missing: MissingModels) -> list[MissingModel]:
+    """Um modelo anterior ao dia 2026-10-02, um do próprio dia e um posterior."""
+    missing.record(["OLD1"], today=date(2026, 10, 1))
+    missing.record(["DAY2"], today=date(2026, 10, 1))
+    missing.record(["DAY2"], today=date(2026, 10, 2))
+    missing.record(["NEW3"], today=date(2026, 10, 3))
+    return missing.top()
+
+
+def test_remove_deletes_only_that_code_and_names_it(command: tuple[Command, MissingModels]) -> None:
+    run, missing = command
+    before = _three_days(missing)
+
+    status, out, _ = run("--remove", "OLD1")
+
+    assert status == 0
+    assert "OLD1" in out
+    assert missing.top() == [m for m in before if m.code != "OLD1"]
+    assert "OLD1" not in run()[1]
+
+
+def test_remove_ignores_case(command: tuple[Command, MissingModels]) -> None:
+    run, missing = command
+    missing.record(["XY99"])
+
+    status, out, _ = run("--remove", "xy99")
+
+    assert status == 0
+    assert "XY99" in out
+    assert missing.top() == []
+
+
+def test_remove_of_a_code_that_is_not_listed_fails_and_changes_nothing(command: tuple[Command, MissingModels]) -> None:
+    run, missing = command
+    before = _three_days(missing)
+
+    status, out, err = run("--remove", "zzz9")
+
+    assert status == 1
+    assert "ZZZ9 não está na lista" in err
+    assert out == ""
+    assert missing.top() == before
+
+
+def test_before_without_yes_shows_the_older_models_and_deletes_nothing(command: tuple[Command, MissingModels]) -> None:
+    run, missing = command
+    _three_days(missing)
+    missing.record(["OLD0"], today=date(2026, 9, 1))
+    missing.record(["OLD0"], today=date(2026, 9, 30))
+    before = missing.top()
+
+    status, out, _ = run("--before", "2026-10-02")
+
+    lines = out.strip().splitlines()
+    assert status == 0
+    assert lines[0].startswith("menções")
+    assert [line.split() for line in lines[1:-1]] == [["2", "2026-09-30", "OLD0"], ["1", "2026-10-01", "OLD1"]]
+    assert "Nada foi apagado" in lines[-1]
+    assert missing.top() == before
+
+
+def test_before_with_yes_deletes_the_older_models_and_says_which(command: tuple[Command, MissingModels]) -> None:
+    run, missing = command
+    _three_days(missing)
+    missing.record(["OLD0"], today=date(2026, 9, 30))
+
+    status, out, _ = run("--before", "2026-10-02", "--yes")
+
+    assert status == 0
+    assert "2" in out.split() and "OLD0" in out and "OLD1" in out
+    assert "DAY2" not in out and "NEW3" not in out
+    assert [m.code for m in missing.top()] == ["DAY2", "NEW3"]
+    assert "OLD" not in run()[1]
+
+
+@pytest.mark.parametrize("yes", [[], ["--yes"]])
+def test_before_keeps_a_model_last_cited_on_the_day_itself(command: tuple[Command, MissingModels], yes: list[str]) -> None:
+    run, missing = command
+    missing.record(["DAY2"], today=date(2026, 10, 2))
+
+    status, out, _ = run("--before", "2026-10-02", *yes)
+
+    assert status == 0
+    assert "não há modelo para apagar" in out
+    assert [m.code for m in missing.top()] == ["DAY2"]
+
+
+@pytest.mark.parametrize("yes", [[], ["--yes"]])
+def test_before_with_no_older_model_says_there_is_nothing_to_delete(command: tuple[Command, MissingModels], yes: list[str]) -> None:
+    run, missing = command
+    before = _three_days(missing)
+
+    status, out, _ = run("--before", "2026-10-01", *yes)
+
+    assert status == 0
+    assert "não há modelo para apagar" in out
+    assert missing.top() == before
+
+
+@pytest.mark.parametrize("day", ["02/10/2026", "2026-02-30", "2026-10-2", "20261002", "ontem"])
+def test_before_with_an_invalid_day_is_a_usage_error_and_deletes_nothing(command: tuple[Command, MissingModels], day: str) -> None:
+    run, missing = command
+    before = _three_days(missing)
+
+    status, _, err = run("--before", day, "--yes")
+
+    assert status == 2
+    assert "data inválida" in err
+    assert missing.top() == before
+
+
+@pytest.mark.parametrize(
+    "args",
+    [
+        ["--remove", "OLD1", "--before", "2026-10-04", "--yes"],
+        ["--yes"],
+        ["--limit", "1", "--remove", "OLD1"],
+        ["--limit", "1", "--before", "2026-10-04"],
+    ],
+)
+def test_invalid_combinations_are_usage_errors_and_delete_nothing(command: tuple[Command, MissingModels], args: list[str]) -> None:
+    run, missing = command
+    before = _three_days(missing)
+
+    status, _, err = run(*args)
+
+    assert status == 2
+    assert "usage:" in err
+    assert missing.top() == before
+
+
+def test_help_describes_the_cleaning_options_in_portuguese(command: tuple[Command, MissingModels]) -> None:
+    run, _ = command
+
+    status, out, _ = run("--help")
+
+    out = " ".join(out.split())  # a ajuda quebra as linhas conforme a largura do terminal
+    assert status == 0
+    assert "--remove CÓDIGO" in out and "tira o código da lista" in out
+    assert "--before AAAA-MM-DD" in out and "citados pela última vez antes da data" in out
+    assert "--yes" in out and "apaga os modelos mostrados" in out
