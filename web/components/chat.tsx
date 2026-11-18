@@ -65,7 +65,7 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
 
   // Pergunta ao /ask com o produto dado. O turno guarda esse produto para o "Tentar de novo".
   async function answer(id: number, question: string, product: SelectedProduct | null) {
-    patchTurn(id, { status: "loading", sentWith: product });
+    patchTurn(id, { status: "loading", sentWith: product, rateLimit: undefined });
     const thisConversation = conversation.current;
     try {
       const result = await ask(question, product);
@@ -79,7 +79,8 @@ export function Chat({ initialQuestion }: { initialQuestion: string }) {
           say(GONE_NOTICE, GONE_NOTICE.text);
         }
       }
-      patchTurn(id, { status: "error" });
+      const rateLimit = error instanceof AskError && error.status === 429 ? { seconds: error.retryAfter } : undefined;
+      patchTurn(id, { status: "error", rateLimit });
     }
   }
 

@@ -12,6 +12,8 @@ export type Turn = {
   // closed é a pergunta que tinha só o código: o aparelho foi escolhido e não há resposta.
   status: "detecting" | "loading" | "choosing" | "closed" | "error" | "done";
   result?: AskResponse;
+  // Só no erro 429: a API recusou por excesso de perguntas; seconds é o tempo de espera, ou null se não veio.
+  rateLimit?: { seconds: number | null };
   sentWith?: SelectedProduct | null; // o produto com que o turno foi enviado (vale no "Tentar de novo")
   options?: SelectedProduct[];
   onlyCodes?: boolean;
@@ -102,10 +104,17 @@ function ChatReply({ turn, onRetry, onChoose, busy }: ChatMessageProps) {
   }
 
   if (turn.status === "error" || !turn.result) {
+    const limit = turn.rateLimit;
     return (
       <div className={noteClass} role="alert">
-        <p className={`${noteTitleClass} text-alert`}>Não consegui consultar o manual.</p>
-        <p className="leading-normal">A conexão com o servidor falhou. Sua pergunta continua aqui.</p>
+        <p className={`${noteTitleClass} text-alert`}>
+          {limit ? "Muitas perguntas em pouco tempo." : "Não consegui consultar o manual."}
+        </p>
+        <p className="leading-normal">
+          {limit
+            ? `Tente de novo ${limit.seconds ? `em ${limit.seconds} ${limit.seconds === 1 ? "segundo" : "segundos"}` : "em instantes"}.`
+            : "A conexão com o servidor falhou. Sua pergunta continua aqui."}
+        </p>
         <Button variant="outline" size="sm" className="mt-3.5" onClick={onRetry} disabled={busy}>
           <Icons.retry /> Tentar de novo
         </Button>

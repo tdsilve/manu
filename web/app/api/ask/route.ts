@@ -31,8 +31,12 @@ export async function POST(request: Request) {
     return Response.json({ detail: "Serviço temporariamente indisponível." }, { status: 503 });
   }
 
-  return new Response(await upstream.text(), {
-    status: upstream.status,
-    headers: { "Content-Type": upstream.headers.get("Content-Type") ?? "application/json" },
-  });
+  const headers: Record<string, string> = {
+    "Content-Type": upstream.headers.get("Content-Type") ?? "application/json",
+  };
+  // No 429 a tela precisa do tempo de espera que a API calculou.
+  const retryAfter = upstream.headers.get("Retry-After");
+  if (upstream.status === 429 && retryAfter) headers["Retry-After"] = retryAfter;
+
+  return new Response(await upstream.text(), { status: upstream.status, headers });
 }
