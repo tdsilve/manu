@@ -20,17 +20,21 @@ const BRE: Match = { code: "BRE57FE", matched: "BRE57FE", product: brastemp };
 let asked: Record<string, unknown>[];
 let detect: (text: string) => object | Promise<object>;
 let answer: (body: Record<string, unknown>) => object | Promise<object>;
+// Quando definido, a resposta de /api/ask sai pronta daqui (status e cabeçalhos), em vez de `answer`.
+let askReply: (() => Response) | null;
 
 beforeEach(() => {
   asked = [];
   detect = () => ({ matches: [], unrecognized: [], only_codes: false });
   answer = () => ({ answer: "Resposta do manual.", refused: false, citations: [] });
+  askReply = null;
   vi.stubGlobal(
     "fetch",
     vi.fn(async (url: string, init?: RequestInit) => {
       const body = init?.body ? JSON.parse(String(init.body)) : {};
       if (url.includes("/api/products/detect")) return Response.json(await detect(body.text));
       asked.push(body);
+      if (askReply) return askReply();
       return Response.json(await answer(body));
     }),
   );
@@ -218,5 +222,93 @@ describe("Detecção do modelo no chat (spec 0001)", () => {
     await ask(user, "pergunta fora do manual");
 
     expect(await screen.findByText(/Dica: descreva o que acontece com as palavras do manual/)).toBeInTheDocument();
+  });
+
+  describe("429 da API (muitas perguntas em pouco tempo)", () => {
+    const limited = (retryAfter?: string) => () =>
+      Response.json(
+        { detail: "Muitas chamadas em pouco tempo. Tente de novo em instantes." },
+        { status: 429, headers: retryAfter ? { "Retry-After": retryAfter } : {} },
+      );
+
+    it("mostra o título e os segundos do Retry-After, sem falar em conexão (AC-01)", async () => {
+      askReply = limited("37");
+      const user = userEvent.setup();
+      render(<Chat initialQuestion="" />);
+
+      await ask(user, "quanto dura a garantia?");
+
+      const alert = await screen.findByRole("alert");
+      expect(within(alert).getByText("Muitas perguntas em pouco tempo.")).toBeInTheDocument();
+      expect(within(alert).getByText("Tente de novo em 37 segundos.")).toBeInTheDocument();
+      expect(screen.queryByText(/A conexão com o servidor falhou/)).not.toBeInTheDocument();
+    });
+
+    it("com 1 segundo, usa o singular (AC-02)", async () => {
+      askReply = limited("1");
+      const user = userEvent.setup();
+      render(<Chat initialQuestion="" />);
+
+      await ask(user, "quanto dura a garantia?");
+
+      expect(await screen.findByText("Tente de novo em 1 segundo.")).toBeInTheDocument();
+    });
+
+    it.each([["sem Retry-After", undefined], ["com Retry-After inválido", "amanhã"], ["com Retry-After zero", "0"]])(
+      "%s, diz que é para tentar em instantes (AC-03)",
+      async (_name, retryAfter) => {
+        askReply = limited(retryAfter);
+        const user = userEvent.setup();
+        render(<Chat initialQuestion="" />);
+
+        await ask(user, "quanto dura a garantia?");
+
+        const alert = await screen.findByRole("alert");
+        expect(within(alert).getByText("Muitas perguntas em pouco tempo.")).toBeInTheDocument();
+        expect(within(alert).getByText("Tente de novo em instantes.")).toBeInTheDocument();
+      },
+    );
+
+    it("mantém a pergunta e o 'Tentar de novo', que reenvia e mostra o resultado normal (AC-04)", async () => {
+      askReply = limited("5");
+      const user = userEvent.setup();
+      render(<Chat initialQuestion="" />);
+      await ask(user, "quanto dura a garantia?");
+      await screen.findByText("Tente de novo em 5 segundos.");
+      expect(screen.getByText("quanto dura a garantia?")).toBeInTheDocument();
+
+      askReply = null;
+      await user.click(screen.getByRole("button", { name: /Tentar de novo/ }));
+
+      expect(await screen.findByText("Resposta do manual.")).toBeInTheDocument();
+      expect(asked).toHaveLength(2);
+      expect(screen.queryByText("Muitas perguntas em pouco tempo.")).not.toBeInTheDocument();
+    });
+
+    it("se o 'Tentar de novo' falha por outro erro, o aviso de espera some (AC-04)", async () => {
+      askReply = limited("5");
+      const user = userEvent.setup();
+      render(<Chat initialQuestion="" />);
+      await ask(user, "quanto dura a garantia?");
+      await screen.findByText("Tente de novo em 5 segundos.");
+
+      askReply = () => new Response("{}", { status: 503 });
+      await user.click(screen.getByRole("button", { name: /Tentar de novo/ }));
+
+      expect(await screen.findByText("Não consegui consultar o manual.")).toBeInTheDocument();
+      expect(screen.queryByText("Muitas perguntas em pouco tempo.")).not.toBeInTheDocument();
+    });
+
+    it.each([503, 502])("o status %i continua com o aviso de conexão (AC-05)", async (status) => {
+      askReply = () => new Response("{}", { status, headers: { "Retry-After": "9" } });
+      const user = userEvent.setup();
+      render(<Chat initialQuestion="" />);
+
+      await ask(user, "quanto dura a garantia?");
+
+      const alert = await screen.findByRole("alert");
+      expect(within(alert).getByText("Não consegui consultar o manual.")).toBeInTheDocument();
+      expect(within(alert).getByText("A conexão com o servidor falhou. Sua pergunta continua aqui.")).toBeInTheDocument();
+    });
   });
 });
